@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() , OnFragmentActionsListener{
     override fun onClickFragmentButton(fragment: Fragment) {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fragmentContainer, fragment)
-        fragmentTransaction.addToBackStack(null)
+        //fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
 }

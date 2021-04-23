@@ -32,9 +32,9 @@
             android:background="#FFFFFF"
             android:backgroundTint="#FFFFFF"
             android:ems="10"
+            android:gravity="center"
+            android:hint="Email"
             android:inputType="textPersonName"
-            android:text="  email"
-            android:textAlignment="viewStart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/LoginText" />
@@ -47,8 +47,9 @@
             android:background="#FFFFFF"
             android:backgroundTint="#FFFFFF"
             android:ems="10"
+            android:hint="Password"
+            android:gravity="center"
             android:inputType="textPersonName"
-            android:text="  password"
             app:layout_constraintEnd_toEndOf="@+id/emailPlainText"
             app:layout_constraintStart_toStartOf="@+id/emailPlainText"
             app:layout_constraintTop_toBottomOf="@+id/emailPlainText" />

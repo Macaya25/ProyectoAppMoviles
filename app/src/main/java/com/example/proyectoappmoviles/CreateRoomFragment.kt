@@ -41,9 +41,9 @@ class CreateRoomFragment : Fragment() {
 
         btnBackToLooby.setOnClickListener {
             val auxtext1=view.findViewById<EditText>(R.id.RoomNamePlainText).text.toString()
-            //val auxtext2=view.findViewById<EditText>(R.id.PasswordPlainText).text.toString()
+            val auxtext2=view.findViewById<EditText>(R.id.RoomPasswordPlainText).text.toString()
 
-            if(auxtext1==""){
+            if(auxtext1=="" || auxtext2==""){
                 Toast.makeText(activity,"Please Don't Leave Any Input Blank",Toast.LENGTH_SHORT).show()
             }else{
                 viewModel.addShit(ExampleItem(auxtext1))

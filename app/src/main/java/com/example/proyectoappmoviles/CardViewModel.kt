@@ -13,7 +13,10 @@ class CardViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun setDeck(deck: Array<String>){
-        list.add(CardItem(2))
+        val cards = deck.toList().chunked(3)
+        for(i in cards.indices){
+            list.add(CardItem(cards[i].size, cards[i]))
+        }
         live_list.postValue(list)
     }
 }

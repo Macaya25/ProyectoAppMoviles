@@ -15,6 +15,12 @@ class CardAdapter(var cardsList: MutableList<CardItem>):RecyclerView.Adapter<Car
 
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
         val current_item = cardsList[position]
+        holder.card1.text = current_item.cardNames[0]
+        if(current_item.cardAmount >= 2) holder.card2.text = current_item.cardNames[1]
+        if(current_item.cardAmount == 3) holder.card3.text = current_item.cardNames[2]
+
+
+
     }
 
     override fun getItemCount(): Int {

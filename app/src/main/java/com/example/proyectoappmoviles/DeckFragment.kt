@@ -36,7 +36,10 @@ class DeckFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val btnSettings=view.findViewById<Button>(R.id.SettingsButton)
         val btnLobby=view.findViewById<Button>(R.id.LobbyButton)
-        val btnDebugCard=view.findViewById<Button>(R.id.DebugCard)
+        val card1 = view.findViewById<Button>(R.id.card1)
+        val card2 = view.findViewById<Button>(R.id.card2)
+        val card3 = view.findViewById<Button>(R.id.card3)
+
         com=activity as OnFragmentActionsListener
 
         btnSettings.setOnClickListener {
@@ -47,9 +50,9 @@ class DeckFragment : Fragment() {
             com.onClickFragmentButton(LobbyFragment())
         }
 
-        btnDebugCard.setOnClickListener {
-            com.onClickFragmentButton(InspectCardFragment())
-        }
+
+
+
     }
 
 }

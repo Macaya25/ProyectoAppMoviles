@@ -8,15 +8,18 @@ class CardViewModel(application: Application) : AndroidViewModel(application) {
     var list = mutableListOf<CardItem>()
     var live_list = MutableLiveData<MutableList<CardItem>>()
 
-    init{
-        setDeck(application.resources.getStringArray(R.array.Standard))
-    }
 
     fun setDeck(deck: Array<String>){
-        val cards = deck.toList().chunked(3)
+        list.clear()
+        val mutableCards = deck.toMutableList()
+        mutableCards.add("?")
+        mutableCards.add("taza")
+        val cards = mutableCards.chunked(3)
         for(i in cards.indices){
             list.add(CardItem(cards[i].size, cards[i]))
         }
         live_list.postValue(list)
     }
+
+
 }

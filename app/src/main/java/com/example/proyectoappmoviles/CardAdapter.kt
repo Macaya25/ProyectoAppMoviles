@@ -1,5 +1,6 @@
 package com.example.proyectoappmoviles
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +15,22 @@ class CardAdapter(var cardsList: MutableList<CardItem>):RecyclerView.Adapter<Car
     }
 
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
-        val current_item = cardsList[position]
-        holder.card1.text = current_item.cardNames[0]
-        if(current_item.cardAmount >= 2) holder.card2.text = current_item.cardNames[1]
-        if(current_item.cardAmount == 3) holder.card3.text = current_item.cardNames[2]
+        val currentItem = cardsList[position]
+        holder.card1.text = currentItem.cardNames[0]
+        if(currentItem.cardAmount >= 2) holder.card2.text = currentItem.cardNames[1]
+        if(currentItem.cardAmount == 3) holder.card3.text = currentItem.cardNames[2]
 
-
+        val width = Resources.getSystem().displayMetrics.widthPixels
+        if(currentItem.cardAmount == 1){
+            holder.card1.x += width/3
+            holder.card2.visibility = View.INVISIBLE
+            holder.card3.visibility = View.INVISIBLE
+        }
+        else if (currentItem.cardAmount == 2){
+            holder.card3.visibility = View.INVISIBLE
+            holder.card1.x += width/6
+            holder.card2.x += width/6
+        }
 
     }
 

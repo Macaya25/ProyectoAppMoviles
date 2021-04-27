@@ -9,11 +9,14 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import androidx.fragment.app.activityViewModels
 
 
 class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     lateinit var com:OnFragmentActionsListener
+    private lateinit var deck: Array<String>
+    private val viewModel: CardViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +55,13 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        //TODO("Not yet implemented")
+        val deckName = parent?.getItemAtPosition(position)
+
+        if (deckName == "Standard") deck = resources.getStringArray(R.array.Standard)
+        else if (deckName == "T-Shirt") deck = resources.getStringArray(R.array.TShirt)
+        else if (deckName == "Fibonacci") deck = resources.getStringArray(R.array.Fibonacci)
+        else if (deckName == "Hours") deck = resources.getStringArray(R.array.Hours)
+        viewModel.setDeck(deck)
     }
 
 }

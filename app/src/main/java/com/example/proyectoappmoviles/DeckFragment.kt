@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 class DeckFragment : Fragment() {
     lateinit var com:OnFragmentActionsListener
     lateinit var adapter: CardAdapter
+
     private val viewModel: CardViewModel by activityViewModels()
 
     override fun onCreateView(

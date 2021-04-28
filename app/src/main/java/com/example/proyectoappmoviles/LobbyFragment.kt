@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -28,8 +30,21 @@ class LobbyFragment : Fragment() {
         recycler_view.adapter=adapter
         recycler_view.layoutManager= LinearLayoutManager(activity)
         viewModel.genericList.observe(viewLifecycleOwner,androidx.lifecycle.Observer{adapter.set(it)})
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler_view)
 
         return aux
+    }
+
+    private val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+            return false
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            viewModel.list.removeAt(viewHolder.adapterPosition)
+            adapter.notifyDataSetChanged()
+            //Toast.makeText(activity,"ewe", Toast.LENGTH_SHORT)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

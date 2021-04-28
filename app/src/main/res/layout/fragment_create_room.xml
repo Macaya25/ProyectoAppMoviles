@@ -21,7 +21,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/purple_200"
-            android:text="Deck" />
+            app:icon="@drawable/ic_deck"
+            app:iconGravity="top"
+            app:iconSize="40dp" />
 
         <Button
             android:id="@+id/LobbyButton"
@@ -29,8 +31,11 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/purple_200"
-            android:text="Lobby"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:icon="@drawable/ic_lobby"
+            app:iconGravity="top"
+            app:iconSize="40dp"
+            app:iconTint="#F4DE1A" />
 
         <Button
             android:id="@+id/SettingsButton"
@@ -38,7 +43,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/purple_200"
-            android:text="Settings" />
+            app:icon="@drawable/ic_settings"
+            app:iconGravity="top"
+            app:iconSize="40dp" />
     </LinearLayout>
 
     <EditText

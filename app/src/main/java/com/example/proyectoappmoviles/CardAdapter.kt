@@ -8,7 +8,7 @@ import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 
 class CardAdapter(var cardsList: MutableList<CardItem>):RecyclerView.Adapter<CardAdapter.CardViewHolder>() {
-
+    lateinit var com:OnClickFragmentCardInspect
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
         val itemView= LayoutInflater.from(parent.context).inflate(R.layout.card_item,parent,false)
         return CardViewHolder(itemView)
@@ -17,8 +17,22 @@ class CardAdapter(var cardsList: MutableList<CardItem>):RecyclerView.Adapter<Car
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
         val currentItem = cardsList[position]
         holder.card1.text = currentItem.cardNames[0]
+        holder.card1.setOnClickListener(){
+            com.onClickCardToInspect(InspectCardFragment(),currentItem.cardNames[0])
+        }
         if(currentItem.cardAmount >= 2) holder.card2.text = currentItem.cardNames[1]
         if(currentItem.cardAmount == 3) holder.card3.text = currentItem.cardNames[2]
+
+
+
+
+        holder.card2.setOnClickListener(){
+            com.onClickCardToInspect(InspectCardFragment(),currentItem.cardNames[1])
+        }
+        holder.card3.setOnClickListener(){
+            com.onClickCardToInspect(InspectCardFragment(),currentItem.cardNames[2])
+        }
+
 
         val width = Resources.getSystem().displayMetrics.widthPixels
         if(currentItem.cardAmount == 1){

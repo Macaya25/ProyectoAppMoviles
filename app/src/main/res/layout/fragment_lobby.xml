@@ -45,6 +45,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/purple_200"
+            app:icon="@drawable/ic_settings"
             app:iconGravity="top"
             app:iconSize="40dp" />
     </LinearLayout>

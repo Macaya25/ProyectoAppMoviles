@@ -9,7 +9,7 @@ class ContactViewModel(application: Application) : AndroidViewModel(application)
     var list= mutableListOf<ExampleItem>()
     var genericList = MutableLiveData<MutableList<ExampleItem>>()
 
-    fun addShit(item : ExampleItem){
+    fun addRoom(item : ExampleItem){
         list.add(item)
         genericList.postValue(list)
     }

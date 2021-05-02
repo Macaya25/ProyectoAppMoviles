@@ -49,7 +49,7 @@ class CreateRoomFragment : Fragment() {
             if(auxtext1=="" || auxtext2==""){
                 Toast.makeText(activity,"Please Don't Leave Any Input Blank",Toast.LENGTH_SHORT).show()
             }else{
-                viewModel.addShit(ExampleItem(auxtext1))
+                viewModel.addRoom(ExampleItem(auxtext1))
                 com.onClickFragmentButton(LobbyFragment())
             }
         }

@@ -1,4 +1,4 @@
-package com.example.proyectoappmoviles
+package com.example.proyectoappmoviles.Fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,12 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import com.example.proyectoappmoviles.*
+import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
+import com.example.proyectoappmoviles.ObjectItems.ExampleItem
+import com.example.proyectoappmoviles.ViewModels.ContactViewModel
 
 class CreateRoomFragment : Fragment() {
-    lateinit var com:OnFragmentActionsListener
+    lateinit var com: OnFragmentActionsListener
     private val viewModel: ContactViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

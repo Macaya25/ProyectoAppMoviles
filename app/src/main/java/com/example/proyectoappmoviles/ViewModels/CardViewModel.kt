@@ -1,8 +1,10 @@
-package com.example.proyectoappmoviles
+package com.example.proyectoappmoviles.ViewModels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.example.proyectoappmoviles.ObjectItems.CardItem
+import com.example.proyectoappmoviles.R
 
 class CardViewModel(application: Application) : AndroidViewModel(application) {
     var list = mutableListOf<CardItem>()

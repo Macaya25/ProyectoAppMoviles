@@ -1,4 +1,4 @@
-package com.example.proyectoappmoviles
+package com.example.proyectoappmoviles.Adapters
 
 import android.content.res.Resources
 import android.view.LayoutInflater
@@ -6,9 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
+import com.example.proyectoappmoviles.ObjectItems.CardItem
+import com.example.proyectoappmoviles.Fragments.InspectCardFragment
+import com.example.proyectoappmoviles.Interfaces.OnClickFragmentCardInspect
+import com.example.proyectoappmoviles.R
 
 class CardAdapter(var cardsList: MutableList<CardItem>):RecyclerView.Adapter<CardAdapter.CardViewHolder>() {
-    lateinit var com:OnClickFragmentCardInspect
+    lateinit var com: OnClickFragmentCardInspect
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
         val itemView= LayoutInflater.from(parent.context).inflate(R.layout.card_item,parent,false)
         return CardViewHolder(itemView)

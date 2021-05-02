@@ -1,20 +1,23 @@
-package com.example.proyectoappmoviles
+package com.example.proyectoappmoviles.Fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.proyectoappmoviles.*
+import com.example.proyectoappmoviles.Adapters.CardAdapter
+import com.example.proyectoappmoviles.Interfaces.OnClickFragmentCardInspect
+import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
+import com.example.proyectoappmoviles.ViewModels.CardViewModel
 
 
 class DeckFragment : Fragment() {
-    lateinit var com:OnFragmentActionsListener
+    lateinit var com: OnFragmentActionsListener
     lateinit var adapter: CardAdapter
 
     private val viewModel: CardViewModel by activityViewModels()

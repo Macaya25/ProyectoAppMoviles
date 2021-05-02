@@ -1,4 +1,4 @@
-package com.example.proyectoappmoviles
+package com.example.proyectoappmoviles.Fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
+import com.example.proyectoappmoviles.R
 
 
 class InspectCardFragment : Fragment() {
-    lateinit var com:OnFragmentActionsListener
+    lateinit var com: OnFragmentActionsListener
     var displayMessage: String? =""
 
     override fun onCreateView(

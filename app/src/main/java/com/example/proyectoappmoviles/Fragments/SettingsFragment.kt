@@ -1,4 +1,4 @@
-package com.example.proyectoappmoviles
+package com.example.proyectoappmoviles.Fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,11 +10,14 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import androidx.fragment.app.activityViewModels
+import com.example.proyectoappmoviles.ViewModels.CardViewModel
+import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
+import com.example.proyectoappmoviles.R
 
 
 class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
-    lateinit var com:OnFragmentActionsListener
+    lateinit var com: OnFragmentActionsListener
     private lateinit var deck: Array<String>
     private val viewModel: CardViewModel by activityViewModels()
 
@@ -30,7 +33,7 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
         super.onViewCreated(view, savedInstanceState)
 
         val spinner= view.findViewById<Spinner>(R.id.spinner)
-        val spinnerAdapter : ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(view.context,R.array.decks,android.R.layout.simple_spinner_item)
+        val spinnerAdapter : ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(view.context, R.array.decks,android.R.layout.simple_spinner_item)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = spinnerAdapter
         spinner.onItemSelectedListener = this

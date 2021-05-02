@@ -1,16 +1,17 @@
-package com.example.proyectoappmoviles
+package com.example.proyectoappmoviles.Fragments
 
 import android.os.Bundle
-import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
+import com.example.proyectoappmoviles.R
 
 class LoginFragment : Fragment() {
-    lateinit var com:OnFragmentActionsListener
+    lateinit var com: OnFragmentActionsListener
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

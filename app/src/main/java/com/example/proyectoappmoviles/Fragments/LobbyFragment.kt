@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +18,6 @@ import com.example.proyectoappmoviles.ViewModels.ContactViewModel
 
 class LobbyFragment : Fragment() {
 
-    lateinit var com: OnFragmentActionsListener
     lateinit var adapter: ExampleAdapter
     private val viewModel: ContactViewModel by activityViewModels()
 
@@ -55,18 +55,17 @@ class LobbyFragment : Fragment() {
         val btnDeck=view.findViewById<Button>(R.id.DeckButton)
         val btnSettings=view.findViewById<Button>(R.id.SettingsButton)
         val btnCreateRoom=view.findViewById<Button>(R.id.CreateRoomButton)
-        com=activity as OnFragmentActionsListener
 
         btnDeck.setOnClickListener {
-            com.onClickFragmentButton(DeckFragment())
+            Navigation.findNavController(view).navigate(R.id.action_lobbyFragment_to_deckFragment)
         }
 
         btnSettings.setOnClickListener {
-            com.onClickFragmentButton(SettingsFragment())
+            Navigation.findNavController(view).navigate(R.id.action_lobbyFragment_to_settingsFragment)
         }
 
         btnCreateRoom.setOnClickListener {
-            com.onClickFragmentButton(CreateRoomFragment())
+            Navigation.findNavController(view).navigate(R.id.action_lobbyFragment_to_createRoomFragment)
         }
     }
 }

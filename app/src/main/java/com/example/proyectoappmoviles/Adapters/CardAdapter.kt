@@ -5,7 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
+import com.example.proyectoappmoviles.Fragments.DeckFragment
+import com.example.proyectoappmoviles.Fragments.DeckFragmentDirections
 import com.example.proyectoappmoviles.ObjectItems.CardItem
 import com.example.proyectoappmoviles.Fragments.InspectCardFragment
 import com.example.proyectoappmoviles.Interfaces.OnClickFragmentCardInspect
@@ -13,6 +16,7 @@ import com.example.proyectoappmoviles.R
 
 class CardAdapter(var cardsList: MutableList<CardItem>):RecyclerView.Adapter<CardAdapter.CardViewHolder>() {
     lateinit var com: OnClickFragmentCardInspect
+    lateinit var view: View
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
         val itemView= LayoutInflater.from(parent.context).inflate(R.layout.card_item,parent,false)
         return CardViewHolder(itemView)
@@ -22,7 +26,8 @@ class CardAdapter(var cardsList: MutableList<CardItem>):RecyclerView.Adapter<Car
         val currentItem = cardsList[position]
         holder.card1.text = currentItem.cardNames[0]
         holder.card1.setOnClickListener(){
-            com.onClickCardToInspect(InspectCardFragment(),currentItem.cardNames[0])
+            val action = DeckFragmentDirections.actionDeckFragmentToInspectCardFragment(currentItem.cardNames[0])
+            Navigation.findNavController(view).navigate(action)
         }
         if(currentItem.cardAmount >= 2) holder.card2.text = currentItem.cardNames[1]
         if(currentItem.cardAmount == 3) holder.card3.text = currentItem.cardNames[2]
@@ -31,10 +36,12 @@ class CardAdapter(var cardsList: MutableList<CardItem>):RecyclerView.Adapter<Car
 
 
         holder.card2.setOnClickListener(){
-            com.onClickCardToInspect(InspectCardFragment(),currentItem.cardNames[1])
+            val action = DeckFragmentDirections.actionDeckFragmentToInspectCardFragment(currentItem.cardNames[1])
+            Navigation.findNavController(view).navigate(action)
         }
         holder.card3.setOnClickListener(){
-            com.onClickCardToInspect(InspectCardFragment(),currentItem.cardNames[2])
+            val action = DeckFragmentDirections.actionDeckFragmentToInspectCardFragment(currentItem.cardNames[2])
+            Navigation.findNavController(view).navigate(action)
         }
 
 

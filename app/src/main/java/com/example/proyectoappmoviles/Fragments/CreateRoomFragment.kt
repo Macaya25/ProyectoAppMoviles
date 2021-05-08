@@ -9,13 +9,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.Navigation
 import com.example.proyectoappmoviles.*
 import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
 import com.example.proyectoappmoviles.ObjectItems.ExampleItem
 import com.example.proyectoappmoviles.ViewModels.ContactViewModel
 
 class CreateRoomFragment : Fragment() {
-    lateinit var com: OnFragmentActionsListener
     private val viewModel: ContactViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,16 +30,20 @@ class CreateRoomFragment : Fragment() {
         val btnDeck=view.findViewById<Button>(R.id.DeckButton)
         val btnSettings=view.findViewById<Button>(R.id.SettingsButton)
         val btnBackToLooby=view.findViewById<Button>(R.id.BackToLobbyButtton)
+        val btnLobby=view.findViewById<Button>(R.id.LobbyButton)
 
 
-        com=activity as OnFragmentActionsListener
 
         btnDeck.setOnClickListener {
-            com.onClickFragmentButton(DeckFragment())
+            Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_deckFragment)
         }
 
         btnSettings.setOnClickListener {
-            com.onClickFragmentButton(SettingsFragment())
+            Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_settingsFragment)
+        }
+
+        btnLobby.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_lobbyFragment)
         }
 
         btnBackToLooby.setOnClickListener {
@@ -50,7 +54,7 @@ class CreateRoomFragment : Fragment() {
                 Toast.makeText(activity,"Please Don't Leave Any Input Blank",Toast.LENGTH_SHORT).show()
             }else{
                 viewModel.addRoom(ExampleItem(auxtext1))
-                com.onClickFragmentButton(LobbyFragment())
+                Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_lobbyFragment)
             }
         }
     }

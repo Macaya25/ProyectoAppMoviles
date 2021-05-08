@@ -7,13 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
 import com.example.proyectoappmoviles.R
 
 
 class InspectCardFragment : Fragment() {
-    lateinit var com: OnFragmentActionsListener
-    var displayMessage: String? =""
+    val args:InspectCardFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,17 +22,31 @@ class InspectCardFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val aux = inflater.inflate(R.layout.fragment_inspect_card, container, false)
-        displayMessage= arguments?.getString("Name")
-        aux.findViewById<TextView>(R.id.NumberText).text=displayMessage
+        aux.findViewById<TextView>(R.id.NumberText).text=args.cardName
         return aux
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val btnCard=view.findViewById<ConstraintLayout>(R.id.InspectCard)
-        com=activity as OnFragmentActionsListener
+        val btnDeck=view.findViewById<Button>(R.id.DeckButton)
+        val btnSettings=view.findViewById<Button>(R.id.SettingsButton)
+        val btnLobby=view.findViewById<Button>(R.id.LobbyButton)
 
         btnCard.setOnClickListener {
-            com.onClickFragmentButton(DeckFragment())
+            Navigation.findNavController(view).navigate(R.id.action_inspectCardFragment_to_deckFragment)
         }
+
+        btnDeck.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_inspectCardFragment_to_deckFragment)
+        }
+
+        btnSettings.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_inspectCardFragment_to_settingsFragment)
+        }
+
+        btnLobby.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_inspectCardFragment_to_lobbyFragment)
+        }
+
     }
 }

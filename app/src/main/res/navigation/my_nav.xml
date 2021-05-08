@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.proyectoappmoviles.Fragments.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_lobbyFragment"
+            app:destination="@id/lobbyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/lobbyFragment"
+        android:name="com.example.proyectoappmoviles.Fragments.LobbyFragment"
+        android:label="fragment_lobby"
+        tools:layout="@layout/fragment_lobby" >
+        <action
+            android:id="@+id/action_lobbyFragment_to_deckFragment"
+            app:destination="@id/deckFragment" />
+        <action
+            android:id="@+id/action_lobbyFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_lobbyFragment_to_createRoomFragment"
+            app:destination="@id/createRoomFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/deckFragment"
+        android:name="com.example.proyectoappmoviles.Fragments.DeckFragment"
+        android:label="fragment_deck"
+        tools:layout="@layout/fragment_deck" >
+        <action
+            android:id="@+id/action_deckFragment_to_lobbyFragment"
+            app:destination="@id/lobbyFragment" />
+        <action
+            android:id="@+id/action_deckFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_deckFragment_to_inspectCardFragment"
+            app:destination="@id/inspectCardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.proyectoappmoviles.Fragments.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_settingsFragment_to_lobbyFragment"
+            app:destination="@id/lobbyFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_deckFragment"
+            app:destination="@id/deckFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createRoomFragment"
+        android:name="com.example.proyectoappmoviles.Fragments.CreateRoomFragment"
+        android:label="fragment_create_room"
+        tools:layout="@layout/fragment_create_room" >
+        <action
+            android:id="@+id/action_createRoomFragment_to_lobbyFragment"
+            app:destination="@id/lobbyFragment" />
+        <action
+            android:id="@+id/action_createRoomFragment_to_deckFragment"
+            app:destination="@id/deckFragment" />
+        <action
+            android:id="@+id/action_createRoomFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_createRoomFragment_to_lobbyFragment2"
+            app:destination="@id/lobbyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/inspectCardFragment"
+        android:name="com.example.proyectoappmoviles.Fragments.InspectCardFragment"
+        android:label="fragment_inspect_card"
+        tools:layout="@layout/fragment_inspect_card" >
+        <action
+            android:id="@+id/action_inspectCardFragment_to_deckFragment"
+            app:destination="@id/deckFragment" />
+        <action
+            android:id="@+id/action_inspectCardFragment_to_lobbyFragment"
+            app:destination="@id/lobbyFragment" />
+        <action
+            android:id="@+id/action_inspectCardFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <argument
+            android:name="cardName"
+            app:argType="string" />
+    </fragment>
+</navigation>

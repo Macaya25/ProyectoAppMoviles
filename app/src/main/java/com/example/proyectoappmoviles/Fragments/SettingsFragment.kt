@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.Navigation
 import com.example.proyectoappmoviles.ViewModels.CardViewModel
 import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
 import com.example.proyectoappmoviles.R
@@ -17,7 +18,6 @@ import com.example.proyectoappmoviles.R
 
 class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
-    lateinit var com: OnFragmentActionsListener
     private lateinit var deck: Array<String>
     private val viewModel: CardViewModel by activityViewModels()
 
@@ -42,14 +42,14 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         val btnDeck=view.findViewById<Button>(R.id.DeckButton)
         val btnLobby=view.findViewById<Button>(R.id.LobbyButton)
-        com=activity as OnFragmentActionsListener
+
 
         btnDeck.setOnClickListener {
-            com.onClickFragmentButton(DeckFragment())
+            Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_deckFragment)
         }
 
         btnLobby.setOnClickListener {
-            com.onClickFragmentButton(LobbyFragment())
+            Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_lobbyFragment)
         }
     }
 

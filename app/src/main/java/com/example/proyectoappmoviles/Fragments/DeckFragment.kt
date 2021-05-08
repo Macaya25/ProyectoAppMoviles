@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectoappmoviles.*
@@ -17,7 +18,6 @@ import com.example.proyectoappmoviles.ViewModels.CardViewModel
 
 
 class DeckFragment : Fragment() {
-    lateinit var com: OnFragmentActionsListener
     lateinit var adapter: CardAdapter
 
     private val viewModel: CardViewModel by activityViewModels()
@@ -31,7 +31,7 @@ class DeckFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.DeckRecyclerView)
         recyclerView.setHasFixedSize(true)
         adapter = CardAdapter(viewModel.list)
-        adapter.com= activity as OnClickFragmentCardInspect
+        adapter.view=view
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(activity)
         viewModel.live_list.observe(viewLifecycleOwner,androidx.lifecycle.Observer{adapter.set(it)})
@@ -47,14 +47,13 @@ class DeckFragment : Fragment() {
         val card2 = view.findViewById<Button>(R.id.card2)
         val card3 = view.findViewById<Button>(R.id.card3)
 
-        com=activity as OnFragmentActionsListener
 
         btnSettings.setOnClickListener {
-            com.onClickFragmentButton(SettingsFragment())
+            Navigation.findNavController(view).navigate(R.id.action_deckFragment_to_settingsFragment)
         }
 
         btnLobby.setOnClickListener {
-            com.onClickFragmentButton(LobbyFragment())
+            Navigation.findNavController(view).navigate(R.id.action_deckFragment_to_lobbyFragment)
         }
 
 

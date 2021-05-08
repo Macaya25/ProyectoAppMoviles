@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.navigation.Navigation
 import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
 import com.example.proyectoappmoviles.R
 
 class LoginFragment : Fragment() {
-    lateinit var com: OnFragmentActionsListener
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -24,14 +24,13 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val btnLogin=view.findViewById<Button>(R.id.LoginButton)
         val txtSignIn= view.findViewById<TextView>(R.id.SignInText)
-        com=activity as OnFragmentActionsListener
 
         btnLogin.setOnClickListener {
-            com.onClickFragmentButton(LobbyFragment())
+            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
         }
 
         txtSignIn.setOnClickListener {
-            com.onClickFragmentButton(LobbyFragment())
+            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
         }
     }
 }

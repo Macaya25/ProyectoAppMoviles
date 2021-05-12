@@ -1,9 +1,6 @@
 package com.example.proyectoappmoviles.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.proyectoappmoviles.ObjectItems.ExampleItem
 
 @Dao
@@ -14,6 +11,6 @@ interface RoomDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addRoom(contact: RoomEntity)
 
-    @Query("DELETE FROM roomsTable WHERE id = :roomId")
-    fun deleteRoom(roomId: Int)
+    @Delete
+    fun deleteRoom(room: RoomEntity)
 }

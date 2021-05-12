@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.proyectoappmoviles.ObjectItems.ExampleItem
 import com.example.proyectoappmoviles.database.RoomDao
+import com.example.proyectoappmoviles.database.RoomEntity
 import com.example.proyectoappmoviles.database.RoomEntityMapper
 import com.example.proyectoappmoviles.database.RoomRepository
 import java.util.concurrent.ExecutorService
@@ -16,13 +17,13 @@ class ContactViewModel(application: Application) : AndroidViewModel(application)
     var database: RoomDao = RoomRepository(application).getRoomDao()
 
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
-    private lateinit var rooms: List<ExampleItem>
+    private lateinit var rooms: List<RoomEntity>
 
     init{
         executor.execute{
-            rooms = database.getAllRooms().map { RoomEntityMapper().mapFromCached(it) }
+            rooms = database.getAllRooms()
             rooms.forEach {
-                list.add(it)
+                list.add(RoomEntityMapper().mapFromCached(it))
             }
             genericList.postValue(list)
         }
@@ -33,12 +34,12 @@ class ContactViewModel(application: Application) : AndroidViewModel(application)
         genericList.postValue(list)
     }
 
-    fun saveDB(){
+    fun updateDB(){
         executor.execute {
-            rooms = database.getAllRooms().map{RoomEntityMapper().mapFromCached(it)}
+            rooms = database.getAllRooms()
             rooms.forEach {
-                if(it !in list){
-                    //database.deleteContact(ContactEntityMapper().mapToCached(it))
+                if(RoomEntityMapper().mapFromCached(it) !in list){
+                    database.deleteRoom(it)
                 }
             }
         }

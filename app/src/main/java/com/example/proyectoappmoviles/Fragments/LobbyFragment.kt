@@ -48,10 +48,10 @@ class LobbyFragment : Fragment() {
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            viewModel.list.removeAt(viewHolder.adapterPosition)
             executor.execute{
-                viewModel.database.deleteRoom(viewHolder.adapterPosition)
+                viewModel.updateDB()
             }
+            viewModel.list.removeAt(viewHolder.adapterPosition)
             adapter.notifyDataSetChanged()
             //Toast.makeText(activity,"ewe", Toast.LENGTH_SHORT)
         }

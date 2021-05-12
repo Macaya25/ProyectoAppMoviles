@@ -15,11 +15,15 @@ import com.example.proyectoappmoviles.*
 import com.example.proyectoappmoviles.Adapters.ExampleAdapter
 import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
 import com.example.proyectoappmoviles.ViewModels.ContactViewModel
+import com.example.proyectoappmoviles.database.RoomEntityMapper
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class LobbyFragment : Fragment() {
 
     lateinit var adapter: ExampleAdapter
     private val viewModel: ContactViewModel by activityViewModels()
+    private val executor: ExecutorService = Executors.newSingleThreadExecutor()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +49,9 @@ class LobbyFragment : Fragment() {
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             viewModel.list.removeAt(viewHolder.adapterPosition)
+            executor.execute{
+                viewModel.database.deleteRoom(viewHolder.adapterPosition)
+            }
             adapter.notifyDataSetChanged()
             //Toast.makeText(activity,"ewe", Toast.LENGTH_SHORT)
         }

@@ -14,9 +14,15 @@ import com.example.proyectoappmoviles.*
 import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
 import com.example.proyectoappmoviles.ObjectItems.ExampleItem
 import com.example.proyectoappmoviles.ViewModels.ContactViewModel
+import com.example.proyectoappmoviles.database.RoomEntityMapper
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class CreateRoomFragment : Fragment() {
     private val viewModel: ContactViewModel by activityViewModels()
+
+    private val executor: ExecutorService = Executors.newSingleThreadExecutor()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,7 +59,11 @@ class CreateRoomFragment : Fragment() {
             if(auxtext1=="" || auxtext2==""){
                 Toast.makeText(activity,"Please Don't Leave Any Input Blank",Toast.LENGTH_SHORT).show()
             }else{
-                viewModel.addRoom(ExampleItem(auxtext1))
+                val item = ExampleItem(auxtext1)
+                executor.execute{
+                    viewModel.database.addRoom(RoomEntityMapper().mapToCached(item))
+                }
+                viewModel.addRoom(item)
                 Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_lobbyFragment)
             }
         }

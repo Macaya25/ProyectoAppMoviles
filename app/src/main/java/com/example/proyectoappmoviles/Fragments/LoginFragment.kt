@@ -25,7 +25,6 @@ import com.example.proyectoappmoviles.R
 class LoginFragment : Fragment() {
 
     private lateinit var apiViewModel:ApiViewModel
-    private val key = "MY_KEY"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,16 +38,34 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
-        val loggedIn= prefs?.getBoolean("loggedIn",false)
-
-        if (loggedIn==true){
-            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
-        }
-
         val repository= Repository()
         val viewModelFactory=ApiViewModelFactory(repository)
         apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
+
+        val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+
+        val loggedIn= prefs?.getBoolean("loggedIn",false)
+        val usernameaux= prefs?.getString("loggedInUser",null).toString()
+        val passwordaux= prefs?.getString("loggedInPass",null).toString()
+
+
+        if (loggedIn==true){
+            val myUser=UserObject(null,usernameaux,null,passwordaux,null)
+            apiViewModel.getLogin(myUser)
+            apiViewModel.myResponse.observe(activity as MainActivity, Observer { response->
+                if(response.isSuccessful){
+                    Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
+                }
+                else{
+                    Toast.makeText(activity as MainActivity,"Incorrect AutoLogin", Toast.LENGTH_SHORT).show()
+                }
+            })
+
+        }
+
+        /*if (loggedIn==true){
+            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
+        }*/
 
         val btnLogin=view.findViewById<Button>(R.id.RegisterButton)
         val txtSignIn= view.findViewById<TextView>(R.id.SignInText)
@@ -65,6 +82,8 @@ class LoginFragment : Fragment() {
                     val editor= prefs?.edit()
                     editor?.apply {
                         putBoolean("loggedIn",true)
+                        putString("loggedInUser",username)
+                        putString("loggedInPass",password)
                     }?.apply()
 
                     Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.LoginFragment">
+    tools:context=".Fragments.SignUpFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -13,10 +13,10 @@
         android:layout_marginStart="50sp"
         android:layout_marginTop="50sp"
         android:layout_marginEnd="50sp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="150dp"
         android:background="#000000"
         android:backgroundTint="#E8DEF8"
-        app:layout_constraintBottom_toTopOf="@id/SignInText"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -39,6 +39,23 @@
             app:layout_constraintTop_toBottomOf="@+id/LoginText" />
 
         <EditText
+            android:id="@+id/NameRegisterPlainText"
+            android:layout_width="0dp"
+            android:layout_height="40sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:background="#FFFFFF"
+            android:backgroundTint="#FFFFFF"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="Name"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/UsernameRegisterPlainText" />
+
+        <EditText
             android:id="@+id/PasswordRegisterPlainText"
             android:layout_width="0dp"
             android:layout_height="40sp"
@@ -46,12 +63,12 @@
             android:background="#FFFFFF"
             android:backgroundTint="#FFFFFF"
             android:ems="10"
-            android:hint="Password"
             android:gravity="center"
+            android:hint="Password"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="@+id/UsernameRegisterPlainText"
             app:layout_constraintStart_toStartOf="@+id/UsernameRegisterPlainText"
-            app:layout_constraintTop_toBottomOf="@+id/UsernameRegisterPlainText" />
+            app:layout_constraintTop_toBottomOf="@+id/NameRegisterPlainText" />
 
         <Button
             android:id="@+id/RegisterButton"
@@ -60,47 +77,25 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="40dp"
-            android:text="Login"
+            android:text="Register"
             app:layout_constraintEnd_toEndOf="@+id/PasswordRegisterPlainText"
             app:layout_constraintStart_toStartOf="@+id/PasswordRegisterPlainText"
             app:layout_constraintTop_toBottomOf="@+id/PasswordRegisterPlainText" />
 
-        <TextView
-            android:id="@+id/ForgotPasswordText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text="forgot password ?"
-            android:textColor="#673AB7"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/RegisterButton" />
 
         <TextView
             android:id="@+id/LoginText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="Login"
+            android:layout_marginTop="80dp"
+            android:text="Sign Up"
             android:textColor="#673AB7"
             android:textSize="36sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/SignInText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="100dp"
-        android:text="Sign In"
-        android:textColor="#673AB7"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

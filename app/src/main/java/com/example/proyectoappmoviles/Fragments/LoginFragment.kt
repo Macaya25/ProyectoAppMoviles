@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.Api.ApiViewModel

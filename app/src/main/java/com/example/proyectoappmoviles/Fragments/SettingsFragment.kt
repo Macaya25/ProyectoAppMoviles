@@ -51,8 +51,8 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
             val editor= prefs?.edit()
             editor?.apply {
                 putBoolean("loggedIn",false)
-                putString("loggedInUser","")
-                putString("loggedInPass","")
+                putString("loggedInUser",null)
+                putString("loggedInPass",null)
             }?.apply()
             val navOption = NavOptions.Builder().setPopUpTo(R.id.loginFragment,true).build()
             Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_loginFragment,null,navOption)

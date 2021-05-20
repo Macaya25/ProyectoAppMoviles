@@ -8,7 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.ViewModels.CardViewModel
 import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
@@ -49,8 +52,8 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
             editor?.apply {
                 putBoolean("loggedIn",false)
             }?.apply()
-            Navigation.findNavController(view).popBackStack(R.id.loginFragment,true)
-            //Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_loginFragment)
+            val navOption = NavOptions.Builder().setPopUpTo(R.id.loginFragment,true).build()
+            Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_loginFragment,null,navOption)
         }
 
 

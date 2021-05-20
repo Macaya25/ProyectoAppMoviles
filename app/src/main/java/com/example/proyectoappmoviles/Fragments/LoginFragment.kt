@@ -1,6 +1,9 @@
 package com.example.proyectoappmoviles.Fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +25,7 @@ import com.example.proyectoappmoviles.R
 class LoginFragment : Fragment() {
 
     private lateinit var apiViewModel:ApiViewModel
+    private val key = "MY_KEY"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +38,13 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+        val loggedIn= prefs?.getBoolean("loggedIn",false)
+
+        if (loggedIn==true){
+            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
+        }
 
         val repository= Repository()
         val viewModelFactory=ApiViewModelFactory(repository)
@@ -50,6 +61,12 @@ class LoginFragment : Fragment() {
             apiViewModel.getLogin(myUser)
             apiViewModel.myResponse.observe(activity as MainActivity, Observer { response->
                 if(response.isSuccessful){
+
+                    val editor= prefs?.edit()
+                    editor?.apply {
+                        putBoolean("loggedIn",true)
+                    }?.apply()
+
                     Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
                 }
                 else{

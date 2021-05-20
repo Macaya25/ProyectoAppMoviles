@@ -1,16 +1,15 @@
 package com.example.proyectoappmoviles.Fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
+import android.widget.*
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.ViewModels.CardViewModel
 import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
 import com.example.proyectoappmoviles.R
@@ -42,6 +41,17 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         val btnDeck=view.findViewById<Button>(R.id.DeckButton)
         val btnLobby=view.findViewById<Button>(R.id.LobbyButton)
+        val btnLogout=view.findViewById<Button>(R.id.LogoutButton)
+
+        btnLogout.setOnClickListener{
+            val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+            val editor= prefs?.edit()
+            editor?.apply {
+                putBoolean("loggedIn",false)
+            }?.apply()
+            Navigation.findNavController(view).popBackStack(R.id.loginFragment,true)
+            //Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_loginFragment)
+        }
 
 
         btnDeck.setOnClickListener {

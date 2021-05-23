@@ -1,9 +1,8 @@
 package com.example.proyectoappmoviles.Fragments
 
 import android.content.Context
-import android.content.SharedPreferences
+import android.net.ConnectivityManager
 import android.os.Bundle
-import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavOptions
 import androidx.navigation.Navigation
 import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.Api.ApiViewModel
@@ -22,6 +20,7 @@ import com.example.proyectoappmoviles.Api.ApiViewModelFactory
 import com.example.proyectoappmoviles.Api.Repository
 import com.example.proyectoappmoviles.Api.UserObject
 import com.example.proyectoappmoviles.R
+import java.lang.Exception
 
 class LoginFragment : Fragment() {
 
@@ -51,17 +50,22 @@ class LoginFragment : Fragment() {
 
 
         if (loggedIn==true){
-            val myUser=UserObject(null,usernameaux,null,passwordaux,null)
-            apiViewModel.getLogin(myUser)
-            apiViewModel.myResponse.observe(activity as MainActivity, Observer { response->
-                if(response.isSuccessful){
-                    Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
-                }
-                else{
-                    Toast.makeText(activity as MainActivity,"Incorrect AutoLogin", Toast.LENGTH_SHORT).show()
-                }
-            })
+            if(check_connection()) {
+                val myUser = UserObject(null, usernameaux, null, passwordaux, null)
+                apiViewModel.getLogin(myUser)
+                apiViewModel.myResponse.observe(activity as MainActivity, Observer { response ->
+                    if (response.isSuccessful) {
+                        try {
+                            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
+                        }catch (e:Exception){}
 
+                    } else {
+                        Toast.makeText(activity as MainActivity, "Incorrect AutoLogin", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }else{
+                Toast.makeText(activity as MainActivity,"AutoLogin Connection Error",Toast.LENGTH_SHORT).show()
+            }
         }
 
         /*if (loggedIn==true){
@@ -72,32 +76,51 @@ class LoginFragment : Fragment() {
         val txtSignIn= view.findViewById<TextView>(R.id.SignInText)
 
         btnLogin.setOnClickListener {
-            val username=view.findViewById<EditText>(R.id.UsernameRegisterPlainText).text.toString()
-            val password=view.findViewById<EditText>(R.id.PasswordRegisterPlainText).text.toString()
+            if(check_connection()){
+                val username=view.findViewById<EditText>(R.id.UsernameRegisterPlainText).text.toString()
+                val password=view.findViewById<EditText>(R.id.PasswordRegisterPlainText).text.toString()
 
-            val myUser=UserObject(null,username,null,password,null)
-            apiViewModel.getLogin(myUser)
-            apiViewModel.myResponse.observe(activity as MainActivity, Observer { response->
-                if(response.isSuccessful){
+                val myUser=UserObject(null,username,null,password,null)
+                apiViewModel.getLogin(myUser)
+                apiViewModel.myResponse.observe(activity as MainActivity, Observer { response->
+                    if(response.isSuccessful){
 
-                    val editor= prefs?.edit()
-                    editor?.apply {
-                        putBoolean("loggedIn",true)
-                        putString("loggedInUser",username)
-                        putString("loggedInPass",password)
-                    }?.apply()
+                        val editor= prefs?.edit()
+                        editor?.apply {
+                            putBoolean("loggedIn",true)
+                            putString("loggedInUser",username)
+                            putString("loggedInPass",password)
+                        }?.apply()
+                        try {
+                            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
+                        }catch (e:Exception){}
 
-                    Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
-                }
-                else{
-                    Toast.makeText(activity as MainActivity,"Incorrect Username or Password", Toast.LENGTH_SHORT).show()
-                }
-            })
+                    }
+                    else{
+                        Toast.makeText(activity as MainActivity,"Incorrect Username or Password", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            }else{
+                Toast.makeText(activity as MainActivity,"Connection Error",Toast.LENGTH_SHORT).show()
+            }
         }
 
 
         txtSignIn.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_signUpFragment)
         }
+
+
+    }
+
+    private fun check_connection() : Boolean{
+        val managment = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = managment.activeNetworkInfo
+        if (networkInfo != null){
+            if (networkInfo.type == ConnectivityManager.TYPE_WIFI || networkInfo.type == ConnectivityManager.TYPE_MOBILE){
+                return true
+            }
+        }
+        return false
     }
 }

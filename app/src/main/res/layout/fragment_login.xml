@@ -46,9 +46,10 @@
             android:background="#FFFFFF"
             android:backgroundTint="#FFFFFF"
             android:ems="10"
-            android:hint="Password"
             android:gravity="center"
+            android:hint="Password"
             android:inputType="textPersonName"
+            android:password="true"
             app:layout_constraintEnd_toEndOf="@+id/UsernameRegisterPlainText"
             app:layout_constraintStart_toStartOf="@+id/UsernameRegisterPlainText"
             app:layout_constraintTop_toBottomOf="@+id/UsernameRegisterPlainText" />

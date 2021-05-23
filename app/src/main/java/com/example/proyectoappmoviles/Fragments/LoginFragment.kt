@@ -20,6 +20,7 @@ import com.example.proyectoappmoviles.Api.ApiViewModelFactory
 import com.example.proyectoappmoviles.Api.Repository
 import com.example.proyectoappmoviles.Api.UserObject
 import com.example.proyectoappmoviles.R
+import java.lang.Exception
 
 class LoginFragment : Fragment() {
 
@@ -54,7 +55,10 @@ class LoginFragment : Fragment() {
                 apiViewModel.getLogin(myUser)
                 apiViewModel.myResponse.observe(activity as MainActivity, Observer { response ->
                     if (response.isSuccessful) {
-                        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
+                        try {
+                            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
+                        }catch (e:Exception){}
+
                     } else {
                         Toast.makeText(activity as MainActivity, "Incorrect AutoLogin", Toast.LENGTH_SHORT).show()
                     }
@@ -87,8 +91,10 @@ class LoginFragment : Fragment() {
                             putString("loggedInUser",username)
                             putString("loggedInPass",password)
                         }?.apply()
+                        try {
+                            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
+                        }catch (e:Exception){}
 
-                        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
                     }
                     else{
                         Toast.makeText(activity as MainActivity,"Incorrect Username or Password", Toast.LENGTH_SHORT).show()

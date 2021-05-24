@@ -74,23 +74,40 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val deckName = parent?.getItemAtPosition(position)
-
+        val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+        val usernameaux= prefs?.getString("loggedInUser",null).toString()
 
         if (deckName == "Standard"){
             deck = resources.getStringArray(R.array.Standard)
             viewModel.setDeck(deck, 0)
+            val editor= prefs?.edit()
+            editor?.apply {
+                putInt(usernameaux+"Deck",0)
+            }?.apply()
         }
         else if (deckName == "T-Shirt") {
             deck = resources.getStringArray(R.array.TShirt)
             viewModel.setDeck(deck, 1)
+            val editor= prefs?.edit()
+            editor?.apply {
+                putInt(usernameaux+"Deck",1)
+            }?.apply()
         }
         else if (deckName == "Fibonacci") {
             deck = resources.getStringArray(R.array.Fibonacci)
             viewModel.setDeck(deck, 2)
+            val editor= prefs?.edit()
+            editor?.apply {
+                putInt(usernameaux+"Deck",2)
+            }?.apply()
         }
         else if (deckName == "Hours") {
             deck = resources.getStringArray(R.array.Hours)
             viewModel.setDeck(deck, 3)
+            val editor= prefs?.edit()
+            editor?.apply {
+                putInt(usernameaux+"Deck",3)
+            }?.apply()
         }
 
     }

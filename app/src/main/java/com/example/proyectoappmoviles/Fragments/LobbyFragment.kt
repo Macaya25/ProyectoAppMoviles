@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -74,5 +75,13 @@ class LobbyFragment : Fragment() {
         btnCreateRoom.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_lobbyFragment_to_createRoomFragment)
         }
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+
+                }
+            }
+            )
     }
 }

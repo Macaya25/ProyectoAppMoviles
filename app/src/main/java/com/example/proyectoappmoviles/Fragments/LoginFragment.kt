@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -20,11 +21,14 @@ import com.example.proyectoappmoviles.Api.ApiViewModelFactory
 import com.example.proyectoappmoviles.Api.Repository
 import com.example.proyectoappmoviles.Api.UserObject
 import com.example.proyectoappmoviles.R
+import com.example.proyectoappmoviles.ViewModels.CardViewModel
 import java.lang.Exception
 
 class LoginFragment : Fragment() {
 
     private lateinit var apiViewModel:ApiViewModel
+    private val viewModel: CardViewModel by activityViewModels()
+    private lateinit var deck: Array<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +59,25 @@ class LoginFragment : Fragment() {
                 apiViewModel.getLogin(myUser)
                 apiViewModel.myResponse.observe(activity as MainActivity, Observer { response ->
                     if (response.isSuccessful) {
+                        val deckaux= prefs?.getInt(usernameaux+"Deck",0)
+
+                        if (deckaux==1) {
+                            deck = resources.getStringArray(R.array.TShirt)
+                            viewModel.setDeck(deck, 1)
+                        }
+                        else if (deckaux==2){
+                            deck = resources.getStringArray(R.array.Fibonacci)
+                            viewModel.setDeck(deck, 2)
+                        }
+                        else if (deckaux==3){
+                            deck = resources.getStringArray(R.array.Hours)
+                            viewModel.setDeck(deck, 3)
+                        }
+                        else {
+                            deck = resources.getStringArray(R.array.Standard)
+                            viewModel.setDeck(deck, 0)
+                        }
+
                         try {
                             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
                         }catch (e:Exception){}
@@ -91,6 +114,27 @@ class LoginFragment : Fragment() {
                             putString("loggedInUser",username)
                             putString("loggedInPass",password)
                         }?.apply()
+
+                        val deckaux= prefs?.getInt(username+"Deck",0)
+
+                        if (deckaux==1) {
+                            deck = resources.getStringArray(R.array.TShirt)
+                            viewModel.setDeck(deck, 1)
+                        }
+                        else if (deckaux==2){
+                            deck = resources.getStringArray(R.array.Fibonacci)
+                            viewModel.setDeck(deck, 2)
+                        }
+                        else if (deckaux==3){
+                            deck = resources.getStringArray(R.array.Hours)
+                            viewModel.setDeck(deck, 3)
+                        }
+                        else {
+                            deck = resources.getStringArray(R.array.Standard)
+                            viewModel.setDeck(deck, 0)
+                        }
+
+
                         try {
                             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
                         }catch (e:Exception){}

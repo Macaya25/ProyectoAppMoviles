@@ -40,8 +40,8 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
         spinner.adapter = spinnerAdapter
         spinner.onItemSelectedListener = this
 
-
-
+        spinner.setSelection(viewModel.selected_deck)
+        
         val btnDeck=view.findViewById<Button>(R.id.DeckButton)
         val btnLobby=view.findViewById<Button>(R.id.LobbyButton)
         val btnLogout=view.findViewById<Button>(R.id.LogoutButton)
@@ -75,11 +75,24 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val deckName = parent?.getItemAtPosition(position)
 
-        if (deckName == "Standard") deck = resources.getStringArray(R.array.Standard)
-        else if (deckName == "T-Shirt") deck = resources.getStringArray(R.array.TShirt)
-        else if (deckName == "Fibonacci") deck = resources.getStringArray(R.array.Fibonacci)
-        else if (deckName == "Hours") deck = resources.getStringArray(R.array.Hours)
-        viewModel.setDeck(deck)
+
+        if (deckName == "Standard"){
+            deck = resources.getStringArray(R.array.Standard)
+            viewModel.setDeck(deck, 0)
+        }
+        else if (deckName == "T-Shirt") {
+            deck = resources.getStringArray(R.array.TShirt)
+            viewModel.setDeck(deck, 1)
+        }
+        else if (deckName == "Fibonacci") {
+            deck = resources.getStringArray(R.array.Fibonacci)
+            viewModel.setDeck(deck, 2)
+        }
+        else if (deckName == "Hours") {
+            deck = resources.getStringArray(R.array.Hours)
+            viewModel.setDeck(deck, 3)
+        }
+
     }
 
 }

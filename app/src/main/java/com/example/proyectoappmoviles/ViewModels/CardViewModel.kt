@@ -10,11 +10,14 @@ class CardViewModel(application: Application) : AndroidViewModel(application) {
     var list = mutableListOf<CardItem>()
     var live_list = MutableLiveData<MutableList<CardItem>>()
 
+    var selected_deck: Int = 0
+
     init{
-        setDeck(application.resources.getStringArray(R.array.Standard))
+        setDeck(application.resources.getStringArray(R.array.Standard), 0)
     }
 
-    fun setDeck(deck: Array<String>){
+    fun setDeck(deck: Array<String>, deckIndex: Int){
+        selected_deck = deckIndex
         list.clear()
         val mutableCards = deck.toMutableList()
         mutableCards.add("?")

@@ -6,5 +6,5 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Deck (
     val deckName: String,
-    val deck: String
+    val deck: List<String>
 ) : Parcelable

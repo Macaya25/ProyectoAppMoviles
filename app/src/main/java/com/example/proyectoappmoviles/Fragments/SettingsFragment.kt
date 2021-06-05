@@ -16,11 +16,16 @@ import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.ViewModels.CardViewModel
 import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
 import com.example.proyectoappmoviles.R
+import com.example.proyectoappmoviles.database.DeckDao
+import com.example.proyectoappmoviles.database.DeckEntity
+import com.example.proyectoappmoviles.database.DeckEntityMapper
+import com.example.proyectoappmoviles.database.RoomRepository
 
 
 class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private lateinit var deck: Array<String>
+    private lateinit var decks: List<DeckEntity>
     private val viewModel: CardViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -77,38 +82,16 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
         val usernameaux= prefs?.getString("loggedInUser",null).toString()
 
-        if (deckName == "Standard"){
-            deck = resources.getStringArray(R.array.Standard)
-            viewModel.setDeck(deck, 0)
-            val editor= prefs?.edit()
-            editor?.apply {
-                putInt(usernameaux+"Deck",0)
-            }?.apply()
+        viewModel.executor.execute{
+            decks = viewModel.deckDao.getAllDecks()
+            decks.forEach {
+                if (it.name == deckName){
+                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), resources.getStringArray(R.array.decks).indexOf(it.name))
+                }
+            }
         }
-        else if (deckName == "T-Shirt") {
-            deck = resources.getStringArray(R.array.TShirt)
-            viewModel.setDeck(deck, 1)
-            val editor= prefs?.edit()
-            editor?.apply {
-                putInt(usernameaux+"Deck",1)
-            }?.apply()
-        }
-        else if (deckName == "Fibonacci") {
-            deck = resources.getStringArray(R.array.Fibonacci)
-            viewModel.setDeck(deck, 2)
-            val editor= prefs?.edit()
-            editor?.apply {
-                putInt(usernameaux+"Deck",2)
-            }?.apply()
-        }
-        else if (deckName == "Hours") {
-            deck = resources.getStringArray(R.array.Hours)
-            viewModel.setDeck(deck, 3)
-            val editor= prefs?.edit()
-            editor?.apply {
-                putInt(usernameaux+"Deck",3)
-            }?.apply()
-        }
+
+
 
     }
 

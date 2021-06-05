@@ -22,6 +22,8 @@ import com.example.proyectoappmoviles.Api.Repository
 import com.example.proyectoappmoviles.Api.UserObject
 import com.example.proyectoappmoviles.R
 import com.example.proyectoappmoviles.ViewModels.CardViewModel
+import com.example.proyectoappmoviles.database.DeckEntity
+import com.example.proyectoappmoviles.database.DeckEntityMapper
 import java.lang.Exception
 
 class LoginFragment : Fragment() {
@@ -29,6 +31,7 @@ class LoginFragment : Fragment() {
     private lateinit var apiViewModel:ApiViewModel
     private val viewModel: CardViewModel by activityViewModels()
     private lateinit var deck: Array<String>
+    private lateinit var decks: List<DeckEntity>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,22 +64,24 @@ class LoginFragment : Fragment() {
                     if (response.isSuccessful) {
                         val deckaux= prefs?.getInt(usernameaux+"Deck",0)
 
-                        if (deckaux==1) {
-                            deck = resources.getStringArray(R.array.TShirt)
-                            viewModel.setDeck(deck, 1)
+                        viewModel.executor.execute{
+                            decks = viewModel.deckDao.getAllDecks()
+                            decks.forEach {
+                                if (it.name == "T-Shirt"){
+                                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 1)
+                                }
+                                else if (it.name == "Fibonacci"){
+                                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 2)
+                                }
+                                else if (it.name == "Hours"){
+                                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 3)
+                                }
+                                else {
+                                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 0)
+                                }
+                            }
                         }
-                        else if (deckaux==2){
-                            deck = resources.getStringArray(R.array.Fibonacci)
-                            viewModel.setDeck(deck, 2)
-                        }
-                        else if (deckaux==3){
-                            deck = resources.getStringArray(R.array.Hours)
-                            viewModel.setDeck(deck, 3)
-                        }
-                        else {
-                            deck = resources.getStringArray(R.array.Standard)
-                            viewModel.setDeck(deck, 0)
-                        }
+
 
                         try {
                             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
@@ -117,21 +122,22 @@ class LoginFragment : Fragment() {
 
                         val deckaux= prefs?.getInt(username+"Deck",0)
 
-                        if (deckaux==1) {
-                            deck = resources.getStringArray(R.array.TShirt)
-                            viewModel.setDeck(deck, 1)
-                        }
-                        else if (deckaux==2){
-                            deck = resources.getStringArray(R.array.Fibonacci)
-                            viewModel.setDeck(deck, 2)
-                        }
-                        else if (deckaux==3){
-                            deck = resources.getStringArray(R.array.Hours)
-                            viewModel.setDeck(deck, 3)
-                        }
-                        else {
-                            deck = resources.getStringArray(R.array.Standard)
-                            viewModel.setDeck(deck, 0)
+                        viewModel.executor.execute{
+                            decks = viewModel.deckDao.getAllDecks()
+                            decks.forEach {
+                                if (it.name == "T-Shirt"){
+                                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 1)
+                                }
+                                else if (it.name == "Fibonacci"){
+                                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 2)
+                                }
+                                else if (it.name == "Hours"){
+                                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 3)
+                                }
+                                else {
+                                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 0)
+                                }
+                            }
                         }
 
 

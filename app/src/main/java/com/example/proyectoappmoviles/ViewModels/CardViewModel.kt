@@ -21,20 +21,23 @@ class CardViewModel(application: Application) : AndroidViewModel(application) {
     private lateinit var apiViewModel: ApiViewModel
     var list = mutableListOf<CardItem>()
     var live_list = MutableLiveData<MutableList<CardItem>>()
-    private val executor: ExecutorService = Executors.newSingleThreadExecutor()
+    val executor: ExecutorService = Executors.newSingleThreadExecutor()
+    var deckDao: DeckDao = RoomRepository(application).getDeckDao()
 
     var selected_deck: Int = 0
 
     init{
         //apiViewModel.getDecks()
-        //createDecks()
-        setDeck(application.resources.getStringArray(R.array.Standard), 0)
+        createDecks()
+        executor.execute{
+            setDeck(DeckEntityMapper().mapFromCached(deckDao.getAllDecks()[0]), 0)
+        }
     }
 
-    fun setDeck(deck: Array<String>, deckIndex: Int){
+    fun setDeck(deck: Deck, deckIndex: Int){
         selected_deck = deckIndex
         list.clear()
-        val mutableCards = deck.toMutableList()
+        val mutableCards = deck.deck.toMutableList()
         mutableCards.add("?")
         mutableCards.add(9749.toChar().toString())
         val cards = mutableCards.chunked(3)
@@ -44,8 +47,8 @@ class CardViewModel(application: Application) : AndroidViewModel(application) {
         live_list.postValue(list)
     }
 
-    /*
-    fun createDecks(){
+
+    private fun createDecks(){
         val standard = Deck("Standard", listOf("0","½", "1", "2", "3", "4", "5", "6",
                                                            "7", "8","13","20","40","100","∞"))
         val fibonacci = Deck("Fibonacci", listOf("0", "1", "2", "3","5","8","13",
@@ -63,6 +66,6 @@ class CardViewModel(application: Application) : AndroidViewModel(application) {
 
     }
 
-     */
+
 
 }

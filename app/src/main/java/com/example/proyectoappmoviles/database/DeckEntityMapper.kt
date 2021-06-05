@@ -7,14 +7,14 @@ class DeckEntityMapper: EntityMapper<DeckEntity, Deck> {
     override fun mapFromCached(type: DeckEntity): Deck {
         return Deck(
             type.name,
-            type.cards
+            type.cards.split(",").map{ it.trim()}
         )
     }
 
     override fun mapToCached(type: Deck): DeckEntity {
         return DeckEntity(
             type.deckName,
-            type.deck
+            type.deck.joinToString()
         )
     }
 }

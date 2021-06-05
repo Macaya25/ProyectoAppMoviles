@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectoappmoviles.*
 import com.example.proyectoappmoviles.Adapters.ExampleAdapter
+import com.example.proyectoappmoviles.Api.ApiViewModel
 import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
 import com.example.proyectoappmoviles.ViewModels.ContactViewModel
 import com.example.proyectoappmoviles.database.RoomEntityMapper
@@ -22,6 +23,7 @@ import java.util.concurrent.Executors
 
 class LobbyFragment : Fragment() {
 
+    private lateinit var apiViewModel: ApiViewModel
     lateinit var adapter: ExampleAdapter
     private val viewModel: ContactViewModel by activityViewModels()
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
@@ -38,6 +40,7 @@ class LobbyFragment : Fragment() {
         recycler_view.adapter=adapter
         recycler_view.layoutManager= LinearLayoutManager(activity)
         viewModel.genericList.observe(viewLifecycleOwner,androidx.lifecycle.Observer{adapter.set(it)})
+
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler_view)
 
         return aux

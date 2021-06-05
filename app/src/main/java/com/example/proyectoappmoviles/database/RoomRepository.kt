@@ -12,4 +12,8 @@ class RoomRepository(application: Application) {
     fun getRoomDao(): RoomDao{
         return database.roomDao()
     }
+
+    fun getDeckDao(): DeckDao{
+        return database.deckDao()
+    }
 }

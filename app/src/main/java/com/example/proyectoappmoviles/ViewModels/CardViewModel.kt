@@ -2,17 +2,32 @@ package com.example.proyectoappmoviles.ViewModels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import com.example.proyectoappmoviles.Activities.MainActivity
+import com.example.proyectoappmoviles.Api.ApiViewModel
 import com.example.proyectoappmoviles.ObjectItems.CardItem
+import com.example.proyectoappmoviles.ObjectItems.Deck
 import com.example.proyectoappmoviles.R
+import com.example.proyectoappmoviles.database.DeckDao
+import com.example.proyectoappmoviles.database.DeckEntityMapper
+import com.example.proyectoappmoviles.database.RoomDao
+import com.example.proyectoappmoviles.database.RoomRepository
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class CardViewModel(application: Application) : AndroidViewModel(application) {
+
+    private lateinit var apiViewModel: ApiViewModel
     var list = mutableListOf<CardItem>()
     var live_list = MutableLiveData<MutableList<CardItem>>()
+    private val executor: ExecutorService = Executors.newSingleThreadExecutor()
 
     var selected_deck: Int = 0
 
     init{
+        //apiViewModel.getDecks()
+        //createDecks()
         setDeck(application.resources.getStringArray(R.array.Standard), 0)
     }
 
@@ -29,5 +44,25 @@ class CardViewModel(application: Application) : AndroidViewModel(application) {
         live_list.postValue(list)
     }
 
+    /*
+    fun createDecks(){
+        val standard = Deck("Standard", listOf("0","½", "1", "2", "3", "4", "5", "6",
+                                                           "7", "8","13","20","40","100","∞"))
+        val fibonacci = Deck("Fibonacci", listOf("0", "1", "2", "3","5","8","13",
+                                                            "21", "34", "55", "89","144","∞"))
+        val tShirt = Deck("T-Shirt", listOf("XS","S","M","L","XL","XXL"))
+
+        val hours = Deck("Hours", listOf("0","1","2","3","4","6","8","12",
+                                                    "16","24","32","40"))
+        executor.execute{
+            deckDao.addDeck(DeckEntityMapper().mapToCached(standard))
+            deckDao.addDeck(DeckEntityMapper().mapToCached(fibonacci))
+            deckDao.addDeck(DeckEntityMapper().mapToCached(tShirt))
+            deckDao.addDeck(DeckEntityMapper().mapToCached(hours))
+        }
+
+    }
+
+     */
 
 }

@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities= [RoomEntity::class], version = 1, exportSchema = false)
+@Database(entities= [RoomEntity::class, DeckEntity::class], version = 1, exportSchema = false)
 abstract class RoomsDatabase: RoomDatabase() {
     abstract fun roomDao(): RoomDao
+    abstract fun deckDao(): DeckDao
 
     /*
     companion object{

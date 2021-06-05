@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.example.proyectoappmoviles.*
 import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
+import com.example.proyectoappmoviles.ObjectItems.Deck
 import com.example.proyectoappmoviles.ObjectItems.ExampleItem
 import com.example.proyectoappmoviles.ViewModels.ContactViewModel
 import com.example.proyectoappmoviles.database.RoomEntityMapper
@@ -38,8 +39,6 @@ class CreateRoomFragment : Fragment() {
         val btnBackToLooby=view.findViewById<Button>(R.id.BackToLobbyButtton)
         val btnLobby=view.findViewById<Button>(R.id.LobbyButton)
 
-
-
         btnDeck.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_deckFragment)
         }
@@ -59,7 +58,10 @@ class CreateRoomFragment : Fragment() {
             if(auxtext1=="" || auxtext2==""){
                 Toast.makeText(activity,"Please Don't Leave Any Input Blank",Toast.LENGTH_SHORT).show()
             }else{
-                val item = ExampleItem(auxtext1)
+
+                //TODO Poner un spinner que muestre los deck de la bdd en vez de hardcoded
+
+                val item = ExampleItem(auxtext1, auxtext2, "placeholder")
                 executor.execute{
                     viewModel.database.addRoom(RoomEntityMapper().mapToCached(item))
                 }

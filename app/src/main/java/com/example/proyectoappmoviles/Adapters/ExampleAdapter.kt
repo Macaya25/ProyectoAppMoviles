@@ -20,7 +20,7 @@ class ExampleAdapter(var exampleList: MutableList<ExampleItem>) : RecyclerView.A
     override fun onBindViewHolder(holder: ExampleViewHolder, position: Int) {
 
         val currentItem= exampleList[position]
-        holder.textView1.text = currentItem.FrontendTeam
+        holder.textView1.text = currentItem.name
     }
 
     class ExampleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){

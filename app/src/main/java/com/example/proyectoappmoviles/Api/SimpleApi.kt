@@ -2,6 +2,7 @@ package com.example.proyectoappmoviles.Api
 
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface SimpleApi {
@@ -14,4 +15,8 @@ interface SimpleApi {
     suspend fun getSignUp(
         @Body user:UserObject
     ):Response<UserObject>
+
+    @GET("decks")
+    suspend fun getDecks(
+    ): Response<DeckObject>
 }

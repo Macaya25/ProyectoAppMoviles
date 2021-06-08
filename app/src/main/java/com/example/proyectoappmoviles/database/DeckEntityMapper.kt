@@ -13,8 +13,8 @@ class DeckEntityMapper: EntityMapper<DeckEntity, Deck> {
 
     override fun mapToCached(type: Deck): DeckEntity {
         return DeckEntity(
-            type.deckName,
-            type.deck.joinToString()
+            type.name,
+            type.cards.joinToString()
         )
     }
 }

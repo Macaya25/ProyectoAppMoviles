@@ -5,6 +5,6 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Deck (
-    val deckName: String,
-    val deck: List<String>
+        val name: String,
+        val cards: List<String>
 ) : Parcelable

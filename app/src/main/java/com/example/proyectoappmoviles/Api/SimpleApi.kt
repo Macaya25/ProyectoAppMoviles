@@ -1,9 +1,12 @@
 package com.example.proyectoappmoviles.Api
 
+import com.example.proyectoappmoviles.ObjectItems.Deck
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface SimpleApi {
     @POST("login")
@@ -17,6 +20,6 @@ interface SimpleApi {
     ):Response<UserObject>
 
     @GET("decks")
-    suspend fun getDecks(
-    ): Response<DeckObject>
+    fun getDecks(
+    ): Call<List<Deck>>
 }

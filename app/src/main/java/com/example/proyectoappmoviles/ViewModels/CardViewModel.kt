@@ -2,23 +2,19 @@ package com.example.proyectoappmoviles.ViewModels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
-import com.example.proyectoappmoviles.Activities.MainActivity
-import com.example.proyectoappmoviles.Api.ApiViewModel
 import com.example.proyectoappmoviles.ObjectItems.CardItem
 import com.example.proyectoappmoviles.ObjectItems.Deck
-import com.example.proyectoappmoviles.R
+
 import com.example.proyectoappmoviles.database.DeckDao
 import com.example.proyectoappmoviles.database.DeckEntityMapper
-import com.example.proyectoappmoviles.database.RoomDao
 import com.example.proyectoappmoviles.database.RoomRepository
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CardViewModel(application: Application) : AndroidViewModel(application) {
 
-    private lateinit var apiViewModel: ApiViewModel
+
     var list = mutableListOf<CardItem>()
     var live_list = MutableLiveData<MutableList<CardItem>>()
     val executor: ExecutorService = Executors.newSingleThreadExecutor()
@@ -27,17 +23,16 @@ class CardViewModel(application: Application) : AndroidViewModel(application) {
     var selected_deck: Int = 0
 
     init{
-        //apiViewModel.getDecks()
-        createDecks()
+        //createDecks()
         executor.execute{
-            setDeck(DeckEntityMapper().mapFromCached(deckDao.getAllDecks()[0]), 0)
+            //setDeck(DeckEntityMapper().mapFromCached(deckDao.getAllDecks()[0]), 0)
         }
     }
 
     fun setDeck(deck: Deck, deckIndex: Int){
         selected_deck = deckIndex
         list.clear()
-        val mutableCards = deck.deck.toMutableList()
+        val mutableCards = deck.cards.toMutableList()
         mutableCards.add("?")
         mutableCards.add(9749.toChar().toString())
         val cards = mutableCards.chunked(3)

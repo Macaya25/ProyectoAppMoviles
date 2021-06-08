@@ -1,16 +1,23 @@
 package com.example.proyectoappmoviles.Api
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.proyectoappmoviles.ObjectItems.Deck
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
-class ApiViewModel(private val repository: Repository):ViewModel() {
+class ApiViewModel(private val repository: Repository): ViewModel() {
 
     var myResponse: MutableLiveData<Response<UserObject>> = MutableLiveData()
-    var deckResponse: MutableLiveData<Response<DeckObject>> = MutableLiveData()
+
+    init {
+        getDecks()
+    }
+
 
     fun getLogin(userObject: UserObject){
         viewModelScope.launch {
@@ -30,9 +37,23 @@ class ApiViewModel(private val repository: Repository):ViewModel() {
 
     fun getDecks(){
         viewModelScope.launch {
-            deckResponse= MutableLiveData()
-            val response: Response<DeckObject> = repository.getDecks()
-            deckResponse.value = response
+            val call: Call<List<Deck>> = repository.getDecks()
+            call.enqueue(object : Callback<List<Deck>> {
+                override fun onResponse(call: Call<List<Deck>>, response: Response<List<Deck>>) {
+                    val body = response.body()
+                    if(body != null) {
+                        body.forEach {
+                            TODO("Aqui deberia llamarse al dao para agregar los deck a la bdd")
+                            println(it)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<List<Deck>>, t: Throwable) {
+                    TODO("Not yet implemented")
+                }
+
+            })
         }
     }
 }

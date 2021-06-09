@@ -1,18 +1,25 @@
 package com.example.proyectoappmoviles.Api
 
-import android.util.Log
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.proyectoappmoviles.ObjectItems.Deck
+import com.example.proyectoappmoviles.database.DeckDao
+import com.example.proyectoappmoviles.database.DeckEntityMapper
+import com.example.proyectoappmoviles.database.RoomRepository
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
-class ApiViewModel(private val repository: Repository): ViewModel() {
+class ApiViewModel(application: Application, private val repository: Repository): ViewModel() {
 
     var myResponse: MutableLiveData<Response<UserObject>> = MutableLiveData()
+    var deckDao: DeckDao = RoomRepository(application).getDeckDao()
+    private val executor: ExecutorService = Executors.newSingleThreadExecutor()
 
     init {
         getDecks()
@@ -42,9 +49,10 @@ class ApiViewModel(private val repository: Repository): ViewModel() {
                 override fun onResponse(call: Call<List<Deck>>, response: Response<List<Deck>>) {
                     val body = response.body()
                     if(body != null) {
-                        body.forEach {
-                            TODO("Aqui deberia llamarse al dao para agregar los deck a la bdd")
-                            println(it)
+                        executor.execute{
+                            body.forEach {
+                                deckDao.addDeck(DeckEntityMapper().mapToCached(it))
+                            }
                         }
                     }
                 }

@@ -32,7 +32,7 @@ class SignUpFragment : Fragment() {
         val view=inflater.inflate(R.layout.fragment_sign_up, container, false)
 
         val repository= Repository()
-        val viewModelFactory= ApiViewModelFactory(repository)
+        val viewModelFactory= ApiViewModelFactory(requireActivity().application, repository)
         apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
 
         val bttn = view.findViewById<Button>(R.id.RegisterButton)

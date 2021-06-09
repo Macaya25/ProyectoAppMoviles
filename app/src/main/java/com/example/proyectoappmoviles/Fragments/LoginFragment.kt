@@ -46,7 +46,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val repository= Repository()
-        val viewModelFactory=ApiViewModelFactory(repository)
+        val viewModelFactory=ApiViewModelFactory(requireActivity().application, repository)
         apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
 
         val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)

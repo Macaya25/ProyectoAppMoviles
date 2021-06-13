@@ -61,7 +61,7 @@ class CreateRoomFragment : Fragment() {
 
                 //TODO Poner un spinner que muestre los deck de la bdd en vez de hardcoded
 
-                val item = ExampleItem(auxtext1, auxtext2, "placeholder")
+                val item = ExampleItem(auxtext1, auxtext2,null,null)
                 executor.execute{
                     viewModel.database.addRoom(RoomEntityMapper().mapToCached(item))
                 }

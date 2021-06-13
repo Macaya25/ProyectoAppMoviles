@@ -1,6 +1,8 @@
 package com.example.proyectoappmoviles.Fragments
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,14 +10,21 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectoappmoviles.*
+import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.Adapters.ExampleAdapter
 import com.example.proyectoappmoviles.Api.ApiViewModel
+import com.example.proyectoappmoviles.Api.ApiViewModelFactory
+import com.example.proyectoappmoviles.Api.Repository
 import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
+import com.example.proyectoappmoviles.ObjectItems.ExampleItem
 import com.example.proyectoappmoviles.ViewModels.ContactViewModel
 import com.example.proyectoappmoviles.database.RoomEntityMapper
 import java.util.concurrent.ExecutorService
@@ -34,6 +43,23 @@ class LobbyFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val aux=inflater.inflate(R.layout.fragment_lobby, container, false)
+
+        val repository= Repository()
+        val viewModelFactory= ApiViewModelFactory(requireActivity().application, repository)
+        apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
+        val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+        val token= prefs?.getString("loggedInToken","")
+        if (token != null) {
+            apiViewModel.getRooms(token)
+            apiViewModel.myLobbies.observe(activity as MainActivity, Observer { response->
+                response.rooms.forEach(){
+                    //TODO: Agregar las rooms a la bd
+                }
+
+            })
+        }
+
+
         adapter= ExampleAdapter(viewModel.list)
         val recycler_view = aux.findViewById<RecyclerView>(R.id.recycler_view)
         recycler_view.setHasFixedSize(true)

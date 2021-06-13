@@ -1,12 +1,11 @@
 package com.example.proyectoappmoviles.Api
 
 import com.example.proyectoappmoviles.ObjectItems.Deck
+import com.example.proyectoappmoviles.ObjectItems.LobbiesListItem
+import com.example.proyectoappmoviles.ObjectItems.LobbyItem
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface SimpleApi {
     @POST("login")
@@ -22,4 +21,9 @@ interface SimpleApi {
     @GET("decks")
     fun getDecks(
     ): Call<List<Deck>>
+
+    @GET("rooms")
+    suspend fun getRooms(
+        @Header("token") token:String
+    ): LobbiesListItem
 }

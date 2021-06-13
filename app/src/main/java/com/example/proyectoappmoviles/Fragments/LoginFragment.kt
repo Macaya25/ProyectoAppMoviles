@@ -3,6 +3,7 @@ package com.example.proyectoappmoviles.Fragments
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,7 @@ import com.example.proyectoappmoviles.ViewModels.CardViewModel
 import com.example.proyectoappmoviles.database.DeckEntity
 import com.example.proyectoappmoviles.database.DeckEntityMapper
 import java.lang.Exception
+import java.time.LocalDate
 
 class LoginFragment : Fragment() {
 
@@ -118,6 +120,7 @@ class LoginFragment : Fragment() {
                             putBoolean("loggedIn",true)
                             putString("loggedInUser",username)
                             putString("loggedInPass",password)
+                            putString("loggedInToken", response.body()?.token.toString())
                         }?.apply()
 
                         val deckaux= prefs?.getInt(username+"Deck",0)
@@ -139,7 +142,6 @@ class LoginFragment : Fragment() {
                                 }
                             }
                         }
-
 
                         try {
                             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)

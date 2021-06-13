@@ -1,5 +1,5 @@
 package com.example.proyectoappmoviles.ObjectItems
 
 //Este va a ser el item para hacer create room
-data class LobbyItem(val name:String, val password:String,val deck:Deck) {
+data class LobbyItem(val roomId:String?, val name:String?,val deck:Deck?, val members:List<String>?,val password:String?,val message:String?) {
 }

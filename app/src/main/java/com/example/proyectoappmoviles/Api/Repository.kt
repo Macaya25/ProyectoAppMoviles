@@ -3,6 +3,7 @@ package com.example.proyectoappmoviles.Api
 import com.example.proyectoappmoviles.ObjectItems.Deck
 import com.example.proyectoappmoviles.ObjectItems.LobbiesListItem
 import com.example.proyectoappmoviles.ObjectItems.LobbyItem
+import com.example.proyectoappmoviles.ObjectItems.VoteItem
 import retrofit2.Call
 import retrofit2.Response
 
@@ -26,6 +27,30 @@ class Repository {
 
     suspend fun getLobbies(token:String): LobbiesListItem {
         return RetrofitInstance.api.getRooms(token)
+    }
+
+    suspend fun getLobby(token:String,roomName:String): Response<LobbyItem>{
+        return RetrofitInstance.api.getRoom(token,roomName)
+    }
+
+    suspend fun createRoom(token:String,lobbyItem: LobbyItem): Response<LobbyItem>{
+        return RetrofitInstance.api.createRoom(token,lobbyItem)
+    }
+
+    suspend fun deleteRoom(token:String,lobbyItem: LobbyItem): Response<LobbyItem>{
+        return RetrofitInstance.api.deleteRoom(token,lobbyItem)
+    }
+
+    suspend fun joinRoom(token:String,lobbyItem: LobbyItem): Response<LobbyItem>{
+        return RetrofitInstance.api.joinRoom(token,lobbyItem)
+    }
+
+    suspend fun getResult(token:String,lobbyItem: LobbyItem): Response<LobbyItem>{
+        return RetrofitInstance.api.getResult(token,lobbyItem)
+    }
+
+    suspend fun vote(token:String,voteItem: VoteItem): Response<VoteItem>{
+        return RetrofitInstance.api.vote(token,voteItem)
     }
 
 }

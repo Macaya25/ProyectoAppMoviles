@@ -4,9 +4,7 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.proyectoappmoviles.ObjectItems.Deck
-import com.example.proyectoappmoviles.ObjectItems.ExampleItem
-import com.example.proyectoappmoviles.ObjectItems.LobbiesListItem
+import com.example.proyectoappmoviles.ObjectItems.*
 import com.example.proyectoappmoviles.database.DeckDao
 import com.example.proyectoappmoviles.database.DeckEntityMapper
 import com.example.proyectoappmoviles.database.RoomRepository
@@ -21,6 +19,12 @@ class ApiViewModel(application: Application, private val repository: Repository)
 
     var myResponse: MutableLiveData<Response<UserObject>> = MutableLiveData()
     var myLobbies: MutableLiveData<LobbiesListItem> = MutableLiveData()
+    var myLobby: MutableLiveData<Response<LobbyItem>> = MutableLiveData()
+    var createRoomResponse: MutableLiveData<Response<LobbyItem>> = MutableLiveData()
+    var deleteRoomResponse: MutableLiveData<Response<LobbyItem>> = MutableLiveData()
+    var joinRoomResponse: MutableLiveData<Response<LobbyItem>> = MutableLiveData()
+    var getResultResponse: MutableLiveData<Response<LobbyItem>> = MutableLiveData()
+    var voteResponse: MutableLiveData<Response<VoteItem>> = MutableLiveData()
     var deckDao: DeckDao = RoomRepository(application).getDeckDao()
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
 
@@ -72,12 +76,72 @@ class ApiViewModel(application: Application, private val repository: Repository)
         viewModelScope.launch {
             myLobbies= MutableLiveData()
             //val response= repository.getLobbies(token)
-            val dummy1= ExampleItem("ewe", "OwO", null,null)
-            val dummy2= ExampleItem("ewe", "OwO", null,null)
-            val dummy3= ExampleItem("ewe", "OwO", null,null)
+            //myLobbies.value = response
+            val dummy1= ExampleItem("ewe", "OwO 1")
+            val dummy2= ExampleItem("ewe", "OwO 2")
+            val dummy3= ExampleItem("ewe", "OwO 3")
             val dummyList= LobbiesListItem(listOf(dummy1,dummy2,dummy3))
             myLobbies.postValue(dummyList)
-            //myLobbies.value = response
+
+        }
+    }
+
+    fun getRoom(token:String,roomName:String){
+        viewModelScope.launch {
+            myLobby= MutableLiveData()
+            val dummyCards= listOf("1","2","3")
+            val dummyDeck=Deck("DeckName",dummyCards)
+            val dummyMembers= listOf("Julio","Claudio","Carlos")
+            val dummy1=LobbyItem("roomId","roomName",dummyDeck,dummyMembers,null,null)
+            myLobby.postValue(Response.success(dummy1))
+            //val response= repository.getLobby(token,roomName)
+            //myLobby.value = response
+
+        }
+    }
+
+    fun createRoom(token:String,lobbyItem: LobbyItem){
+        viewModelScope.launch {
+            createRoomResponse= MutableLiveData()
+            val response= repository.createRoom(token,lobbyItem)
+            createRoomResponse.value = response
+
+        }
+    }
+
+    fun deleteRoom(token:String,lobbyItem: LobbyItem){
+        viewModelScope.launch {
+            deleteRoomResponse= MutableLiveData()
+            val response= repository.deleteRoom(token,lobbyItem)
+            deleteRoomResponse.value = response
+
+        }
+    }
+
+    fun joinRoom(token:String,lobbyItem: LobbyItem){
+        viewModelScope.launch {
+            joinRoomResponse= MutableLiveData()
+            val response= repository.joinRoom(token,lobbyItem)
+            joinRoomResponse.value = response
+
+        }
+    }
+
+    fun getResult(token:String,lobbyItem: LobbyItem){
+        viewModelScope.launch {
+            getResultResponse= MutableLiveData()
+            val response= repository.getResult(token,lobbyItem)
+            getResultResponse.value = response
+
+        }
+    }
+
+    fun vote(token:String,voteItem: VoteItem){
+        viewModelScope.launch {
+            voteResponse= MutableLiveData()
+            val response= repository.vote(token,voteItem)
+            voteResponse.value = response
+
         }
     }
 

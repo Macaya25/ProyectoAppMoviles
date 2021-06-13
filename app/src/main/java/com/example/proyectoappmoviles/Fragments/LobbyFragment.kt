@@ -2,6 +2,7 @@ package com.example.proyectoappmoviles.Fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,7 +25,10 @@ import com.example.proyectoappmoviles.Api.ApiViewModel
 import com.example.proyectoappmoviles.Api.ApiViewModelFactory
 import com.example.proyectoappmoviles.Api.Repository
 import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
+import com.example.proyectoappmoviles.ObjectItems.Deck
 import com.example.proyectoappmoviles.ObjectItems.ExampleItem
+import com.example.proyectoappmoviles.ObjectItems.LobbyItem
+import com.example.proyectoappmoviles.ObjectItems.VoteItem
 import com.example.proyectoappmoviles.ViewModels.ContactViewModel
 import com.example.proyectoappmoviles.database.RoomEntityMapper
 import java.util.concurrent.ExecutorService
@@ -54,8 +58,10 @@ class LobbyFragment : Fragment() {
             apiViewModel.myLobbies.observe(activity as MainActivity, Observer { response->
                 response.rooms.forEach(){
                     executor.execute {
-                        viewModel.database.addRoom(RoomEntityMapper().mapToCached(it))
-                        viewModel.addRoom(it)
+                        if (it !in viewModel.list) {
+                            viewModel.database.addRoom(RoomEntityMapper().mapToCached(it))
+                            viewModel.addRoom(it)
+                        }
                     }
                 }
 
@@ -71,6 +77,20 @@ class LobbyFragment : Fragment() {
         viewModel.genericList.observe(viewLifecycleOwner,androidx.lifecycle.Observer{adapter.set(it)})
 
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler_view)
+
+
+        //Tester de API
+        /*if (token != null) {
+            //val dummyCards= listOf("1","2","3")
+            //val dummyDeck= Deck("DeckName",dummyCards)
+            //val dummy=LobbyItem("RoomId",null,dummyDeck,null,null,null)
+            val voteDummy= VoteItem("Nombre","XL",null)
+            apiViewModel.vote(token,voteDummy)
+            apiViewModel.voteResponse.observe(activity as MainActivity, Observer { response->
+                Log.d("test", response.body().toString())
+                Log.d("test", response.code().toString())
+            })
+        }*/
 
         return aux
     }

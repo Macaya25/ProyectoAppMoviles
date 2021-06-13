@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.navigation.Navigation
 import com.example.proyectoappmoviles.R
 
 
@@ -18,6 +20,10 @@ class JoinRoomFragment : Fragment() {
         //TODO:Hacer que los valores de los cuadros de texto y spinner los chupe un temp LobbyItem
         //TODO:Mandarle mensaje a la api y cambiar a CardSelectorFragment
 
+        val btnJoinRoom=view.findViewById<Button>(R.id.JoinRoom)
+        btnJoinRoom.setOnClickListener{
+            Navigation.findNavController(view).navigate(R.id.action_joinRoomFragment_to_cardSelectorFragment)
+        }
 
         return view
     }

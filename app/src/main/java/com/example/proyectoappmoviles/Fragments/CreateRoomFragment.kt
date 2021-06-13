@@ -1,6 +1,8 @@
 package com.example.proyectoappmoviles.Fragments
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +11,16 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.proyectoappmoviles.*
-import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
-import com.example.proyectoappmoviles.ObjectItems.Deck
+import com.example.proyectoappmoviles.Activities.MainActivity
+import com.example.proyectoappmoviles.Api.ApiViewModel
+import com.example.proyectoappmoviles.Api.ApiViewModelFactory
+import com.example.proyectoappmoviles.Api.Repository
 import com.example.proyectoappmoviles.ObjectItems.ExampleItem
+import com.example.proyectoappmoviles.ObjectItems.LobbyItem
 import com.example.proyectoappmoviles.ViewModels.ContactViewModel
 import com.example.proyectoappmoviles.database.RoomEntityMapper
 import java.util.concurrent.ExecutorService
@@ -21,6 +28,7 @@ import java.util.concurrent.Executors
 
 class CreateRoomFragment : Fragment() {
     private val viewModel: ContactViewModel by activityViewModels()
+    private lateinit var apiViewModel: ApiViewModel
 
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
 
@@ -33,10 +41,15 @@ class CreateRoomFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val repository= Repository()
+        val viewModelFactory= ApiViewModelFactory(requireActivity().application, repository)
+        apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
+
+
         super.onViewCreated(view, savedInstanceState)
         val btnDeck=view.findViewById<Button>(R.id.DeckButton)
         val btnSettings=view.findViewById<Button>(R.id.SettingsButton)
-        val btnBackToLooby=view.findViewById<Button>(R.id.BackToLobbyButtton)
+        val btnBackToLooby=view.findViewById<Button>(R.id.CreateRoom)
         val btnLobby=view.findViewById<Button>(R.id.LobbyButton)
 
         btnDeck.setOnClickListener {
@@ -60,6 +73,17 @@ class CreateRoomFragment : Fragment() {
             }else{
 
                 //TODO Poner un spinner que muestre los deck de la bdd en vez de hardcoded
+                //TODO: Agregar un spinner para seleccionar el maso y darselo a temp
+                val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+                val token= prefs?.getString("loggedInToken","")
+                if (token != null) {
+                    val temp=LobbyItem(null,auxtext1,null,null,auxtext2,null)
+                    apiViewModel.createRoom(token,temp)
+                    apiViewModel.createRoomResponse.observe(activity as MainActivity, Observer { response->
+                        Log.d("test", response.body().toString())
+                        Log.d("test", response.code().toString())
+                    })
+                }
 
                 val item = ExampleItem(auxtext1, auxtext2)
                 executor.execute{

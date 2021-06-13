@@ -76,7 +76,7 @@
         app:layout_constraintTop_toBottomOf="@+id/RoomNamePlainText" />
 
     <Button
-        android:id="@+id/BackToLobbyButtton"
+        android:id="@+id/CreateRoom"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"

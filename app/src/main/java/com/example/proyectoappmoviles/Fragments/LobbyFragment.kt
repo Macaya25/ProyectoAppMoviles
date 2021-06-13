@@ -115,6 +115,7 @@ class LobbyFragment : Fragment() {
         val btnDeck=view.findViewById<Button>(R.id.DeckButton)
         val btnSettings=view.findViewById<Button>(R.id.SettingsButton)
         val btnCreateRoom=view.findViewById<Button>(R.id.CreateRoomButton)
+        val btnJoinRoom=view.findViewById<Button>(R.id.JoinRoomButton)
 
         btnDeck.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_lobbyFragment_to_deckFragment)
@@ -127,6 +128,11 @@ class LobbyFragment : Fragment() {
         btnCreateRoom.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_lobbyFragment_to_createRoomFragment)
         }
+
+        btnJoinRoom.setOnClickListener{
+            Navigation.findNavController(view).navigate(R.id.action_lobbyFragment_to_joinRoomFragment)
+        }
+
         requireActivity()
             .onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {

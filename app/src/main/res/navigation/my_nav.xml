@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_lobbyFragment_to_createRoomFragment"
             app:destination="@id/createRoomFragment" />
+        <action
+            android:id="@+id/action_lobbyFragment_to_joinRoomFragment"
+            app:destination="@id/joinRoomFragment" />
     </fragment>
     <fragment
         android:id="@+id/deckFragment"
@@ -107,4 +110,27 @@
             android:id="@+id/action_signUpFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/joinRoomFragment"
+        android:name="com.example.proyectoappmoviles.Fragments.JoinRoomFragment"
+        android:label="fragment_join_room"
+        tools:layout="@layout/fragment_join_room" >
+        <action
+            android:id="@+id/action_joinRoomFragment_to_cardSelectorFragment"
+            app:destination="@id/cardSelectorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cardSelectorFragment"
+        android:name="com.example.proyectoappmoviles.Fragments.CardSelectorFragment"
+        android:label="fragment_card_selector"
+        tools:layout="@layout/fragment_card_selector" >
+        <action
+            android:id="@+id/action_cardSelectorFragment_to_voteFragment"
+            app:destination="@id/voteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/voteFragment"
+        android:name="com.example.proyectoappmoviles.Fragments.VoteFragment"
+        android:label="fragment_vote"
+        tools:layout="@layout/fragment_vote" />
 </navigation>

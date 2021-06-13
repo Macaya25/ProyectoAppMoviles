@@ -1,14 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.JoinRoomFragment">
+    tools:context=".Fragments.CreateRoomFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-</FrameLayout>
+        <Button
+            android:id="@+id/DeckButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/purple_200"
+            app:icon="@drawable/ic_deck"
+            app:iconGravity="top"
+            app:iconSize="40dp" />
+
+        <Button
+            android:id="@+id/LobbyButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/purple_200"
+            android:textStyle="bold"
+            app:icon="@drawable/ic_lobby"
+            app:iconGravity="top"
+            app:iconSize="40dp"
+            app:iconTint="#F4DE1A" />
+
+        <Button
+            android:id="@+id/SettingsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/purple_200"
+            app:icon="@drawable/ic_settings"
+            app:iconGravity="top"
+            app:iconSize="40dp" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/JoinRoomNamePlainText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="40dp"
+        android:ems="10"
+        android:hint="Room Name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/JoinRoomPasswordPlainText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:ems="10"
+        android:hint="Room Password"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/JoinRoomNamePlainText"
+        app:layout_constraintStart_toStartOf="@+id/JoinRoomNamePlainText"
+        app:layout_constraintTop_toBottomOf="@+id/JoinRoomNamePlainText" />
+
+    <Button
+        android:id="@+id/JoinRoom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="60dp"
+        android:backgroundTint="#C6F0F6"
+        android:text="Join Room"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="@+id/JoinRoomPasswordPlainText"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="@+id/JoinRoomPasswordPlainText"
+        app:layout_constraintTop_toBottomOf="@+id/JoinRoomPasswordPlainText" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

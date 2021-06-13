@@ -80,7 +80,7 @@ class LobbyFragment : Fragment() {
 
 
         //Tester de API
-        if (token != null) {
+        /*if (token != null) {
             val dummyCards= listOf("0","1","2","3","5","8","13","21","34","55","89","144","∞")
             val dummyDeck= Deck("Fibonacci",dummyCards)
             val dummy=LobbyItem(null,"null",dummyDeck,null,"null",null)
@@ -90,7 +90,7 @@ class LobbyFragment : Fragment() {
                 Log.d("test", response.body().toString())
                 Log.d("test", response.code().toString())
             })
-        }
+        }*/
 
         return aux
     }

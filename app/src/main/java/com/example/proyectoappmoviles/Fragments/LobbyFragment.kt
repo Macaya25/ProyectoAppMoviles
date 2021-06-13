@@ -53,7 +53,9 @@ class LobbyFragment : Fragment() {
             apiViewModel.getRooms(token)
             apiViewModel.myLobbies.observe(activity as MainActivity, Observer { response->
                 response.rooms.forEach(){
-                    //TODO: Agregar las rooms a la bd
+                    executor.execute {
+                        viewModel.database.addRoom(RoomEntityMapper().mapToCached(it))
+                    }
                 }
 
             })

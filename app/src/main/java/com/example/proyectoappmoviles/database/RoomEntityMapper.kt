@@ -16,7 +16,8 @@ class RoomEntityMapper: EntityMapper<RoomEntity, ExampleItem> {
         return RoomEntity(
             0,
             type.room_id,
-            type.name
+            type.name,
+            DeckEntity("","")
         )
     }
 }

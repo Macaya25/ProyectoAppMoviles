@@ -23,7 +23,7 @@ class ApiViewModel(application: Application, private val repository: Repository)
     var createRoomResponse: MutableLiveData<Response<LobbyItem>> = MutableLiveData()
     var deleteRoomResponse: MutableLiveData<Response<LobbyItem>> = MutableLiveData()
     var joinRoomResponse: MutableLiveData<Response<LobbyItem>> = MutableLiveData()
-    var getResultResponse: MutableLiveData<Response<LobbyItem>> = MutableLiveData()
+    var getResultResponse: MutableLiveData<Response<ResultItem>> = MutableLiveData()
     var voteResponse: MutableLiveData<Response<VoteItem>> = MutableLiveData()
     var deckDao: DeckDao = RoomRepository(application).getDeckDao()
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
@@ -103,17 +103,20 @@ class ApiViewModel(application: Application, private val repository: Repository)
     fun createRoom(token:String,lobbyItem: LobbyItem){
         viewModelScope.launch {
             createRoomResponse= MutableLiveData()
-            val response= repository.createRoom(token,lobbyItem)
-            createRoomResponse.value = response
-
+            //val response= repository.createRoom(token,lobbyItem)
+            //createRoomResponse.value = response
+            val dummy=LobbyItem("123",null,null,null,null,"La sala existe equisde")
+            createRoomResponse.postValue(Response.success(dummy))
         }
     }
 
     fun deleteRoom(token:String,lobbyItem: LobbyItem){
         viewModelScope.launch {
             deleteRoomResponse= MutableLiveData()
-            val response= repository.deleteRoom(token,lobbyItem)
-            deleteRoomResponse.value = response
+            //val response= repository.deleteRoom(token,lobbyItem)
+            //deleteRoomResponse.value = response
+            val dummy=LobbyItem(null,null,null,null,null,"La sala se murio equisde")
+            deleteRoomResponse.postValue(Response.success(dummy))
 
         }
     }
@@ -121,8 +124,14 @@ class ApiViewModel(application: Application, private val repository: Repository)
     fun joinRoom(token:String,lobbyItem: LobbyItem){
         viewModelScope.launch {
             joinRoomResponse= MutableLiveData()
-            val response= repository.joinRoom(token,lobbyItem)
-            joinRoomResponse.value = response
+            //val response= repository.joinRoom(token,lobbyItem)
+            //joinRoomResponse.value = response
+            val member1="Julio"
+            val member2="Claudio"
+            val member3="Carlos"
+            val dummyMembers= listOf(member1,member2,member3)
+            val dummy=LobbyItem(null,null,null,dummyMembers,null,"La sala se murio equisde")
+            joinRoomResponse.postValue(Response.success(dummy))
 
         }
     }
@@ -130,18 +139,26 @@ class ApiViewModel(application: Application, private val repository: Repository)
     fun getResult(token:String,lobbyItem: LobbyItem){
         viewModelScope.launch {
             getResultResponse= MutableLiveData()
-            val response= repository.getResult(token,lobbyItem)
-            getResultResponse.value = response
-
+            //val response= repository.getResult(token,lobbyItem)
+            //getResultResponse.value = response
+            val dummyCards= listOf("1","2","3")
+            val dummyDeck=Deck("DeckName",dummyCards)
+            val result1=VoteItem(null,"1",null,"Julio")
+            val result2=VoteItem(null,"1",null,"Claudio")
+            val result3=VoteItem(null,"2",null,"Carlos")
+            val dummyResult= listOf(result1,result2,result3)
+            val dummy = ResultItem("RoomId xd",dummyDeck,dummyResult)
+            getResultResponse.postValue(Response.success(dummy))
         }
     }
 
     fun vote(token:String,voteItem: VoteItem){
         viewModelScope.launch {
             voteResponse= MutableLiveData()
-            val response= repository.vote(token,voteItem)
-            voteResponse.value = response
-
+            //val response= repository.vote(token,voteItem)
+            //voteResponse.value = response
+            val dummy = VoteItem(null,null,"que bacan tu voto xd",null)
+            voteResponse.postValue(Response.success(dummy))
         }
     }
 

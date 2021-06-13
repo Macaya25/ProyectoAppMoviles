@@ -1,9 +1,6 @@
 package com.example.proyectoappmoviles.Api
 
-import com.example.proyectoappmoviles.ObjectItems.Deck
-import com.example.proyectoappmoviles.ObjectItems.LobbiesListItem
-import com.example.proyectoappmoviles.ObjectItems.LobbyItem
-import com.example.proyectoappmoviles.ObjectItems.VoteItem
+import com.example.proyectoappmoviles.ObjectItems.*
 import retrofit2.Call
 import retrofit2.Response
 
@@ -45,7 +42,7 @@ class Repository {
         return RetrofitInstance.api.joinRoom(token,lobbyItem)
     }
 
-    suspend fun getResult(token:String,lobbyItem: LobbyItem): Response<LobbyItem>{
+    suspend fun getResult(token:String,lobbyItem: LobbyItem): Response<ResultItem>{
         return RetrofitInstance.api.getResult(token,lobbyItem)
     }
 

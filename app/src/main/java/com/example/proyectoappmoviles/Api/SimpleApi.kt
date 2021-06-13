@@ -59,7 +59,7 @@ interface SimpleApi {
     suspend fun getResult(
             @Header("token") token:String,
             @Query ("roomName ") room : LobbyItem
-    ): Response<LobbyItem>
+    ): Response<ResultItem>
 
     @POST("vote")
     suspend fun vote(

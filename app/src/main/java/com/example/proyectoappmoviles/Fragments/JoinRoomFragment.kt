@@ -1,32 +1,66 @@
 package com.example.proyectoappmoviles.Fragments
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.example.proyectoappmoviles.Activities.MainActivity
+import com.example.proyectoappmoviles.Api.ApiViewModel
+import com.example.proyectoappmoviles.Api.ApiViewModelFactory
+import com.example.proyectoappmoviles.Api.Repository
+import com.example.proyectoappmoviles.ObjectItems.LobbyItem
 import com.example.proyectoappmoviles.R
 
 
 class JoinRoomFragment : Fragment() {
+    private lateinit var apiViewModel: ApiViewModel
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view= inflater.inflate(R.layout.fragment_join_room, container, false)
 
-        //TODO:Agregar 2 edit text y un spiner para seleccionar sala
+        //TODO:Agregar 2 edit text
         //TODO:Hacer que los valores de los cuadros de texto y spinner los chupe un temp LobbyItem
         //TODO:Mandarle mensaje a la api y cambiar a CardSelectorFragment
 
+        val repository= Repository()
+        val viewModelFactory= ApiViewModelFactory(requireActivity().application, repository)
+        apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
+        val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+        val token= prefs?.getString("loggedInToken","")
+
         val btnJoinRoom=view.findViewById<Button>(R.id.JoinRoom)
         btnJoinRoom.setOnClickListener{
+            if (token != null) {
+                val tempName=view.findViewById<EditText>(R.id.JoinRoomNamePlainText).text.toString()
+                val tempPass=view.findViewById<EditText>(R.id.JoinRoomPasswordPlainText).text.toString()
+                val temp = LobbyItem(null,null,tempName,null,null,tempPass,null)
+                apiViewModel.joinRoom(token,temp)
+                apiViewModel.joinRoomResponse.observe(activity as MainActivity, Observer { response->
+                    if (response.isSuccessful){
+                        apiViewModel.getRoom(token,tempName)
+                        apiViewModel.myLobby.observe(activity as MainActivity, Observer { response->
 
-            val action = JoinRoomFragmentDirections.actionJoinRoomFragmentToCardSelectorFragment(
-                "Standard"
-            )
-            Navigation.findNavController(view).navigate(action)
+                            val action = JoinRoomFragmentDirections.actionJoinRoomFragmentToCardSelectorFragment(
+                                    response.body()?.deck?.name.toString()
+                            )
+                            Navigation.findNavController(view).navigate(action)
+                            //Log.d("xxxx",response.body()?.deck?.name.toString())
+                        })
+                    }
+                })
+            }
+
+
+
         }
 
         return view

@@ -91,20 +91,22 @@ class CreateRoomFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
                 val token= prefs?.getString("loggedInToken","")
                 if (token != null) {
-                    val temp=LobbyItem(null, auxtext1, liveDeck.value,null,auxtext2,null)
+                    val temp=LobbyItem(null,null, auxtext1, liveDeck.value,null,auxtext2,null)
                     apiViewModel.createRoom(token,temp)
                     apiViewModel.createRoomResponse.observe(activity as MainActivity, Observer { response->
-                        Log.d("test", response.body().toString())
-                        Log.d("test", response.code().toString())
+                        if (response.isSuccessful){
+
+                            val item = ExampleItem(auxtext1, auxtext2, liveDeck.value!!)
+                            executor.execute{
+                                viewModel.database.addRoom(RoomEntityMapper().mapToCached(item))
+                            }
+                            viewModel.addRoom(item)
+                            Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_lobbyFragment)
+
+                        }
                     })
                 }
 
-                val item = ExampleItem(auxtext1, auxtext2, liveDeck.value!!)
-                executor.execute{
-                    viewModel.database.addRoom(RoomEntityMapper().mapToCached(item))
-                }
-                viewModel.addRoom(item)
-                Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_lobbyFragment)
             }
         }
     }

@@ -34,7 +34,7 @@ interface SimpleApi {
     @GET("room")
     suspend fun getRoom(
             @Header("token") token:String,
-            @Query ("roomName ") roomName : String
+            @Query ("roomName") roomName : String
     ): Response<LobbyItem>
 
     @POST("rooms")
@@ -58,7 +58,7 @@ interface SimpleApi {
     @GET("getResult")
     suspend fun getResult(
             @Header("token") token:String,
-            @Query ("roomName ") room : LobbyItem
+            @Query ("roomName") room : LobbyItem
     ): Response<ResultItem>
 
     @POST("vote")

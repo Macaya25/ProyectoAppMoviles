@@ -90,9 +90,9 @@ class ApiViewModel(application: Application, private val repository: Repository)
         viewModelScope.launch {
             myLobby= MutableLiveData()
             val dummyCards= listOf("1","2","3")
-            val dummyDeck=Deck("DeckName",dummyCards)
+            val dummyDeck=Deck("Standard",dummyCards)
             val dummyMembers= listOf("Julio","Claudio","Carlos")
-            val dummy1=LobbyItem("roomId","roomName",dummyDeck,dummyMembers,null,null)
+            val dummy1=LobbyItem(null,"roomId","roomName",dummyDeck,dummyMembers,null,null)
             myLobby.postValue(Response.success(dummy1))
             //val response= repository.getLobby(token,roomName)
             //myLobby.value = response
@@ -103,10 +103,10 @@ class ApiViewModel(application: Application, private val repository: Repository)
     fun createRoom(token:String,lobbyItem: LobbyItem){
         viewModelScope.launch {
             createRoomResponse= MutableLiveData()
-            //val response= repository.createRoom(token,lobbyItem)
-            //createRoomResponse.value = response
-            val dummy=LobbyItem("123",null,null,null,null,"La sala existe equisde")
-            createRoomResponse.postValue(Response.success(dummy))
+            val response= repository.createRoom(token,lobbyItem)
+            createRoomResponse.value = response
+            //val dummy=LobbyItem(null,"123",null,null,null,null,"La sala existe equisde")
+            //createRoomResponse.postValue(Response.success(dummy))
         }
     }
 
@@ -115,7 +115,7 @@ class ApiViewModel(application: Application, private val repository: Repository)
             deleteRoomResponse= MutableLiveData()
             //val response= repository.deleteRoom(token,lobbyItem)
             //deleteRoomResponse.value = response
-            val dummy=LobbyItem(null,null,null,null,null,"La sala se murio equisde")
+            val dummy=LobbyItem(null,null,null,null,null,null,"La sala se murio equisde")
             deleteRoomResponse.postValue(Response.success(dummy))
 
         }
@@ -130,7 +130,7 @@ class ApiViewModel(application: Application, private val repository: Repository)
             val member2="Claudio"
             val member3="Carlos"
             val dummyMembers= listOf(member1,member2,member3)
-            val dummy=LobbyItem(null,null,null,dummyMembers,null,"La sala se murio equisde")
+            val dummy=LobbyItem(null,null,null,null,dummyMembers,null,"La sala se murio equisde")
             joinRoomResponse.postValue(Response.success(dummy))
 
         }

@@ -40,6 +40,7 @@ class LobbyFragment : Fragment() {
     lateinit var adapter: ExampleAdapter
     private val viewModel: ContactViewModel by activityViewModels()
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
+    lateinit var token: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,10 +53,11 @@ class LobbyFragment : Fragment() {
         val viewModelFactory= ApiViewModelFactory(requireActivity().application, repository)
         apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
         val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
-        val token= prefs?.getString("loggedInToken","")
+        token= prefs?.getString("loggedInToken","").toString()
         if (token != null) {
             apiViewModel.getRooms(token)
             apiViewModel.myLobbies.observe(activity as MainActivity, Observer { response->
+                //Log.d("xxxxx",response.toString())
                 response.rooms.forEach(){
                     executor.execute {
                         if (it !in viewModel.list) {
@@ -69,7 +71,7 @@ class LobbyFragment : Fragment() {
         }
 
 
-        adapter= ExampleAdapter(viewModel.list)
+        adapter= ExampleAdapter(viewModel.list,apiViewModel,token,activity as MainActivity,aux)
         val recycler_view = aux.findViewById<RecyclerView>(R.id.recycler_view)
         recycler_view.setHasFixedSize(true)
         recycler_view.adapter=adapter
@@ -104,6 +106,11 @@ class LobbyFragment : Fragment() {
             executor.execute{
                 viewModel.updateDB()
             }
+
+            val tempDel=LobbyItem(null,viewModel.list[viewHolder.adapterPosition].room_id,viewModel.list[viewHolder.adapterPosition].name,null,null,null,null)
+            apiViewModel.deleteRoom(token,tempDel)
+
+
             viewModel.list.removeAt(viewHolder.adapterPosition)
             adapter.notifyDataSetChanged()
             //Toast.makeText(activity,"ewe", Toast.LENGTH_SHORT)

@@ -126,7 +126,12 @@
         tools:layout="@layout/fragment_card_selector" >
         <action
             android:id="@+id/action_cardSelectorFragment_to_voteFragment"
-            app:destination="@id/voteFragment" />
+            app:destination="@id/voteFragment" >
+
+        </action>
+        <argument
+            android:name="deckName"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/voteFragment"

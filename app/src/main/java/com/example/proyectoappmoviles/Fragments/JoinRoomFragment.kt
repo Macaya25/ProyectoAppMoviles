@@ -22,7 +22,11 @@ class JoinRoomFragment : Fragment() {
 
         val btnJoinRoom=view.findViewById<Button>(R.id.JoinRoom)
         btnJoinRoom.setOnClickListener{
-            Navigation.findNavController(view).navigate(R.id.action_joinRoomFragment_to_cardSelectorFragment)
+
+            val action = JoinRoomFragmentDirections.actionJoinRoomFragmentToCardSelectorFragment(
+                "Standard"
+            )
+            Navigation.findNavController(view).navigate(action)
         }
 
         return view

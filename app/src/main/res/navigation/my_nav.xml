@@ -159,5 +159,8 @@
         <action
             android:id="@+id/action_voteFragment_to_deckFragment"
             app:destination="@id/deckFragment" />
+        <argument
+            android:name="CardNumber"
+            app:argType="string" />
     </fragment>
 </navigation>

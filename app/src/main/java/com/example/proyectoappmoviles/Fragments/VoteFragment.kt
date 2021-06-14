@@ -5,15 +5,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.navigation.fragment.navArgs
 import com.example.proyectoappmoviles.R
 
 class VoteFragment : Fragment() {
+
+    private val args: VoteFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view= inflater.inflate(R.layout.fragment_vote, container, false)
+        val view = inflater.inflate(R.layout.fragment_vote, container, false)
+        view.findViewById<TextView>(R.id.sampleText).text = args.CardNumber
 
         //TODO:hacer un recycler view con la info del jugador y su voto. Esta info es provista por la api
         //TODO:hacer que la extraccion de datos anterior sea cada 5 segundos

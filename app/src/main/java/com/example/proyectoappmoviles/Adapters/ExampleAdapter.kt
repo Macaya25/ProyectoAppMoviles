@@ -1,5 +1,6 @@
 package com.example.proyectoappmoviles.Adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +38,7 @@ class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel:
 
                         val action = LobbyFragmentDirections.actionLobbyFragmentToCardSelectorFragment(
                                 response.body()?.deck?.name.toString()
+
                         )
                         Navigation.findNavController(view).navigate(action)
                         //Log.d("xxxx",response.body()?.deck?.name.toString())

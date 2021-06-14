@@ -7,6 +7,7 @@ class RoomEntityMapper: EntityMapper<RoomEntity, ExampleItem> {
         return ExampleItem(
             type.room_id,
             type.name,
+            DeckEntityMapper().mapFromCached(type.deck)
         )
     }
 
@@ -14,7 +15,8 @@ class RoomEntityMapper: EntityMapper<RoomEntity, ExampleItem> {
         return RoomEntity(
             0,
             type.room_id,
-            type.name
+            type.name,
+            DeckEntityMapper().mapToCached(type.deck)
         )
     }
 }

@@ -77,9 +77,9 @@ class ApiViewModel(application: Application, private val repository: Repository)
             myLobbies= MutableLiveData()
             //val response= repository.getLobbies(token)
             //myLobbies.value = response
-            val dummy1= ExampleItem("ewe", "OwO 1")
-            val dummy2= ExampleItem("ewe", "OwO 2")
-            val dummy3= ExampleItem("ewe", "OwO 3")
+            val dummy1= ExampleItem("ewe", "OwO 1", Deck(name= "testDeck", listOf("")))
+            val dummy2= ExampleItem("ewe", "OwO 2", Deck(name= "testDeck", listOf("")))
+            val dummy3= ExampleItem("ewe", "OwO 3", Deck(name= "testDeck", listOf("")))
             val dummyList= LobbiesListItem(listOf(dummy1,dummy2,dummy3))
             myLobbies.postValue(dummyList)
 

@@ -121,6 +121,12 @@
         <action
             android:id="@+id/action_joinRoomFragment_to_cardSelectorFragment"
             app:destination="@id/cardSelectorFragment" />
+        <action
+            android:id="@+id/action_joinRoomFragment_to_deckFragment"
+            app:destination="@id/deckFragment" />
+        <action
+            android:id="@+id/action_joinRoomFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/cardSelectorFragment"
@@ -135,10 +141,23 @@
         <argument
             android:name="deckName"
             app:argType="string" />
+        <action
+            android:id="@+id/action_cardSelectorFragment_to_deckFragment"
+            app:destination="@id/deckFragment" />
+        <action
+            android:id="@+id/action_cardSelectorFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/voteFragment"
         android:name="com.example.proyectoappmoviles.Fragments.VoteFragment"
         android:label="fragment_vote"
-        tools:layout="@layout/fragment_vote" />
+        tools:layout="@layout/fragment_vote" >
+        <action
+            android:id="@+id/action_voteFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_voteFragment_to_deckFragment"
+            app:destination="@id/deckFragment" />
+    </fragment>
 </navigation>

@@ -4,13 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.Api.ApiViewModel
-import com.example.proyectoappmoviles.Fragments.JoinRoomFragmentDirections
 import com.example.proyectoappmoviles.Fragments.LobbyFragmentDirections
 import com.example.proyectoappmoviles.ObjectItems.ExampleItem
 import com.example.proyectoappmoviles.ObjectItems.LobbyItem
@@ -28,13 +26,13 @@ class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel:
     override fun onBindViewHolder(holder: ExampleViewHolder, position: Int) {
 
         val currentItem= exampleList[position]
-        holder.textView1.text = currentItem.name
+        holder.textView1.text = currentItem.roomName
         holder.itemView.setOnClickListener{
-            val temp = LobbyItem(null,null,currentItem.name,null,null,currentItem.room_id,null)
+            val temp = LobbyItem(null,null,currentItem.roomName,null,null,currentItem.roomId,null)
             apiViewModel.joinRoom(token,temp)
             apiViewModel.joinRoomResponse.observe(activity as MainActivity, Observer { response->
                 if (response.isSuccessful){
-                    apiViewModel.getRoom(token,currentItem.name)
+                    apiViewModel.getRoom(token,currentItem.roomName)
                     apiViewModel.myLobby.observe(activity as MainActivity, Observer { response->
 
                         val action = LobbyFragmentDirections.actionLobbyFragmentToCardSelectorFragment(

@@ -75,13 +75,13 @@ class ApiViewModel(application: Application, private val repository: Repository)
     fun getRooms(token:String){
         viewModelScope.launch {
             myLobbies= MutableLiveData()
-            //val response= repository.getLobbies(token)
-            //myLobbies.value = response
-            val dummy1= ExampleItem("ewe", "OwO 1", Deck(name= "testDeck", listOf("")))
-            val dummy2= ExampleItem("ewe", "OwO 2", Deck(name= "testDeck", listOf("")))
-            val dummy3= ExampleItem("ewe", "OwO 3", Deck(name= "testDeck", listOf("")))
-            val dummyList= LobbiesListItem(listOf(dummy1,dummy2,dummy3))
-            myLobbies.postValue(dummyList)
+            val response= repository.getLobbies(token)
+            myLobbies.value = response
+            //val dummy1= ExampleItem("ewe", "OwO 1", Deck(name= "testDeck", listOf("")))
+            //val dummy2= ExampleItem("ewe", "OwO 2", Deck(name= "testDeck", listOf("")))
+            //val dummy3= ExampleItem("ewe", "OwO 3", Deck(name= "testDeck", listOf("")))
+            //val dummyList= LobbiesListItem(listOf(dummy1,dummy2,dummy3))
+            //myLobbies.postValue(dummyList)
 
         }
     }
@@ -90,7 +90,7 @@ class ApiViewModel(application: Application, private val repository: Repository)
         viewModelScope.launch {
             myLobby= MutableLiveData()
             val dummyCards= listOf("1","2","3")
-            val dummyDeck=Deck("Standard",dummyCards)
+            val dummyDeck=Deck("T-Shirt",dummyCards)
             val dummyMembers= listOf("Julio","Claudio","Carlos")
             val dummy1=LobbyItem(null,"roomId","roomName",dummyDeck,dummyMembers,null,null)
             myLobby.postValue(Response.success(dummy1))

@@ -2,7 +2,6 @@ package com.example.proyectoappmoviles.Fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -24,11 +22,7 @@ import com.example.proyectoappmoviles.Adapters.ExampleAdapter
 import com.example.proyectoappmoviles.Api.ApiViewModel
 import com.example.proyectoappmoviles.Api.ApiViewModelFactory
 import com.example.proyectoappmoviles.Api.Repository
-import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
-import com.example.proyectoappmoviles.ObjectItems.Deck
-import com.example.proyectoappmoviles.ObjectItems.ExampleItem
 import com.example.proyectoappmoviles.ObjectItems.LobbyItem
-import com.example.proyectoappmoviles.ObjectItems.VoteItem
 import com.example.proyectoappmoviles.ViewModels.ContactViewModel
 import com.example.proyectoappmoviles.database.RoomEntityMapper
 import java.util.concurrent.ExecutorService
@@ -57,7 +51,7 @@ class LobbyFragment : Fragment() {
         if (token != null) {
             apiViewModel.getRooms(token)
             apiViewModel.myLobbies.observe(activity as MainActivity, Observer { response->
-                //Log.d("xxxxx",response.toString())
+                Log.d("xxxxx",response.toString())
                 response.rooms.forEach(){
                     executor.execute {
                         if (it !in viewModel.list) {
@@ -107,7 +101,7 @@ class LobbyFragment : Fragment() {
                 viewModel.updateDB()
             }
 
-            val tempDel=LobbyItem(null,viewModel.list[viewHolder.adapterPosition].room_id,viewModel.list[viewHolder.adapterPosition].name,null,null,null,null)
+            val tempDel=LobbyItem(null,viewModel.list[viewHolder.adapterPosition].roomId,viewModel.list[viewHolder.adapterPosition].roomName,null,null,null,null)
             apiViewModel.deleteRoom(token,tempDel)
 
 

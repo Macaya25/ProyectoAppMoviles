@@ -4,4 +4,4 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ExampleItem(val room_id:String, val name:String, val deck: Deck) : Parcelable
+data class ExampleItem(val roomId:String, val roomName:String, val deck: Deck) : Parcelable

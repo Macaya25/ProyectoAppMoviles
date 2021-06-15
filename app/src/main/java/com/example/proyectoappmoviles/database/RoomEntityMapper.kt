@@ -13,7 +13,6 @@ class RoomEntityMapper: EntityMapper<RoomEntity, ExampleItem> {
 
     override fun mapToCached(type: ExampleItem): RoomEntity {
         return RoomEntity(
-            0,
             type.roomId,
             type.roomName,
             DeckEntityMapper().mapToCached(type.deck)

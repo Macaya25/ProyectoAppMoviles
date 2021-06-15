@@ -30,8 +30,10 @@ class ContactViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun addRoom(item : ExampleItem){
-        list.add(item)
-        genericList.postValue(list)
+        if(item !in list){
+            list.add(item)
+            genericList.postValue(list)
+        }
     }
 
     fun updateDB(){

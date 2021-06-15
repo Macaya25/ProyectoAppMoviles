@@ -65,7 +65,7 @@ class LobbyFragment : Fragment() {
         }
 
 
-        adapter= ExampleAdapter(viewModel.list,apiViewModel,token,activity as MainActivity,aux)
+        adapter= ExampleAdapter(viewModel.list, apiViewModel,token,activity as MainActivity,aux)
         val recycler_view = aux.findViewById<RecyclerView>(R.id.recycler_view)
         recycler_view.setHasFixedSize(true)
         recycler_view.adapter=adapter

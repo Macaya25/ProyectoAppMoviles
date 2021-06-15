@@ -8,14 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavOptions
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.example.proyectoappmoviles.Activities.MainActivity
+import com.example.proyectoappmoviles.Api.ApiViewModel
+import com.example.proyectoappmoviles.Api.ApiViewModelFactory
+import com.example.proyectoappmoviles.Api.Repository
 import com.example.proyectoappmoviles.ViewModels.CardViewModel
 import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
 import com.example.proyectoappmoviles.R
+import com.example.proyectoappmoviles.ViewModels.ContactViewModel
 import com.example.proyectoappmoviles.database.DeckEntity
 import com.example.proyectoappmoviles.database.DeckEntityMapper
 import com.example.proyectoappmoviles.database.RoomRepository
@@ -26,6 +32,8 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var deck: Array<String>
     private lateinit var decks: List<DeckEntity>
     private val viewModel: CardViewModel by activityViewModels()
+    private lateinit var apiViewModel:ApiViewModel
+    private val roomViewModel: ContactViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +45,9 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val repository= Repository()
+        val viewModelFactory= ApiViewModelFactory(requireActivity().application, repository)
+        apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
         val spinner= view.findViewById<Spinner>(R.id.spinner)
         val spinnerAdapter : ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(view.context, R.array.decks,android.R.layout.simple_spinner_item)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -59,6 +69,12 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 putString("loggedInPass",null)
             }?.apply()
             val navOption = NavOptions.Builder().setPopUpTo(R.id.loginFragment,true).build()
+            viewModel.executor.execute{
+                roomViewModel.database.deleteAllRooms()
+            }
+            roomViewModel.list.clear()
+            roomViewModel.genericList.postValue(roomViewModel.list)
+            apiViewModel.myLobbies = MutableLiveData()
             Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_loginFragment,null,navOption)
         }
 

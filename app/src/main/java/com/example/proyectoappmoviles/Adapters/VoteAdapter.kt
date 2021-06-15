@@ -82,8 +82,8 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
 
         else if (currentItem.cardAmount == 2){
             holder.card3.visibility = View.INVISIBLE
-            holder.card1.x = (width/2 - width/3).toFloat()
-            holder.card2.x = (width/2 + width/9).toFloat()
+            holder.card1.x = (width/2 - width/6).toFloat()
+            holder.card2.x = (width/2 + width/6).toFloat()
         }
 
     }

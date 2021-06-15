@@ -42,13 +42,12 @@ class JoinRoomFragment : Fragment() {
             if (token != null) {
                 val tempName=view.findViewById<EditText>(R.id.JoinRoomNamePlainText).text.toString()
                 val tempPass=view.findViewById<EditText>(R.id.JoinRoomPasswordPlainText).text.toString()
-                val temp = LobbyItem(null,null,tempName,null,null,tempPass,null)
-                apiViewModel.joinRoom(token,temp)
+                val temp = LobbyItem(null,null,null,null,null,tempPass,null,tempName)
+                apiViewModel.joinRoom(token,temp,activity as MainActivity)
                 apiViewModel.joinRoomResponse.observe(activity as MainActivity, Observer { response->
                     if (response.isSuccessful){
                         apiViewModel.getRoom(token,tempName)
                         apiViewModel.myLobby.observe(activity as MainActivity, Observer { response->
-
                             val action = JoinRoomFragmentDirections.actionJoinRoomFragmentToCardSelectorFragment(
                                     response.body()?.deck?.name.toString()
                             )

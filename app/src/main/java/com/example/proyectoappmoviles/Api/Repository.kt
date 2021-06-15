@@ -42,8 +42,8 @@ class Repository {
         return RetrofitInstance.api.joinRoom(token,lobbyItem)
     }
 
-    suspend fun getResult(token:String,lobbyItem: LobbyItem): Response<ResultItem>{
-        return RetrofitInstance.api.getResult(token,lobbyItem)
+    suspend fun getResult(token:String,roomName: String): Response<ResultItem>{
+        return RetrofitInstance.api.getResult(token,roomName)
     }
 
     suspend fun vote(token:String,voteItem: VoteItem): Response<VoteItem>{

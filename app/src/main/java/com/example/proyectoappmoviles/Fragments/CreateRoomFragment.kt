@@ -91,7 +91,7 @@ class CreateRoomFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
                 val token= prefs?.getString("loggedInToken","")
                 if (token != null) {
-                    val temp=LobbyItem(null,null, auxtext1, liveDeck.value,null,auxtext2,null)
+                    val temp=LobbyItem(null,null, auxtext1, liveDeck.value,null,auxtext2,null,null)
                     apiViewModel.createRoom(token,temp)
                     apiViewModel.createRoomResponse.observe(activity as MainActivity, Observer { response->
                         if (response.isSuccessful){

@@ -1,22 +1,27 @@
 package com.example.proyectoappmoviles.Adapters
 
+import android.content.Context
 import android.content.res.Resources
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
+import com.example.proyectoappmoviles.Activities.MainActivity
+import com.example.proyectoappmoviles.Api.ApiViewModel
 import com.example.proyectoappmoviles.Fragments.CardSelectorFragmentDirections
 import com.example.proyectoappmoviles.Fragments.DeckFragmentDirections
 import com.example.proyectoappmoviles.Interfaces.OnClickFragmentCardInspect
 import com.example.proyectoappmoviles.ObjectItems.CardItem
+import com.example.proyectoappmoviles.ObjectItems.VoteItem
 import com.example.proyectoappmoviles.R
 
-class VoteAdapter(var cardsList: MutableList<CardItem>): RecyclerView.Adapter<VoteAdapter.CardViewHolder>() {
+class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiViewModel, val token:String, val activity: MainActivity, val view: View): RecyclerView.Adapter<VoteAdapter.CardViewHolder>() {
 
     lateinit var com: OnClickFragmentCardInspect
-    lateinit var view: View
 
     inner class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val card1: Button = itemView.findViewById(R.id.card1)
@@ -36,16 +41,36 @@ class VoteAdapter(var cardsList: MutableList<CardItem>): RecyclerView.Adapter<Vo
         if (currentItem.cardAmount == 3) holder.card3.text = currentItem.cardNames[2]
 
         holder.card1.setOnClickListener() {
-            val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[0])
-            Navigation.findNavController(view).navigate(action)
+
+            val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+            val roomName= prefs?.getString("CurrentRoomName","")
+            val tempVote=VoteItem(roomName,holder.card1.text.toString(),null,null)
+            apiViewModel.vote(token,tempVote)
+            apiViewModel.voteResponse.observe(activity, Observer { response->
+                val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[0])
+                Navigation.findNavController(view).navigate(action)
+            })
+
         }
         holder.card2.setOnClickListener() {
-            val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[1])
-            Navigation.findNavController(view).navigate(action)
+            val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+            val roomName= prefs?.getString("CurrentRoomName","")
+            val tempVote=VoteItem(roomName,holder.card2.text.toString(),null,null)
+            apiViewModel.vote(token,tempVote)
+            apiViewModel.voteResponse.observe(activity, Observer { response->
+                val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[1])
+                Navigation.findNavController(view).navigate(action)
+            })
         }
         holder.card3.setOnClickListener() {
-            val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[2])
-            Navigation.findNavController(view).navigate(action)
+            val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+            val roomName= prefs?.getString("CurrentRoomName","").toString()
+            val tempVote=VoteItem(roomName,holder.card3.text.toString(),null,null)
+            apiViewModel.vote(token,tempVote)
+            apiViewModel.voteResponse.observe(activity, Observer { response->
+                val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[2])
+                Navigation.findNavController(view).navigate(action)
+            })
         }
 
         val width = Resources.getSystem().displayMetrics.widthPixels

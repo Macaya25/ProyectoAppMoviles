@@ -31,7 +31,7 @@ interface SimpleApi {
         @Header("token") token:String
     ): LobbiesListItem
 
-    @GET("room")
+    @GET("rooms")
     suspend fun getRoom(
             @Header("token") token:String,
             @Query ("roomName") roomName : String
@@ -49,16 +49,16 @@ interface SimpleApi {
             @Body room:LobbyItem
     ): Response<LobbyItem>
 
-    @POST("joinRoom")//Error raro de response vacia
+    @POST("joinRoom")
     suspend fun joinRoom(
             @Header("token") token:String,
             @Body room:LobbyItem
     ): Response<LobbyItem>
 
-    @GET("getResult")
+    @GET("getResult/{roomName}")
     suspend fun getResult(
             @Header("token") token:String,
-            @Query ("roomName") room : LobbyItem
+            @Path ("roomName") roomName: String
     ): Response<ResultItem>
 
     @POST("vote")

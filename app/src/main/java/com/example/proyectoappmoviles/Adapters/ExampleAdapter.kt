@@ -29,8 +29,8 @@ class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel:
         val currentItem= exampleList[position]
         holder.textView1.text = currentItem.roomName
         holder.itemView.setOnClickListener{
-            val temp = LobbyItem(null,null,currentItem.roomName,null,null,currentItem.roomId,null)
-            apiViewModel.joinRoom(token,temp)
+            val temp = LobbyItem(null,null,null,null,null,currentItem.roomId,null,currentItem.roomName)
+            apiViewModel.joinRoom(token,temp,activity)
             apiViewModel.joinRoomResponse.observe(activity as MainActivity, Observer { response->
                 if (response.isSuccessful){
                     apiViewModel.getRoom(token,currentItem.roomName)
@@ -41,9 +41,11 @@ class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel:
 
                         )
                         Navigation.findNavController(view).navigate(action)
-                        //Log.d("xxxx",response.body()?.deck?.name.toString())
+
                     })
                 }
+                Log.d("xxxx",response.body().toString())
+                Log.d("xxxx",response.code().toString())
             })
         }
     }

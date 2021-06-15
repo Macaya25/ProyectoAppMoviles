@@ -97,17 +97,20 @@ class LobbyFragment : Fragment() {
         }
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            executor.execute{
-                viewModel.updateDB()
-            }
-
-            val tempDel=LobbyItem(null,viewModel.list[viewHolder.adapterPosition].roomId,viewModel.list[viewHolder.adapterPosition].roomName,null,null,null,null)
+            val tempDel=LobbyItem(null,viewModel.list[viewHolder.adapterPosition].roomId,null,null,null,null,null,viewModel.list[viewHolder.adapterPosition].roomName)
             apiViewModel.deleteRoom(token,tempDel)
+            apiViewModel.deleteRoomResponse.observe(activity as MainActivity, Observer { response->
+                if(response.isSuccessful){
 
+                    executor.execute{
+                        viewModel.updateDB()
+                    }
+                    viewModel.list.removeAt(viewHolder.adapterPosition)
+                    adapter.notifyDataSetChanged()
 
-            viewModel.list.removeAt(viewHolder.adapterPosition)
-            adapter.notifyDataSetChanged()
-            //Toast.makeText(activity,"ewe", Toast.LENGTH_SHORT)
+                }
+            })
+
         }
     }
 

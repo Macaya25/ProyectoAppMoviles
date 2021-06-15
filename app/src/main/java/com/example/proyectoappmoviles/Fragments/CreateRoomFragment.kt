@@ -95,14 +95,7 @@ class CreateRoomFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     apiViewModel.createRoom(token,temp)
                     apiViewModel.createRoomResponse.observe(activity as MainActivity, Observer { response->
                         if (response.isSuccessful){
-
-                            val item = ExampleItem(auxtext1, auxtext2, liveDeck.value!!)
-                            executor.execute{
-                                viewModel.database.addRoom(RoomEntityMapper().mapToCached(item))
-                            }
-                            viewModel.addRoom(item)
                             Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_lobbyFragment)
-
                         }
                     })
                 }

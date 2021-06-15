@@ -91,13 +91,13 @@ class ApiViewModel(application: Application, private val repository: Repository)
     fun getRoom(token:String,roomName:String){
         viewModelScope.launch {
             myLobby= MutableLiveData()
-            val dummyCards= listOf("1","2","3")
-            val dummyDeck=Deck("T-Shirt",dummyCards)
-            val dummyMembers= listOf("Julio","Claudio","Carlos")
-            val dummy1=LobbyItem(null,"roomId","roomName",dummyDeck,dummyMembers,null,null,null)
-            myLobby.postValue(Response.success(dummy1))
-            //val response= repository.getLobby(token,roomName)
-            //myLobby.value = response
+            //val dummyCards= listOf("1","2","3")
+            //val dummyDeck=Deck("T-Shirt",dummyCards)
+            //val dummyMembers= listOf("Julio","Claudio","Carlos")
+            //val dummy1=LobbyItem(null,"roomId","roomName",dummyDeck,dummyMembers,null,null,null)
+            //myLobby.postValue(Response.success(dummy1))
+            val response= repository.getLobby(token,roomName)
+            myLobby.value = response
 
         }
     }

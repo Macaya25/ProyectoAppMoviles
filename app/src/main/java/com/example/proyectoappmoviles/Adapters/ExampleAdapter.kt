@@ -10,6 +10,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.Api.ApiViewModel
+import com.example.proyectoappmoviles.Fragments.JoinRoomFragmentDirections
 import com.example.proyectoappmoviles.Fragments.LobbyFragmentDirections
 import com.example.proyectoappmoviles.ObjectItems.ExampleItem
 import com.example.proyectoappmoviles.ObjectItems.LobbyItem
@@ -33,19 +34,20 @@ class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel:
             apiViewModel.joinRoom(token,temp,activity)
             apiViewModel.joinRoomResponse.observe(activity as MainActivity, Observer { response->
                 if (response.isSuccessful){
-                    apiViewModel.getRoom(token,currentItem.roomName)
-                    apiViewModel.myLobby.observe(activity as MainActivity, Observer { response->
-
-                        val action = LobbyFragmentDirections.actionLobbyFragmentToCardSelectorFragment(
-                                response.body()?.deck?.name.toString()
-
-                        )
-                        Navigation.findNavController(view).navigate(action)
+                    apiViewModel.getRooms(token)
+                    apiViewModel.myLobbies.observe(activity as MainActivity, Observer { response->
+                        Log.d("xxxxx",response.toString())
+                        response.rooms.forEach(){
+                            if (it.roomName==currentItem.roomName){
+                                val action = LobbyFragmentDirections.actionLobbyFragmentToCardSelectorFragment(
+                                        it.deck.name.toString()
+                                )
+                                Navigation.findNavController(view).navigate(action)
+                            }
+                        }
 
                     })
                 }
-                Log.d("xxxx",response.body().toString())
-                Log.d("xxxx",response.code().toString())
             })
         }
     }

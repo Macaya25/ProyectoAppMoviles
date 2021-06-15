@@ -18,6 +18,7 @@ import com.example.proyectoappmoviles.Api.ApiViewModelFactory
 import com.example.proyectoappmoviles.Api.Repository
 import com.example.proyectoappmoviles.ObjectItems.LobbyItem
 import com.example.proyectoappmoviles.R
+import com.example.proyectoappmoviles.database.RoomEntityMapper
 
 
 class JoinRoomFragment : Fragment() {
@@ -46,13 +47,18 @@ class JoinRoomFragment : Fragment() {
                 apiViewModel.joinRoom(token,temp,activity as MainActivity)
                 apiViewModel.joinRoomResponse.observe(activity as MainActivity, Observer { response->
                     if (response.isSuccessful){
-                        apiViewModel.getRoom(token,tempName)
-                        apiViewModel.myLobby.observe(activity as MainActivity, Observer { response->
-                            val action = JoinRoomFragmentDirections.actionJoinRoomFragmentToCardSelectorFragment(
-                                    response.body()?.deck?.name.toString()
-                            )
-                            Navigation.findNavController(view).navigate(action)
-                            //Log.d("xxxx",response.body()?.deck?.name.toString())
+                        apiViewModel.getRooms(token)
+                        apiViewModel.myLobbies.observe(activity as MainActivity, Observer { response->
+                            Log.d("xxxxx",response.toString())
+                            response.rooms.forEach(){
+                                if (it.roomName==tempName){
+                                    val action = JoinRoomFragmentDirections.actionJoinRoomFragmentToCardSelectorFragment(
+                                            it.deck.name.toString()
+                                    )
+                                    Navigation.findNavController(view).navigate(action)
+                                }
+                            }
+
                         })
                     }
                 })

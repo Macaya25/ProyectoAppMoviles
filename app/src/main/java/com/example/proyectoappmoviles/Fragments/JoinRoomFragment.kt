@@ -43,7 +43,7 @@ class JoinRoomFragment : Fragment() {
             if (token != null) {
                 val tempName=view.findViewById<EditText>(R.id.JoinRoomNamePlainText).text.toString()
                 val tempPass=view.findViewById<EditText>(R.id.JoinRoomPasswordPlainText).text.toString()
-                val temp = LobbyItem(null,null,null,null,null,tempPass,null,tempName)
+                val temp = LobbyItem(null,null,tempName,null,null,tempPass,null,null)
                 apiViewModel.joinRoom(token,temp,activity as MainActivity)
                 apiViewModel.joinRoomResponse.observe(activity as MainActivity, Observer { response->
                     if (response.isSuccessful){

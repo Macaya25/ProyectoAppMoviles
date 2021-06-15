@@ -58,8 +58,6 @@ class JoinRoomFragment : Fragment() {
                 })
             }
 
-
-
         }
 
         return view

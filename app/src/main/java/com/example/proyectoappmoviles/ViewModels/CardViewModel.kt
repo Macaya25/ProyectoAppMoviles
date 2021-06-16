@@ -34,7 +34,7 @@ class CardViewModel(application: Application) : AndroidViewModel(application) {
         list.clear()
         val mutableCards = deck.cards.toMutableList()
         mutableCards.add("?")
-        mutableCards.add(9749.toChar().toString())
+        mutableCards.add("☕️")
         val cards = mutableCards.chunked(3)
         for(i in cards.indices){
             list.add(CardItem(cards[i].size, cards[i]))

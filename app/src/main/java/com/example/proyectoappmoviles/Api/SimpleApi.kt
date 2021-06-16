@@ -31,10 +31,10 @@ interface SimpleApi {
         @Header("token") token:String
     ): LobbiesListItem
 
-    @GET("rooms")
+    @GET("rooms/{roomName}")
     suspend fun getRoom(
             @Header("token") token:String,
-            @Query ("roomName") roomName : String
+            @Path ("roomName") roomName : String
     ): Response<LobbyItem>
 
     @POST("rooms")

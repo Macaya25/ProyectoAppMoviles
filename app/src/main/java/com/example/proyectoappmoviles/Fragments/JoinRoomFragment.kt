@@ -42,8 +42,17 @@ class JoinRoomFragment : Fragment() {
                 val temp = LobbyItem(null,null,tempName,null,null,tempPass,null,null)
                 apiViewModel.joinRoom(token,temp,activity as MainActivity)
                 apiViewModel.joinRoomResponse.observe(activity as MainActivity, Observer { response->
+                    Log.d("yes",response.body().toString())
+                    Log.d("yes",response.code().toString())
                     if (response.isSuccessful){
-                        //TODO hacer get room
+                        apiViewModel.getRoom(token,tempName)
+                        apiViewModel.myLobby.observe(activity as MainActivity, Observer { response1->
+                            Log.d("yes",response1.body().toString())
+                            val action = JoinRoomFragmentDirections.actionJoinRoomFragmentToCardSelectorFragment(
+                                    response1.body()?.deck?.name.toString()
+                            )
+                            Navigation.findNavController(view).navigate(action)
+                        })
                     }
                 })
             }

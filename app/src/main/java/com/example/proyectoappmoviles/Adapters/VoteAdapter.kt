@@ -95,4 +95,5 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
         cardsList = item
         this.notifyDataSetChanged()
     }
+
 }

@@ -51,10 +51,12 @@ class LobbyFragment : Fragment() {
         if (token != null) {
             apiViewModel.getRooms(token)
             apiViewModel.myLobbies.observe(activity as MainActivity, Observer { response->
-                Log.d("xxxxx",response.toString())
+
                 response.rooms.forEach(){
+
                     executor.execute {
                         if (it !in viewModel.list) {
+                            Log.d("xxxxx",it.toString())
                             RoomEntityMapper().mapToCached(it)?.let { it1 -> viewModel.database.addRoom(it1) }
                             viewModel.addRoom(it)
                         }
@@ -64,7 +66,7 @@ class LobbyFragment : Fragment() {
             })
         }
 
-
+        //Log.d("list",viewModel.list.toString())
         adapter= ExampleAdapter(viewModel.list, apiViewModel,token,activity as MainActivity,aux)
         val recycler_view = aux.findViewById<RecyclerView>(R.id.recycler_view)
         recycler_view.setHasFixedSize(true)

@@ -34,7 +34,14 @@ class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel:
             apiViewModel.joinRoom(token,temp,activity)
             apiViewModel.joinRoomResponse.observe(activity as MainActivity, Observer { response->
                 if (response.isSuccessful){
-                    //TODO agregar get room
+                    apiViewModel.getRoom(token,currentItem.roomName)
+                    apiViewModel.myLobby.observe(activity as MainActivity, Observer { response1->
+                        Log.d("yes",response1.body().toString())
+                        val action = LobbyFragmentDirections.actionLobbyFragmentToCardSelectorFragment(
+                                response1.body()?.deck?.name.toString()
+                        )
+                        Navigation.findNavController(view).navigate(action)
+                    })
                 }
             })
         }

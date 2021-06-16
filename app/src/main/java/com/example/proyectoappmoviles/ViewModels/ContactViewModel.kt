@@ -20,13 +20,13 @@ class ContactViewModel(application: Application) : AndroidViewModel(application)
     private lateinit var rooms: List<RoomEntity>
 
     init{
-        executor.execute{
+        /*executor.execute{
             rooms = database.getAllRooms()
             rooms.forEach {
                 RoomEntityMapper().mapFromCached(it)?.let { it1 -> list.add(it1) }
             }
             genericList.postValue(list)
-        }
+        }*/
     }
 
     fun addRoom(item : ExampleItem){

@@ -12,9 +12,40 @@ class VotesViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updateVotes(myVote: VoteItem){
         list.clear()
-        //TODO: Hacer call a api de result
-
         list.add(myVote)
         live_list.postValue(list)
     }
+
+    fun setMemberList(memberList: List<String>,voteList:List<VoteItem>){
+        list.clear()
+
+        var tempList= mutableListOf<String>()
+        voteList.forEach{
+            tempList.add(it.name.toString())
+            val tempMember=VoteItem(null,it.vote,null,it.name)
+            list.add(tempMember)
+            live_list.postValue(list)
+        }
+
+        memberList.forEach{
+            if (it !in tempList){
+                val tempMember=VoteItem(null,"",null,it)
+                list.add(tempMember)
+                live_list.postValue(list)
+            }
+        }
+
+        /*voteList.forEach{
+            if (it.name in memberList){
+                val tempMember=VoteItem(null,it.vote,null,it.name)
+                list.add(tempMember)
+                live_list.postValue(list)
+            }else{
+                val tempMember=VoteItem(null,"",null,it.name)
+                list.add(tempMember)
+                live_list.postValue(list)
+            }
+        }*/
+    }
+
 }

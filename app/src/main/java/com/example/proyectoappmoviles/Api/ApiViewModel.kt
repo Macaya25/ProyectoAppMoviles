@@ -87,7 +87,6 @@ class ApiViewModel(application: Application, private val repository: Repository)
 
         }
     }
-    //Aun con dummy
     fun getRoom(token:String,roomName:String){
         viewModelScope.launch {
             myLobby= MutableLiveData()
@@ -131,7 +130,7 @@ class ApiViewModel(application: Application, private val repository: Repository)
             val prefs= activity.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
             val editor= prefs?.edit()
             editor?.apply {
-                putString("CurrentRoomName",lobbyItem.name)
+                putString("CurrentRoomName",lobbyItem.roomName)
             }?.apply()
             //val member1="Julio"
             //val member2="Claudio"

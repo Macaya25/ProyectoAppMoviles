@@ -23,7 +23,7 @@ class ContactViewModel(application: Application) : AndroidViewModel(application)
         executor.execute{
             rooms = database.getAllRooms()
             rooms.forEach {
-                list.add(RoomEntityMapper().mapFromCached(it))
+                RoomEntityMapper().mapFromCached(it)?.let { it1 -> list.add(it1) }
             }
             genericList.postValue(list)
         }

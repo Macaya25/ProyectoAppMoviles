@@ -55,7 +55,7 @@ class LobbyFragment : Fragment() {
                 response.rooms.forEach(){
                     executor.execute {
                         if (it !in viewModel.list) {
-                            viewModel.database.addRoom(RoomEntityMapper().mapToCached(it))
+                            RoomEntityMapper().mapToCached(it)?.let { it1 -> viewModel.database.addRoom(it1) }
                             viewModel.addRoom(it)
                         }
                     }

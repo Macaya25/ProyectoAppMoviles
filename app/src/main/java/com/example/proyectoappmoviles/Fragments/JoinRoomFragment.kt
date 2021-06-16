@@ -28,10 +28,6 @@ class JoinRoomFragment : Fragment() {
         // Inflate the layout for this fragment
         val view= inflater.inflate(R.layout.fragment_join_room, container, false)
 
-        //TODO:Agregar 2 edit text
-        //TODO:Hacer que los valores de los cuadros de texto y spinner los chupe un temp LobbyItem
-        //TODO:Mandarle mensaje a la api y cambiar a CardSelectorFragment
-
         val repository= Repository()
         val viewModelFactory= ApiViewModelFactory(requireActivity().application, repository)
         apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
@@ -47,19 +43,7 @@ class JoinRoomFragment : Fragment() {
                 apiViewModel.joinRoom(token,temp,activity as MainActivity)
                 apiViewModel.joinRoomResponse.observe(activity as MainActivity, Observer { response->
                     if (response.isSuccessful){
-                        apiViewModel.getRooms(token)
-                        apiViewModel.myLobbies.observe(activity as MainActivity, Observer { response->
-                            Log.d("xxxxx",response.toString())
-                            response.rooms.forEach(){
-                                if (it.roomName==tempName){
-                                    val action = JoinRoomFragmentDirections.actionJoinRoomFragmentToCardSelectorFragment(
-                                            it.deck.name.toString()
-                                    )
-                                    Navigation.findNavController(view).navigate(action)
-                                }
-                            }
-
-                        })
+                        //TODO hacer get room
                     }
                 })
             }

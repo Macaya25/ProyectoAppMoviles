@@ -6,7 +6,8 @@ class RoomEntityMapper: EntityMapper<RoomEntity, ExampleItem> {
     override fun mapFromCached(type: RoomEntity): ExampleItem {
         return ExampleItem(
             type.room_id,
-            type.name,
+            type.name!!,
+            type.waitingDelete,
             DeckEntityMapper().mapFromCached(type.deck)
         )
     }
@@ -15,6 +16,7 @@ class RoomEntityMapper: EntityMapper<RoomEntity, ExampleItem> {
         return RoomEntity(
             type.roomId,
             type.roomName,
+            type.waitingDelete,
             DeckEntityMapper().mapToCached(type.deck)
         )
     }

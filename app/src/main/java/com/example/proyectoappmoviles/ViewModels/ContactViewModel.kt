@@ -16,7 +16,7 @@ class ContactViewModel(application: Application) : AndroidViewModel(application)
     var genericList = MutableLiveData<MutableList<ExampleItem>>()
     var database: RoomDao = RoomRepository(application).getRoomDao()
 
-    private val executor: ExecutorService = Executors.newSingleThreadExecutor()
+    val executor: ExecutorService = Executors.newSingleThreadExecutor()
     private lateinit var rooms: List<RoomEntity>
 
     init{

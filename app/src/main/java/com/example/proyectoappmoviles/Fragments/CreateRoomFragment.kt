@@ -2,14 +2,12 @@ package com.example.proyectoappmoviles.Fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,6 +23,7 @@ import com.example.proyectoappmoviles.ObjectItems.LobbyItem
 import com.example.proyectoappmoviles.ViewModels.CardViewModel
 import com.example.proyectoappmoviles.ViewModels.ContactViewModel
 import com.example.proyectoappmoviles.database.DeckEntityMapper
+import com.example.proyectoappmoviles.database.RoomEntity
 import com.example.proyectoappmoviles.database.RoomEntityMapper
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -86,8 +85,6 @@ class CreateRoomFragment : Fragment(), AdapterView.OnItemSelectedListener {
             if(auxtext1=="" || auxtext2==""){
                 Toast.makeText(activity,"Please Don't Leave Any Input Blank",Toast.LENGTH_SHORT).show()
             }else{
-
-                //TODO: Agregar un spinner para seleccionar el maso y darselo a temp
                 val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
                 val token= prefs?.getString("loggedInToken","")
                 if (token != null) {
@@ -95,6 +92,14 @@ class CreateRoomFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     apiViewModel.createRoom(token,temp)
                     apiViewModel.createRoomResponse.observe(activity as MainActivity, Observer { response->
                         if (response.isSuccessful){
+                            Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_lobbyFragment)
+                        }
+                        else{
+                            viewModel.executor.execute{
+                                val room = RoomEntity("", temp.name, false, DeckEntityMapper().mapToCached(temp.deck))
+                                viewModel.database.addRoom(room)
+                                viewModel.addRoom(RoomEntityMapper().mapFromCached(room))
+                            }
                             Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_lobbyFragment)
                         }
                     })

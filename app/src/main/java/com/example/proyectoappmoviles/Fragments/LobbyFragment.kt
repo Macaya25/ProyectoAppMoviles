@@ -103,13 +103,18 @@ class LobbyFragment : Fragment() {
             apiViewModel.deleteRoom(token,tempDel)
             apiViewModel.deleteRoomResponse.observe(activity as MainActivity, Observer { response->
                 if(response.isSuccessful){
-
                     executor.execute{
                         viewModel.updateDB()
                     }
                     viewModel.list.removeAt(viewHolder.adapterPosition)
                     adapter.notifyDataSetChanged()
 
+                }
+                else {
+                    val roomId = viewModel.list[viewHolder.adapterPosition].roomId
+                    viewModel.database.setToDelete(roomId)
+                    viewModel.list.removeAt(viewHolder.adapterPosition)
+                    adapter.notifyDataSetChanged()
                 }
             })
 

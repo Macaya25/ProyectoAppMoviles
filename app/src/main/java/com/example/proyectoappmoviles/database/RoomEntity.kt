@@ -10,6 +10,7 @@ import kotlinx.android.parcel.Parcelize
 data class RoomEntity(
         @PrimaryKey
         @ColumnInfo(name = "room_id") val room_id: String,
-        @ColumnInfo(name = "roomName") val name: String,
+        @ColumnInfo(name = "roomName") val name: String?,
+        @ColumnInfo(name= "waitingDelete") val waitingDelete: Boolean,
         @Embedded val deck: DeckEntity
 ): Parcelable

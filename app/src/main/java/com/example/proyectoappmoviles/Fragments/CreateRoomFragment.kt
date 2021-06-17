@@ -1,6 +1,7 @@
 package com.example.proyectoappmoviles.Fragments
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -88,21 +89,26 @@ class CreateRoomFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
                 val token= prefs?.getString("loggedInToken","")
                 if (token != null) {
-                    val temp=LobbyItem(null,null, auxtext1, liveDeck.value,null,auxtext2,null,null)
-                    apiViewModel.createRoom(token,temp)
-                    apiViewModel.createRoomResponse.observe(activity as MainActivity, Observer { response->
-                        if (response.isSuccessful){
-                            Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_lobbyFragment)
-                        }
-                        else{
-                            viewModel.executor.execute{
-                                val room = RoomEntity("", temp.name, false, DeckEntityMapper().mapToCached(temp.deck))
-                                viewModel.database.addRoom(room)
-                                viewModel.addRoom(RoomEntityMapper().mapFromCached(room))
+                    if(check_connection()){
+                        val temp=LobbyItem(null,null, auxtext1, liveDeck.value,null,auxtext2,null,null)
+                        apiViewModel.createRoom(token,temp)
+                        apiViewModel.createRoomResponse.observe(activity as MainActivity, Observer { response->
+                            if (response.isSuccessful){
+                                Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_lobbyFragment)
                             }
-                            Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_lobbyFragment)
-                        }
-                    })
+                            else{
+                                viewModel.executor.execute{
+                                    val room = RoomEntity("", temp.name, false, DeckEntityMapper().mapToCached(temp.deck))
+                                    viewModel.database.addRoom(room)
+                                    viewModel.addRoom(RoomEntityMapper().mapFromCached(room))
+                                }
+                                Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_lobbyFragment)
+                            }
+                        })
+                    }else{
+                        //TODO: hacer funcion que agrega a la base de datos con valor
+                        Toast.makeText(activity, "Create on Offline Mode", Toast.LENGTH_SHORT).show()
+                    }
                 }
 
             }
@@ -122,5 +128,16 @@ class CreateRoomFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
         TODO("Not yet implemented")
+    }
+
+    private fun check_connection() : Boolean{
+        val managment = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = managment.activeNetworkInfo
+        if (networkInfo != null){
+            if (networkInfo.type == ConnectivityManager.TYPE_WIFI || networkInfo.type == ConnectivityManager.TYPE_MOBILE){
+                return true
+            }
+        }
+        return false
     }
 }

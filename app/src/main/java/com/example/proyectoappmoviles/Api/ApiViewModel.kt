@@ -67,7 +67,7 @@ class ApiViewModel(application: Application, private val repository: Repository)
                 }
 
                 override fun onFailure(call: Call<List<Deck>>, t: Throwable) {
-                    TODO("Not yet implemented")
+                    //TODO("Not yet implemented")
                 }
 
             })

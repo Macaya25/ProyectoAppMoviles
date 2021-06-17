@@ -94,7 +94,11 @@ class LoginFragment : Fragment() {
                     }
                 })
             }else{
-                Toast.makeText(activity as MainActivity,"AutoLogin Connection Error",Toast.LENGTH_SHORT).show()
+                Log.d("Offline enter","Offline enter")
+
+                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
+
+                Toast.makeText(activity as MainActivity,"AutoLogin Offline Mode",Toast.LENGTH_SHORT).show()
             }
         }
 

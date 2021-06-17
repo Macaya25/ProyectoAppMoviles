@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -41,22 +42,35 @@ class JoinRoomFragment : Fragment() {
                 val tempPass=view.findViewById<EditText>(R.id.JoinRoomPasswordPlainText).text.toString()
                 val temp = LobbyItem(null,null,tempName,null,null,tempPass,null,null)
                 apiViewModel.joinRoom(token,temp,activity as MainActivity)
-                apiViewModel.joinRoomResponse.observe(activity as MainActivity, Observer { response->
-                    Log.d("yes",response.body().toString())
-                    Log.d("yes",response.code().toString())
-                    if (response.isSuccessful){
-                        apiViewModel.getRoom(token,tempName)
-                        apiViewModel.myLobby.observe(activity as MainActivity, Observer { response1->
-                            Log.d("yes",response1.body().toString())
+                apiViewModel.joinRoomResponse.observe(activity as MainActivity, Observer { response ->
+                    Log.d("yes", response.body().toString())
+                    Log.d("yes", response.code().toString())
+                    if (response.isSuccessful && response.body()?.message != null) {
+                        apiViewModel.getRoom(token, tempName)
+                        apiViewModel.myLobby.observe(activity as MainActivity, Observer { response1 ->
+                            Log.d("yes", response1.body().toString())
                             val action = JoinRoomFragmentDirections.actionJoinRoomFragmentToCardSelectorFragment(
                                     response1.body()?.deck?.name.toString()
                             )
                             Navigation.findNavController(view).navigate(action)
                         })
+                    } else {
+                        Toast.makeText(activity,"No Match For Given Credentials", Toast.LENGTH_SHORT).show()
                     }
                 })
             }
 
+        }
+
+        val btnDeck=view.findViewById<Button>(R.id.DeckButton)
+        val btnSettings=view.findViewById<Button>(R.id.SettingsButton)
+
+        btnDeck.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_joinRoomFragment_to_deckFragment)
+        }
+
+        btnSettings.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_joinRoomFragment_to_settingsFragment)
         }
 
         return view

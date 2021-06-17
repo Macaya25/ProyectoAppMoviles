@@ -9,10 +9,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -71,7 +73,16 @@ class VoteFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
         viewModel.live_list.observe(viewLifecycleOwner,androidx.lifecycle.Observer{adapter.set(it)})
 
+        val btnDeck=view.findViewById<Button>(R.id.DeckButton)
+        val btnSettings=view.findViewById<Button>(R.id.SettingsButton)
 
+        btnDeck.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_voteFragment_to_deckFragment)
+        }
+
+        btnSettings.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_voteFragment_to_settingsFragment)
+        }
 
 
         return view

@@ -24,8 +24,12 @@ import com.example.proyectoappmoviles.Adapters.ExampleAdapter
 import com.example.proyectoappmoviles.Api.ApiViewModel
 import com.example.proyectoappmoviles.Api.ApiViewModelFactory
 import com.example.proyectoappmoviles.Api.Repository
+import com.example.proyectoappmoviles.ObjectItems.Deck
+import com.example.proyectoappmoviles.ObjectItems.ExampleItem
 import com.example.proyectoappmoviles.ObjectItems.LobbyItem
+import com.example.proyectoappmoviles.ViewModels.CardViewModel
 import com.example.proyectoappmoviles.ViewModels.ContactViewModel
+import com.example.proyectoappmoviles.database.DeckEntity
 import com.example.proyectoappmoviles.database.RoomEntity
 import com.example.proyectoappmoviles.database.RoomEntityMapper
 import java.util.concurrent.ExecutorService
@@ -36,6 +40,7 @@ class LobbyFragment : Fragment() {
     private lateinit var apiViewModel: ApiViewModel
     lateinit var adapter: ExampleAdapter
     private val viewModel: ContactViewModel by activityViewModels()
+    private val cardViewModel: CardViewModel by activityViewModels()
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
     lateinit var token: String
 
@@ -71,6 +76,17 @@ class LobbyFragment : Fragment() {
 
         }else{
             //Todo: Hacer que viewModel.list tenga las salas leidas de la base de datos locas
+            cardViewModel.executor.execute{
+                viewModel.database.getAllRooms().forEach{
+                    RoomEntityMapper().mapFromCached(it)?.let { it1 ->
+                        viewModel.database.addRoom(it)
+                        viewModel.addRoom(it1)
+                    }
+
+                }
+            }
+            viewModel.list.clear()
+            viewModel.genericList.postValue(viewModel.list)
             Toast.makeText(activity, "Logged in without internet", Toast.LENGTH_SHORT).show()
         }
 
@@ -110,6 +126,7 @@ class LobbyFragment : Fragment() {
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val tempDel=LobbyItem(null,viewModel.list[viewHolder.adapterPosition].roomId,viewModel.list[viewHolder.adapterPosition].roomName,null,null,null,null,null)
             apiViewModel.deleteRoom(token,tempDel)
+            Log.d("Offline Deletion","Before Deletion")
             if (check_connection()) {
                 apiViewModel.deleteRoomResponse.observe(activity as MainActivity, Observer { response ->
                     if (response.isSuccessful) {
@@ -123,10 +140,12 @@ class LobbyFragment : Fragment() {
                 })
             }
             else {
+                Log.d("Offline Deletion","Offline Deletion")
                 val roomId = viewModel.list[viewHolder.adapterPosition].roomId
                 viewModel.executor.execute {
                     viewModel.database.setToDelete(roomId)
                 }
+                Log.d("Offline Deletion","End Deletion")
             }
         }
     }

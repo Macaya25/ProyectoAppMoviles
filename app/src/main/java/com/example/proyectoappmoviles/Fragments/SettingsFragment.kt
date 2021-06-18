@@ -64,11 +64,16 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         btnLogout.setOnClickListener{
             val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+            val usernameaux= prefs?.getString("loggedInUser",null).toString()
+            val deckaux = prefs?.getInt(usernameaux+"Deck",0)
+            val deckNameaux = prefs?.getString(usernameaux+"DeckName", null).toString()
             val editor= prefs?.edit()
             editor?.apply {
                 putBoolean("loggedIn",false)
                 putString("loggedInUser",null)
                 putString("loggedInPass",null)
+                putString(usernameaux+"DeckName", deckNameaux as String?)
+                putInt(usernameaux+"Deck", deckaux!!)
             }?.apply()
             val navOption = NavOptions.Builder().setPopUpTo(R.id.loginFragment,true).build()
             viewModel.executor.execute{
@@ -98,6 +103,12 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val deckName = parent?.getItemAtPosition(position)
         val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
         val usernameaux= prefs?.getString("loggedInUser",null).toString()
+
+        val editor= prefs?.edit()
+        editor?.apply {
+            putString(usernameaux+"DeckName", deckName as String?)
+            putInt(usernameaux+"Deck", position)
+        }?.apply()
 
         viewModel.executor.execute{
             decks = viewModel.deckDao.getAllDecks()

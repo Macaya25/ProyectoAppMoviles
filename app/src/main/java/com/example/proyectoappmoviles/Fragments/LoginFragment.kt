@@ -62,9 +62,9 @@ class LoginFragment : Fragment() {
 
         if (loggedIn==true){
             val deckaux= prefs?.getInt(usernameaux+"Deck",0)
+            val deckNameaux = prefs?.getString(usernameaux+"DeckName", null).toString()
             viewModel.executor.execute{
-                //TODO: poder pasarle el nombre del deck a setDeck
-                //viewModel.setDeck(DeckEntityMapper().mapFromCached(it), deckaux)
+                viewModel.setDeck(DeckEntityMapper().mapFromCached(viewModel.deckDao.getDeck(deckNameaux)), deckaux)
             }
             if(check_connection()) {
                 val myUser = UserObject(null, usernameaux, null, passwordaux, null)
@@ -111,11 +111,10 @@ class LoginFragment : Fragment() {
                             putString("loggedInToken", response.body()?.token.toString())
                         }?.apply()
 
-                        val deckaux=prefs?.getInt(usernameaux+"Deck",0)
-
+                        val deckaux = prefs?.getInt(usernameaux+"Deck",0)
+                        val deckNameaux = prefs?.getString(usernameaux+"DeckName", null).toString()
                         viewModel.executor.execute{
-                            //TODO: poder pasarle el nombre del deck a setDeck
-                            //viewModel.setDeck(DeckEntityMapper().mapFromCached(it), deckaux!!)
+                            viewModel.setDeck(DeckEntityMapper().mapFromCached(viewModel.deckDao.getDeck(deckNameaux)), deckaux!!)
                         }
 
                         try {

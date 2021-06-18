@@ -12,6 +12,6 @@ data class RoomEntity(
         @ColumnInfo(name = "room_id") val room_id: String,
         @ColumnInfo(name = "roomName") val name: String?,
         @ColumnInfo(name= "waitingDelete") val waitingDelete: Boolean,
-        @ColumnInfo(name= "madeOffline") val madeOffline: Boolean,
+        @ColumnInfo(name= "offlinePassword") val offlinePassword: String?,
         @Embedded val deck: DeckEntity
 ): Parcelable

@@ -100,7 +100,7 @@ class CreateRoomFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     } else {
                         //TODO: hacer funcion que agrega a la base de datos con valor
                         viewModel.executor.execute{
-                            val room = RoomEntity(auxtext1, auxtext1, waitingDelete = false, madeOffline = true, DeckEntityMapper().mapToCached(liveDeck.value))
+                            val room = RoomEntity(auxtext1, auxtext1, waitingDelete = false, auxtext2, DeckEntityMapper().mapToCached(liveDeck.value))
                             viewModel.database.addRoom(room)
                             viewModel.addRoom(RoomEntityMapper().mapFromCached(room))
                         }

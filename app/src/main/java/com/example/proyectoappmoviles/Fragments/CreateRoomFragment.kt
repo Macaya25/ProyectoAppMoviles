@@ -58,7 +58,7 @@ class CreateRoomFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val btnBackToLooby=view.findViewById<Button>(R.id.CreateRoom)
         val btnLobby=view.findViewById<Button>(R.id.LobbyButton)
 
-        executor.execute{
+        deckViewModel.executor.execute{
             val deckNames = deckViewModel.deckDao.getAllDecks().map{ it.name }.toTypedArray()
             val spinner = view.findViewById<Spinner>(R.id.deckSpinner)
             val spinnerAdapter : ArrayAdapter<CharSequence> = ArrayAdapter(view.context, android.R.layout.simple_spinner_item, deckNames)
@@ -96,17 +96,15 @@ class CreateRoomFragment : Fragment(), AdapterView.OnItemSelectedListener {
                             if (response.isSuccessful){
                                 Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_lobbyFragment)
                             }
-                            else{
-                                viewModel.executor.execute{
-                                    val room = RoomEntity("", temp.name, false, DeckEntityMapper().mapToCached(temp.deck))
-                                    viewModel.database.addRoom(room)
-                                    viewModel.addRoom(RoomEntityMapper().mapFromCached(room))
-                                }
-                                Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_lobbyFragment)
-                            }
                         })
-                    }else{
+                    } else {
                         //TODO: hacer funcion que agrega a la base de datos con valor
+                        viewModel.executor.execute{
+                            val room = RoomEntity("", auxtext1, false, DeckEntityMapper().mapToCached(liveDeck.value))
+                            viewModel.database.addRoom(room)
+                            viewModel.addRoom(RoomEntityMapper().mapFromCached(room))
+                        }
+                        Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_lobbyFragment)
                         Toast.makeText(activity, "Create on Offline Mode", Toast.LENGTH_SHORT).show()
                     }
                 }

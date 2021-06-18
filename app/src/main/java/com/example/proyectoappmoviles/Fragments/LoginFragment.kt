@@ -23,6 +23,7 @@ import com.example.proyectoappmoviles.Api.Repository
 import com.example.proyectoappmoviles.Api.UserObject
 import com.example.proyectoappmoviles.R
 import com.example.proyectoappmoviles.ViewModels.CardViewModel
+import com.example.proyectoappmoviles.ViewModels.ContactViewModel
 import com.example.proyectoappmoviles.database.DeckEntity
 import com.example.proyectoappmoviles.database.DeckEntityMapper
 import java.lang.Exception
@@ -31,6 +32,7 @@ import java.time.LocalDate
 class LoginFragment : Fragment() {
 
     private lateinit var apiViewModel:ApiViewModel
+    private val deckViewModel: ContactViewModel by activityViewModels()
     private val viewModel: CardViewModel by activityViewModels()
     private lateinit var deck: Array<String>
     private lateinit var decks: List<DeckEntity>
@@ -95,7 +97,6 @@ class LoginFragment : Fragment() {
                 })
             }else{
                 Log.d("Offline enter","Offline enter")
-
                 Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
 
                 Toast.makeText(activity as MainActivity,"AutoLogin Offline Mode",Toast.LENGTH_SHORT).show()

@@ -1,6 +1,7 @@
 package com.example.proyectoappmoviles.Adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,7 +30,6 @@ class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel:
     override fun getItemCount() =exampleList.size
 
     override fun onBindViewHolder(holder: ExampleViewHolder, position: Int) {
-
         val currentItem= exampleList[position]
         holder.textView1.text = currentItem.roomName
         holder.itemView.setOnClickListener{

@@ -53,13 +53,10 @@ class LobbyFragment : Fragment() {
         token= prefs?.getString("loggedInToken","").toString()
 
         if (check_connection()){
-
             if (token != null) {
                 apiViewModel.getRooms(token)
                 apiViewModel.myLobbies.observe(activity as MainActivity, Observer { response->
-
                     response.rooms.forEach(){
-
                         executor.execute {
                             if (it !in viewModel.list) {
                                 Log.d("xxxxx",it.toString())
@@ -73,9 +70,8 @@ class LobbyFragment : Fragment() {
             }
 
         }else{
-
             //Todo: Hacer que viewModel.list tenga las salas leidas de la base de datos locas
-
+            Toast.makeText(activity, "Logged in without internet", Toast.LENGTH_SHORT).show()
         }
 
 
@@ -114,23 +110,24 @@ class LobbyFragment : Fragment() {
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val tempDel=LobbyItem(null,viewModel.list[viewHolder.adapterPosition].roomId,viewModel.list[viewHolder.adapterPosition].roomName,null,null,null,null,null)
             apiViewModel.deleteRoom(token,tempDel)
-            apiViewModel.deleteRoomResponse.observe(activity as MainActivity, Observer { response->
-                if(response.isSuccessful){
-                    executor.execute{
-                        viewModel.updateDB()
+            if (check_connection()) {
+                apiViewModel.deleteRoomResponse.observe(activity as MainActivity, Observer { response ->
+                    if (response.isSuccessful) {
+                        val roomName = viewModel.list[viewHolder.adapterPosition].roomName
+                        viewModel.list.removeAt(viewHolder.adapterPosition)
+                        adapter.notifyDataSetChanged()
+                        viewModel.executor.execute {
+                            viewModel.database.deleteRoom(roomName)
+                        }
                     }
-                    viewModel.list.removeAt(viewHolder.adapterPosition)
-                    adapter.notifyDataSetChanged()
-
-                }
-                else {
-                    val roomId = viewModel.list[viewHolder.adapterPosition].roomId
+                })
+            }
+            else {
+                val roomId = viewModel.list[viewHolder.adapterPosition].roomId
+                viewModel.executor.execute {
                     viewModel.database.setToDelete(roomId)
-                    viewModel.list.removeAt(viewHolder.adapterPosition)
-                    adapter.notifyDataSetChanged()
                 }
-            })
-
+            }
         }
     }
 

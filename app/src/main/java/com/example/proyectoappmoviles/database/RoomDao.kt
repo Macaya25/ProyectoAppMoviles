@@ -17,6 +17,6 @@ interface RoomDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addRoom(contact: RoomEntity)
 
-    @Delete
-    fun deleteRoom(room: RoomEntity)
+    @Query("DELETE FROM roomsTable WHERE roomName = :name")
+    fun deleteRoom(name: String)
 }

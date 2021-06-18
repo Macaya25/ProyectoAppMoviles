@@ -36,14 +36,5 @@ class ContactViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun updateDB(){
-        executor.execute {
-            rooms = database.getAllRooms()
-            rooms.forEach {
-                if(RoomEntityMapper().mapFromCached(it) !in list){
-                    database.deleteRoom(it)
-                }
-            }
-        }
-    }
+
 }

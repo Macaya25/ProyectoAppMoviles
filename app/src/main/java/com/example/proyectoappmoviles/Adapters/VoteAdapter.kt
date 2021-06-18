@@ -23,10 +23,12 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
 
     lateinit var com: OnClickFragmentCardInspect
 
+
     inner class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val card1: Button = itemView.findViewById(R.id.card1)
         val card2: Button = itemView.findViewById(R.id.card2)
         val card3: Button = itemView.findViewById(R.id.card3)
+        var moved = false
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
@@ -36,6 +38,7 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
 
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
         val currentItem = cardsList[position]
+
         holder.card1.text = currentItem.cardNames[0]
         if (currentItem.cardAmount >= 2) holder.card2.text = currentItem.cardNames[1]
         if (currentItem.cardAmount == 3) holder.card3.text = currentItem.cardNames[2]
@@ -74,17 +77,20 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
         }
 
         val width = Resources.getSystem().displayMetrics.widthPixels
-        if(currentItem.cardAmount == 1){
-            holder.card1.x += width/3
-            holder.card2.visibility = View.INVISIBLE
-            holder.card3.visibility = View.INVISIBLE
+        if (!holder.moved) {
+            if(currentItem.cardAmount == 1){
+                holder.card1.x += width/3
+                holder.card2.visibility = View.INVISIBLE
+                holder.card3.visibility = View.INVISIBLE
+            }
+            else if (currentItem.cardAmount == 2){
+                holder.card3.visibility = View.INVISIBLE
+                holder.card1.x += width/6
+                holder.card2.x += width/6
+            }
+            holder.moved = true
         }
 
-        else if (currentItem.cardAmount == 2){
-            holder.card3.visibility = View.INVISIBLE
-            holder.card1.x = (width/2 - width/6).toFloat() - width/10
-            holder.card2.x = (width/2 + width/6).toFloat() - width/10
-        }
 
     }
     override fun getItemCount(): Int {

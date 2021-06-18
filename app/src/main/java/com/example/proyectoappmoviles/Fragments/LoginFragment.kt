@@ -63,21 +63,8 @@ class LoginFragment : Fragment() {
         if (loggedIn==true){
             val deckaux= prefs?.getInt(usernameaux+"Deck",0)
             viewModel.executor.execute{
-                decks = viewModel.deckDao.getAllDecks()
-                decks.forEach {
-                    if (it.name == "T-Shirt"){
-                        viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 1)
-                    }
-                    else if (it.name == "Fibonacci"){
-                        viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 2)
-                    }
-                    else if (it.name == "Hours"){
-                        viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 3)
-                    }
-                    else {
-                        viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 0)
-                    }
-                }
+                //TODO: poder pasarle el nombre del deck a setDeck
+                //viewModel.setDeck(DeckEntityMapper().mapFromCached(it), deckaux)
             }
             if(check_connection()) {
                 val myUser = UserObject(null, usernameaux, null, passwordaux, null)
@@ -124,24 +111,11 @@ class LoginFragment : Fragment() {
                             putString("loggedInToken", response.body()?.token.toString())
                         }?.apply()
 
-                        val deckaux= prefs?.getInt(username+"Deck",0)
+                        val deckaux=prefs?.getInt(usernameaux+"Deck",0)
 
                         viewModel.executor.execute{
-                            decks = viewModel.deckDao.getAllDecks()
-                            decks.forEach {
-                                if (it.name == "T-Shirt"){
-                                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 1)
-                                }
-                                else if (it.name == "Fibonacci"){
-                                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 2)
-                                }
-                                else if (it.name == "Hours"){
-                                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 3)
-                                }
-                                else {
-                                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 0)
-                                }
-                            }
+                            //TODO: poder pasarle el nombre del deck a setDeck
+                            //viewModel.setDeck(DeckEntityMapper().mapFromCached(it), deckaux!!)
                         }
 
                         try {

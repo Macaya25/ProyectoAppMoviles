@@ -48,8 +48,10 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val repository= Repository()
         val viewModelFactory= ApiViewModelFactory(requireActivity().application, repository)
         apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
+
         val spinner= view.findViewById<Spinner>(R.id.spinner)
-        val spinnerAdapter : ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(view.context, R.array.decks,android.R.layout.simple_spinner_item)
+        val deckNames = viewModel.deckNames.value!!.toTypedArray()
+        val spinnerAdapter : ArrayAdapter<CharSequence> = ArrayAdapter(view.context, android.R.layout.simple_spinner_item, deckNames)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = spinnerAdapter
         spinner.onItemSelectedListener = this
@@ -101,7 +103,7 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
             decks = viewModel.deckDao.getAllDecks()
             decks.forEach {
                 if (it.name == deckName){
-                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), resources.getStringArray(R.array.decks).indexOf(it.name))
+                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), position)
                 }
             }
         }

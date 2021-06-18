@@ -13,6 +13,8 @@ interface DeckDao {
     @Query("SELECT * FROM deckTable WHERE deckName = :deckName LIMIT 1")
     fun getDeck(deckName: String): DeckEntity
 
+    @Query("SELECT * FROM deckTable WHERE deckName = :deckName LIMIT 1")
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addDeck(deck: DeckEntity)
 }

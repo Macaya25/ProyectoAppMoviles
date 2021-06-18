@@ -8,6 +8,7 @@ class RoomEntityMapper: EntityMapper<RoomEntity, ExampleItem> {
             type.room_id,
             type.name!!,
             type.waitingDelete,
+            type.madeOffline,
             DeckEntityMapper().mapFromCached(type.deck)
         )
     }
@@ -17,6 +18,7 @@ class RoomEntityMapper: EntityMapper<RoomEntity, ExampleItem> {
             type.roomId,
             type.roomName,
             type.waitingDelete,
+            type.madeOffline,
             DeckEntityMapper().mapToCached(type.deck)
         )
     }

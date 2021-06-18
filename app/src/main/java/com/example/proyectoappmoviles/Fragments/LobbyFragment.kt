@@ -59,7 +59,31 @@ class LobbyFragment : Fragment() {
         token= prefs?.getString("loggedInToken","").toString()
 
         if (check_connection()){
+            viewModel.list.clear()
+            executor.execute{
+            viewModel.database.getAllRooms().forEach{
+                    RoomEntityMapper().mapFromCached(it)?.let { it1 ->
+                        if(it1.waitingDelete){
+                            val tempDel=LobbyItem(null,it1.roomId,it1.roomName,null,null,null,null,null)
+                            apiViewModel.deleteRoom(token,tempDel)
+                            viewModel.database.deleteRoom(it1.roomName)
+                        }
+                        if (it1.roomName==it.room_id){
+                            //TODO OjO que la clave esta jarcodeada
+                            val temp=LobbyItem(null,null, it1.roomName, it1.deck,null,"123",null,null)
+                            apiViewModel.createRoom(token,temp)
+                            viewModel.database.deleteRoom(it1.roomName)
+
+                        }
+                    }
+                }
+
+            }
+
+
             if (token != null) {
+                //viewModel.list.clear()
+                //viewModel.genericList.postValue(viewModel.list)
                 apiViewModel.getRooms(token)
                 apiViewModel.myLobbies.observe(activity as MainActivity, Observer { response->
                     response.rooms.forEach(){
@@ -71,7 +95,6 @@ class LobbyFragment : Fragment() {
                             }
                         }
                     }
-
                 })
             }
 
@@ -81,8 +104,9 @@ class LobbyFragment : Fragment() {
             executor.execute{
                 viewModel.database.getAllRooms().forEach{
                     RoomEntityMapper().mapFromCached(it)?.let { it1 ->
-                        viewModel.database.addRoom(it)
-                        viewModel.addRoom(it1)
+                        if(!it1.waitingDelete){
+                            viewModel.addRoom(it1)
+                        }
                     }
 
                 }
@@ -93,7 +117,7 @@ class LobbyFragment : Fragment() {
         }
 
 
-        //Log.d("list",viewModel.list.toString())
+        Log.d("list",viewModel.list.toString())
         adapter= ExampleAdapter(viewModel.list, apiViewModel,token,activity as MainActivity,aux)
         val recycler_view = aux.findViewById<RecyclerView>(R.id.recycler_view)
         recycler_view.setHasFixedSize(true)

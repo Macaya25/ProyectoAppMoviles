@@ -82,7 +82,7 @@ class LobbyFragment : Fragment() {
                                 it1.roomName,
                                 it1.deck,
                                 null,
-                                "123",
+                                it.offlinePassword,
                                 null,
                                 null
                             )

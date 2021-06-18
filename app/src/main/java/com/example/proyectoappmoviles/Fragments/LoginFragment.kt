@@ -62,7 +62,8 @@ class LoginFragment : Fragment() {
 
         if (loggedIn==true){
             val deckaux= prefs?.getInt(usernameaux+"Deck",0)
-            val deckNameaux = prefs?.getString(usernameaux+"DeckName", null).toString()
+            val deckNameaux = prefs?.getString(usernameaux+"DeckName", "Standard").toString()
+            Log.d("deckName",deckNameaux)
             viewModel.executor.execute{
                 viewModel.setDeck(DeckEntityMapper().mapFromCached(viewModel.deckDao.getDeck(deckNameaux)), deckaux)
             }
@@ -111,8 +112,9 @@ class LoginFragment : Fragment() {
                             putString("loggedInToken", response.body()?.token.toString())
                         }?.apply()
 
-                        val deckaux = prefs?.getInt(usernameaux+"Deck",0)
-                        val deckNameaux = prefs?.getString(usernameaux+"DeckName", null).toString()
+                        val deckaux = prefs?.getInt(username+"Deck",0)
+                        val deckNameaux = prefs?.getString(username+"DeckName", "Standard").toString()
+                        Log.d("deckName",deckNameaux)
                         viewModel.executor.execute{
                             viewModel.setDeck(DeckEntityMapper().mapFromCached(viewModel.deckDao.getDeck(deckNameaux)), deckaux!!)
                         }

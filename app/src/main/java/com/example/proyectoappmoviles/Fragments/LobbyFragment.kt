@@ -125,9 +125,9 @@ class LobbyFragment : Fragment() {
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val tempDel=LobbyItem(null,viewModel.list[viewHolder.adapterPosition].roomId,viewModel.list[viewHolder.adapterPosition].roomName,null,null,null,null,null)
-            apiViewModel.deleteRoom(token,tempDel)
             Log.d("Offline Deletion","Before Deletion")
             if (check_connection()) {
+                apiViewModel.deleteRoom(token,tempDel)
                 apiViewModel.deleteRoomResponse.observe(activity as MainActivity, Observer { response ->
                     if (response.isSuccessful) {
                         val roomName = viewModel.list[viewHolder.adapterPosition].roomName
@@ -142,6 +142,8 @@ class LobbyFragment : Fragment() {
             else {
                 Log.d("Offline Deletion","Offline Deletion")
                 val roomId = viewModel.list[viewHolder.adapterPosition].roomId
+                viewModel.list.removeAt(viewHolder.adapterPosition)
+                adapter.notifyDataSetChanged()
                 viewModel.executor.execute {
                     viewModel.database.setToDelete(roomId)
                 }

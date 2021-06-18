@@ -61,32 +61,29 @@ class LoginFragment : Fragment() {
 
 
         if (loggedIn==true){
+            val deckaux= prefs?.getInt(usernameaux+"Deck",0)
+            viewModel.executor.execute{
+                decks = viewModel.deckDao.getAllDecks()
+                decks.forEach {
+                    if (it.name == "T-Shirt"){
+                        viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 1)
+                    }
+                    else if (it.name == "Fibonacci"){
+                        viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 2)
+                    }
+                    else if (it.name == "Hours"){
+                        viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 3)
+                    }
+                    else {
+                        viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 0)
+                    }
+                }
+            }
             if(check_connection()) {
                 val myUser = UserObject(null, usernameaux, null, passwordaux, null)
                 apiViewModel.getLogin(myUser)
                 apiViewModel.myResponse.observe(activity as MainActivity, Observer { response ->
                     if (response.isSuccessful) {
-                        val deckaux= prefs?.getInt(usernameaux+"Deck",0)
-
-                        viewModel.executor.execute{
-                            decks = viewModel.deckDao.getAllDecks()
-                            decks.forEach {
-                                if (it.name == "T-Shirt"){
-                                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 1)
-                                }
-                                else if (it.name == "Fibonacci"){
-                                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 2)
-                                }
-                                else if (it.name == "Hours"){
-                                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 3)
-                                }
-                                else {
-                                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), 0)
-                                }
-                            }
-                        }
-
-
                         try {
                             Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
                         }catch (e:Exception){}
@@ -119,7 +116,6 @@ class LoginFragment : Fragment() {
                 apiViewModel.getLogin(myUser)
                 apiViewModel.myResponse.observe(activity as MainActivity, Observer { response->
                     if(response.isSuccessful){
-
                         val editor= prefs?.edit()
                         editor?.apply {
                             putBoolean("loggedIn",true)

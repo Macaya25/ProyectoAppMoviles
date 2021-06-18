@@ -11,7 +11,7 @@ interface RoomDao {
     @Query("DELETE FROM roomsTable")
     fun deleteAllRooms()
 
-    @Query("UPDATE roomsTable SET waitingDelete = 'True' WHERE room_id = :id")
+    @Query("UPDATE roomsTable SET waitingDelete = 1 WHERE room_id = :id")
     fun setToDelete(id: String)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

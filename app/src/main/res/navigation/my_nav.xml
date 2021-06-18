@@ -85,6 +85,9 @@
         <action
             android:id="@+id/action_createRoomFragment_to_lobbyFragment2"
             app:destination="@id/lobbyFragment" />
+        <argument
+            android:name="deckNames"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/inspectCardFragment"

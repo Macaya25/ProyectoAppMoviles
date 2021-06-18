@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.example.proyectoappmoviles.*
 import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.Api.ApiViewModel
@@ -58,13 +59,12 @@ class CreateRoomFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val btnBackToLooby=view.findViewById<Button>(R.id.CreateRoom)
         val btnLobby=view.findViewById<Button>(R.id.LobbyButton)
 
-        deckViewModel.executor.execute{
-            val deckNames = deckViewModel.deckDao.getAllDecks().map{ it.name }.toTypedArray()
-            val spinner = view.findViewById<Spinner>(R.id.deckSpinner)
-            val spinnerAdapter : ArrayAdapter<CharSequence> = ArrayAdapter(view.context, android.R.layout.simple_spinner_item, deckNames)
-            spinner.adapter = spinnerAdapter
-            spinner.onItemSelectedListener = this
-        }
+        val spinner = view.findViewById<Spinner>(R.id.deckSpinner)
+
+        val deckNames = deckViewModel.deckNames.value!!.toTypedArray()
+        val spinnerAdapter : ArrayAdapter<CharSequence> = ArrayAdapter(view.context, android.R.layout.simple_spinner_item, deckNames)
+        spinner.adapter = spinnerAdapter
+        spinner.onItemSelectedListener = this
 
 
         btnDeck.setOnClickListener {

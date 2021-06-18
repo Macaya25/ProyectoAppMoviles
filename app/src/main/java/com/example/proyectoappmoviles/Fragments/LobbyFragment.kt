@@ -32,6 +32,7 @@ import com.example.proyectoappmoviles.ViewModels.ContactViewModel
 import com.example.proyectoappmoviles.database.DeckEntity
 import com.example.proyectoappmoviles.database.RoomEntity
 import com.example.proyectoappmoviles.database.RoomEntityMapper
+import okhttp3.internal.wait
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -76,7 +77,8 @@ class LobbyFragment : Fragment() {
 
         }else{
             //Todo: Hacer que viewModel.list tenga las salas leidas de la base de datos locas
-            cardViewModel.executor.execute{
+            viewModel.list.clear()
+            executor.execute{
                 viewModel.database.getAllRooms().forEach{
                     RoomEntityMapper().mapFromCached(it)?.let { it1 ->
                         viewModel.database.addRoom(it)
@@ -85,7 +87,7 @@ class LobbyFragment : Fragment() {
 
                 }
             }
-            viewModel.list.clear()
+
             viewModel.genericList.postValue(viewModel.list)
             Toast.makeText(activity, "Logged in without internet", Toast.LENGTH_SHORT).show()
         }
@@ -169,6 +171,7 @@ class LobbyFragment : Fragment() {
 
         btnCreateRoom.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_lobbyFragment_to_createRoomFragment)
+
         }
 
         btnJoinRoom.setOnClickListener{

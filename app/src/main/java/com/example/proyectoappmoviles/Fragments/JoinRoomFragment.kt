@@ -1,6 +1,7 @@
 package com.example.proyectoappmoviles.Fragments
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -37,27 +38,31 @@ class JoinRoomFragment : Fragment() {
 
         val btnJoinRoom=view.findViewById<Button>(R.id.JoinRoom)
         btnJoinRoom.setOnClickListener{
-            if (token != null) {
-                val tempName=view.findViewById<EditText>(R.id.JoinRoomNamePlainText).text.toString()
-                val tempPass=view.findViewById<EditText>(R.id.JoinRoomPasswordPlainText).text.toString()
-                val temp = LobbyItem(null,null,tempName,null,null,tempPass,null,null)
-                apiViewModel.joinRoom(token,temp,activity as MainActivity)
-                apiViewModel.joinRoomResponse.observe(activity as MainActivity, Observer { response ->
-                    Log.d("yes", response.body().toString())
-                    Log.d("yes", response.code().toString())
-                    if (response.isSuccessful && response.body()?.message != null) {
-                        apiViewModel.getRoom(token, tempName)
-                        apiViewModel.myLobby.observe(activity as MainActivity, Observer { response1 ->
-                            Log.d("yes", response1.body().toString())
-                            val action = JoinRoomFragmentDirections.actionJoinRoomFragmentToCardSelectorFragment(
-                                    response1.body()?.deck?.name.toString()
-                            )
-                            Navigation.findNavController(view).navigate(action)
-                        })
-                    } else {
-                        Toast.makeText(activity,"No Match For Given Credentials", Toast.LENGTH_SHORT).show()
-                    }
-                })
+            if (check_connection()){
+                if (token != null) {
+                    val tempName=view.findViewById<EditText>(R.id.JoinRoomNamePlainText).text.toString()
+                    val tempPass=view.findViewById<EditText>(R.id.JoinRoomPasswordPlainText).text.toString()
+                    val temp = LobbyItem(null,null,tempName,null,null,tempPass,null,null)
+                    apiViewModel.joinRoom(token,temp,activity as MainActivity)
+                    apiViewModel.joinRoomResponse.observe(activity as MainActivity, Observer { response ->
+                        Log.d("yes", response.body().toString())
+                        Log.d("yes", response.code().toString())
+                        if (response.isSuccessful && response.body()?.message != null) {
+                            apiViewModel.getRoom(token, tempName)
+                            apiViewModel.myLobby.observe(activity as MainActivity, Observer { response1 ->
+                                Log.d("yes", response1.body().toString())
+                                val action = JoinRoomFragmentDirections.actionJoinRoomFragmentToCardSelectorFragment(
+                                        response1.body()?.deck?.name.toString()
+                                )
+                                Navigation.findNavController(view).navigate(action)
+                            })
+                        } else {
+                            Toast.makeText(activity,"No Match For Given Credentials", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+                }
+            }else{
+                Toast.makeText(activity, "Cant Join Rooms Offline", Toast.LENGTH_SHORT).show()
             }
 
         }
@@ -74,6 +79,17 @@ class JoinRoomFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun check_connection() : Boolean{
+        val managment = activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = managment.activeNetworkInfo
+        if (networkInfo != null){
+            if (networkInfo.type == ConnectivityManager.TYPE_WIFI || networkInfo.type == ConnectivityManager.TYPE_MOBILE){
+                return true
+            }
+        }
+        return false
     }
 
 }

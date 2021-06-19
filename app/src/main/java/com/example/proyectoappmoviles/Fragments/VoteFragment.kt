@@ -1,6 +1,7 @@
 package com.example.proyectoappmoviles.Fragments
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -89,24 +91,28 @@ class VoteFragment : Fragment() {
     }
 
     fun updateMembersNVotes(){
-        Log.d("looper","LOOOOOOP")
-        val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
-        val token= prefs?.getString("loggedInToken","").toString()
-        val roomName= prefs?.getString("CurrentRoomName","").toString()
+        if (check_connection()) {
+            Log.d("looper", "LOOOOOOP")
+            val prefs = this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+            val token = prefs?.getString("loggedInToken", "").toString()
+            val roomName = prefs?.getString("CurrentRoomName", "").toString()
 
-        apiViewModel.getRoom(token, roomName)
-        apiViewModel.myLobby.observe(activity as MainActivity, Observer { response->
-            if (response.isSuccessful){
-                apiViewModel.getResult(token,roomName)
-                apiViewModel.getResultResponse.observe(activity as MainActivity, Observer { response1->
-                    if (response.isSuccessful){
-                        viewModel.setMemberList(response.body()?.members!!, response1.body()!!.result)
-                        Log.d("members",response.body()?.members.toString())
-                    }
-                })
-            }
-        })
-        Log.d("looper","END")
+            apiViewModel.getRoom(token, roomName)
+            apiViewModel.myLobby.observe(activity as MainActivity, Observer { response ->
+                if (response.isSuccessful) {
+                    apiViewModel.getResult(token, roomName)
+                    apiViewModel.getResultResponse.observe(activity as MainActivity, Observer { response1 ->
+                        if (response.isSuccessful) {
+                            viewModel.setMemberList(response.body()?.members!!, response1.body()!!.result)
+                            Log.d("members", response.body()?.members.toString())
+                        }
+                    })
+                }
+            })
+            Log.d("looper", "END")
+        }else{
+            Toast.makeText(activity, "ERROR: Cant Refresh Without Internet", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onPause() {
@@ -117,6 +123,17 @@ class VoteFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         mainHandler.post(updateMembersNVotesTask)
+    }
+
+    private fun check_connection() : Boolean{
+        val managment = activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = managment.activeNetworkInfo
+        if (networkInfo != null){
+            if (networkInfo.type == ConnectivityManager.TYPE_WIFI || networkInfo.type == ConnectivityManager.TYPE_MOBILE){
+                return true
+            }
+        }
+        return false
     }
 
 }

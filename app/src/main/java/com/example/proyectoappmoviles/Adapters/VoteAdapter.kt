@@ -2,11 +2,13 @@ package com.example.proyectoappmoviles.Adapters
 
 import android.content.Context
 import android.content.res.Resources
+import android.net.ConnectivityManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -44,36 +46,47 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
         if (currentItem.cardAmount == 3) holder.card3.text = currentItem.cardNames[2]
 
         holder.card1.setOnClickListener() {
-
-            val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
-            val roomName= prefs?.getString("CurrentRoomName","")
-            val tempVote=VoteItem(roomName,holder.card1.text.toString(),null,null)
-            apiViewModel.vote(token,tempVote)
-            apiViewModel.voteResponse.observe(activity, Observer { response->
-                val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[0])
-                Navigation.findNavController(view).navigate(action)
-            })
+            if (check_connection()) {
+                val prefs = this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+                val roomName = prefs?.getString("CurrentRoomName", "")
+                val tempVote = VoteItem(roomName, holder.card1.text.toString(), null, null)
+                apiViewModel.vote(token, tempVote)
+                apiViewModel.voteResponse.observe(activity, Observer { response ->
+                    val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[0])
+                    Navigation.findNavController(view).navigate(action)
+                })
+            }else{
+                Toast.makeText(activity, "ERROR: Cant join without Internet", Toast.LENGTH_SHORT).show()
+            }
 
         }
         holder.card2.setOnClickListener() {
-            val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
-            val roomName= prefs?.getString("CurrentRoomName","")
-            val tempVote=VoteItem(roomName,holder.card2.text.toString(),null,null)
-            apiViewModel.vote(token,tempVote)
-            apiViewModel.voteResponse.observe(activity, Observer { response->
-                val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[1])
-                Navigation.findNavController(view).navigate(action)
-            })
+            if (check_connection()) {
+                val prefs = this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+                val roomName = prefs?.getString("CurrentRoomName", "")
+                val tempVote = VoteItem(roomName, holder.card2.text.toString(), null, null)
+                apiViewModel.vote(token, tempVote)
+                apiViewModel.voteResponse.observe(activity, Observer { response ->
+                    val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[1])
+                    Navigation.findNavController(view).navigate(action)
+                })
+            }else{
+                Toast.makeText(activity, "ERROR: Cant join without Internet", Toast.LENGTH_SHORT).show()
+            }
         }
         holder.card3.setOnClickListener() {
-            val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
-            val roomName= prefs?.getString("CurrentRoomName","").toString()
-            val tempVote=VoteItem(roomName,holder.card3.text.toString(),null,null)
-            apiViewModel.vote(token,tempVote)
-            apiViewModel.voteResponse.observe(activity, Observer { response->
-                val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[2])
-                Navigation.findNavController(view).navigate(action)
-            })
+            if (check_connection()) {
+                val prefs = this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+                val roomName = prefs?.getString("CurrentRoomName", "").toString()
+                val tempVote = VoteItem(roomName, holder.card3.text.toString(), null, null)
+                apiViewModel.vote(token, tempVote)
+                apiViewModel.voteResponse.observe(activity, Observer { response ->
+                    val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[2])
+                    Navigation.findNavController(view).navigate(action)
+                })
+            }else{
+                Toast.makeText(activity, "ERROR: Cant join without Internet", Toast.LENGTH_SHORT).show()
+            }
         }
 
         val width = Resources.getSystem().displayMetrics.widthPixels
@@ -100,6 +113,16 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
     fun set(item: MutableList<CardItem>){
         cardsList = item
         this.notifyDataSetChanged()
+    }
+    private fun check_connection() : Boolean{
+        val managment = activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = managment.activeNetworkInfo
+        if (networkInfo != null){
+            if (networkInfo.type == ConnectivityManager.TYPE_WIFI || networkInfo.type == ConnectivityManager.TYPE_MOBILE){
+                return true
+            }
+        }
+        return false
     }
 
 }

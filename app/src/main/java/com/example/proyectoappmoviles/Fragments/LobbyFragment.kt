@@ -23,22 +23,23 @@ import com.example.proyectoappmoviles.*
 import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.Adapters.ExampleAdapter
 import com.example.proyectoappmoviles.Api.ApiViewModel
-import com.example.proyectoappmoviles.Api.ApiViewModelFactory
+//import com.example.proyectoappmoviles.Api.ApiViewModelFactory
 import com.example.proyectoappmoviles.Api.Repository
 import com.example.proyectoappmoviles.ObjectItems.LobbyItem
 import com.example.proyectoappmoviles.ViewModels.CardViewModel
 import com.example.proyectoappmoviles.ViewModels.ContactViewModel
 import com.example.proyectoappmoviles.database.RoomEntityMapper
+import org.koin.android.ext.android.inject
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 
 class LobbyFragment : Fragment() {
 
-    private lateinit var apiViewModel: ApiViewModel
+    private val apiViewModel: ApiViewModel by inject()
     lateinit var adapter: ExampleAdapter
-    private val viewModel: ContactViewModel by activityViewModels()
-    private val cardViewModel: CardViewModel by activityViewModels()
+    private val viewModel: ContactViewModel by inject()
+    //private val cardViewModel: CardViewModel by activityViewModels()
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
     lateinit var token: String
 
@@ -49,9 +50,9 @@ class LobbyFragment : Fragment() {
         // Inflate the layout for this fragment
         val aux=inflater.inflate(R.layout.fragment_lobby, container, false)
 
-        val repository= Repository()
-        val viewModelFactory= ApiViewModelFactory(requireActivity().application, repository)
-        apiViewModel= ViewModelProvider(this, viewModelFactory).get(ApiViewModel::class.java)
+        //val repository= Repository()
+        //val viewModelFactory= ApiViewModelFactory(requireActivity().application, repository)
+        //apiViewModel= ViewModelProvider(this, viewModelFactory).get(ApiViewModel::class.java)
         val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
         token= prefs?.getString("loggedInToken", "").toString()
 

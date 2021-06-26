@@ -11,10 +11,10 @@ import com.example.proyectoappmoviles.database.RoomRepository
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class ContactViewModel(application: Application) : AndroidViewModel(application) {
+class ContactViewModel(application: Application, val database:RoomDao) : AndroidViewModel(application) {
     var list= mutableListOf<ExampleItem>()
     var genericList = MutableLiveData<MutableList<ExampleItem>>()
-    var database: RoomDao = RoomRepository(application).getRoomDao()
+    //var database: RoomDao = RoomRepository(application).getRoomDao()
 
     val executor: ExecutorService = Executors.newSingleThreadExecutor()
     private lateinit var rooms: List<RoomEntity>

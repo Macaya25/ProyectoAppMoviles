@@ -15,12 +15,13 @@ import com.example.proyectoappmoviles.Adapters.CardAdapter
 import com.example.proyectoappmoviles.Interfaces.OnClickFragmentCardInspect
 import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
 import com.example.proyectoappmoviles.ViewModels.CardViewModel
+import org.koin.android.ext.android.inject
 
 
 class DeckFragment : Fragment() {
     lateinit var adapter: CardAdapter
 
-    private val viewModel: CardViewModel by activityViewModels()
+    private val viewModel: CardViewModel by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

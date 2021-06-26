@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.Api.ApiViewModel
-import com.example.proyectoappmoviles.Api.ApiViewModelFactory
+//import com.example.proyectoappmoviles.Api.ApiViewModelFactory
 import com.example.proyectoappmoviles.Api.Repository
 import com.example.proyectoappmoviles.Api.UserObject
 import com.example.proyectoappmoviles.R
@@ -26,14 +26,15 @@ import com.example.proyectoappmoviles.ViewModels.CardViewModel
 import com.example.proyectoappmoviles.ViewModels.ContactViewModel
 import com.example.proyectoappmoviles.database.DeckEntity
 import com.example.proyectoappmoviles.database.DeckEntityMapper
+import org.koin.android.ext.android.inject
 import java.lang.Exception
 import java.time.LocalDate
 
 class LoginFragment : Fragment() {
 
-    private lateinit var apiViewModel:ApiViewModel
-    private val deckViewModel: ContactViewModel by activityViewModels()
-    private val viewModel: CardViewModel by activityViewModels()
+    private val apiViewModel:ApiViewModel by inject()
+    //private val deckViewModel: ContactViewModel by activityViewModels()
+    private val viewModel: CardViewModel by inject()
     private lateinit var deck: Array<String>
     private lateinit var decks: List<DeckEntity>
 
@@ -49,9 +50,9 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val repository= Repository()
-        val viewModelFactory=ApiViewModelFactory(requireActivity().application, repository)
-        apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
+        ///val repository= Repository()
+        //val viewModelFactory=ApiViewModelFactory(requireActivity().application, repository)
+        //apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
 
         val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
 

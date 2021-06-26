@@ -1,6 +1,7 @@
 package com.example.proyectoappmoviles.ViewModels
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.proyectoappmoviles.ObjectItems.CardItem
@@ -12,13 +13,13 @@ import com.example.proyectoappmoviles.database.RoomRepository
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class CardViewModel(application: Application) : AndroidViewModel(application) {
+class CardViewModel(application: Application, val deckDao: DeckDao) : AndroidViewModel(application) {
 
     var deckNames = MutableLiveData<List<String>>()
     var list = mutableListOf<CardItem>()
     var live_list = MutableLiveData<MutableList<CardItem>>()
     val executor: ExecutorService = Executors.newSingleThreadExecutor()
-    var deckDao: DeckDao = RoomRepository(application).getDeckDao()
+    //var deckDao: DeckDao = RoomRepository(application).getDeckDao()
 
     var selected_deck: Int = 0
 

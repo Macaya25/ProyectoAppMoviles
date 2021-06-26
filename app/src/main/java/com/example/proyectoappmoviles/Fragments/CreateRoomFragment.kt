@@ -17,7 +17,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.proyectoappmoviles.*
 import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.Api.ApiViewModel
-import com.example.proyectoappmoviles.Api.ApiViewModelFactory
+//import com.example.proyectoappmoviles.Api.ApiViewModelFactory
 import com.example.proyectoappmoviles.Api.Repository
 import com.example.proyectoappmoviles.ObjectItems.Deck
 import com.example.proyectoappmoviles.ObjectItems.ExampleItem
@@ -27,12 +27,13 @@ import com.example.proyectoappmoviles.ViewModels.ContactViewModel
 import com.example.proyectoappmoviles.database.DeckEntityMapper
 import com.example.proyectoappmoviles.database.RoomEntity
 import com.example.proyectoappmoviles.database.RoomEntityMapper
+import org.koin.android.ext.android.inject
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class CreateRoomFragment : Fragment(), AdapterView.OnItemSelectedListener {
-    private val viewModel: ContactViewModel by activityViewModels()
-    private val deckViewModel: CardViewModel by activityViewModels()
+    private val viewModel: ContactViewModel by inject()
+    private val deckViewModel: CardViewModel by inject()
     private lateinit var apiViewModel: ApiViewModel
     private lateinit var selectedDeck: Deck
     private var liveDeck = MutableLiveData<Deck>()
@@ -48,9 +49,9 @@ class CreateRoomFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val repository= Repository()
-        val viewModelFactory= ApiViewModelFactory(requireActivity().application, repository)
-        apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
+        //val repository= Repository()
+        //val viewModelFactory= ApiViewModelFactory(requireActivity().application, repository)
+        //apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
 
 
         super.onViewCreated(view, savedInstanceState)

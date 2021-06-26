@@ -23,16 +23,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.Adapters.LobbyVotesAdapter
 import com.example.proyectoappmoviles.Api.ApiViewModel
-import com.example.proyectoappmoviles.Api.ApiViewModelFactory
+//import com.example.proyectoappmoviles.Api.ApiViewModelFactory
 import com.example.proyectoappmoviles.Api.Repository
 import com.example.proyectoappmoviles.ObjectItems.VoteItem
 import com.example.proyectoappmoviles.R
 import com.example.proyectoappmoviles.ViewModels.VotesViewModel
+import org.koin.android.ext.android.inject
 
 class VoteFragment : Fragment() {
-    private lateinit var apiViewModel: ApiViewModel
+    private val apiViewModel: ApiViewModel by inject()
     lateinit var adapter: LobbyVotesAdapter
-    private val viewModel: VotesViewModel by activityViewModels()
+    private val viewModel: VotesViewModel by inject()
     lateinit var mainHandler: Handler
 
     private val args: VoteFragmentArgs by navArgs()
@@ -51,9 +52,9 @@ class VoteFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_vote, container, false)
 
-        val repository= Repository()
-        val viewModelFactory= ApiViewModelFactory(requireActivity().application, repository)
-        apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
+        //val repository= Repository()
+        //val viewModelFactory= ApiViewModelFactory(requireActivity().application, repository)
+        //apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
 
 
         /*viewModel.updateVotes(

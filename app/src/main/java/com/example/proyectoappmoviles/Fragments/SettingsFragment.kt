@@ -2,6 +2,7 @@ package com.example.proyectoappmoviles.Fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.Api.ApiViewModel
-import com.example.proyectoappmoviles.Api.ApiViewModelFactory
+//import com.example.proyectoappmoviles.Api.ApiViewModelFactory
 import com.example.proyectoappmoviles.Api.Repository
 import com.example.proyectoappmoviles.ViewModels.CardViewModel
 import com.example.proyectoappmoviles.Interfaces.OnFragmentActionsListener
@@ -25,15 +26,16 @@ import com.example.proyectoappmoviles.ViewModels.ContactViewModel
 import com.example.proyectoappmoviles.database.DeckEntity
 import com.example.proyectoappmoviles.database.DeckEntityMapper
 import com.example.proyectoappmoviles.database.RoomRepository
+import org.koin.android.ext.android.inject
 
 
 class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private lateinit var deck: Array<String>
     private lateinit var decks: List<DeckEntity>
-    private val viewModel: CardViewModel by activityViewModels()
-    private lateinit var apiViewModel:ApiViewModel
-    private val roomViewModel: ContactViewModel by activityViewModels()
+    private val viewModel: CardViewModel by inject()
+    private val apiViewModel:ApiViewModel by inject()
+    private val roomViewModel: ContactViewModel by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,12 +47,20 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val repository= Repository()
-        val viewModelFactory= ApiViewModelFactory(requireActivity().application, repository)
-        apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
-
+        //val repository= Repository()
+        //val viewModelFactory= ApiViewModelFactory(requireActivity().application, repository)
+        //apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
         val spinner= view.findViewById<Spinner>(R.id.spinner)
+
+
+
+        //TODO: Error Here
         val deckNames = viewModel.deckNames.value!!.toTypedArray()
+
+
+        
+
+
         val spinnerAdapter : ArrayAdapter<CharSequence> = ArrayAdapter(view.context, android.R.layout.simple_spinner_item, deckNames)
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = spinnerAdapter

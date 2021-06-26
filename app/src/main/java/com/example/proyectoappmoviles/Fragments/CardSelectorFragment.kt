@@ -17,17 +17,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.Adapters.VoteAdapter
 import com.example.proyectoappmoviles.Api.ApiViewModel
-import com.example.proyectoappmoviles.Api.ApiViewModelFactory
+//import com.example.proyectoappmoviles.Api.ApiViewModelFactory
 import com.example.proyectoappmoviles.Api.Repository
 import com.example.proyectoappmoviles.R
 import com.example.proyectoappmoviles.ViewModels.CardViewModel
 import com.example.proyectoappmoviles.database.DeckEntityMapper
+import org.koin.android.ext.android.inject
 
 
 class CardSelectorFragment : Fragment() {
 
     lateinit var adapter: VoteAdapter
-    private val viewModel: CardViewModel by activityViewModels()
+    private val viewModel: CardViewModel by inject()
     private lateinit var apiViewModel: ApiViewModel
     private val args: CardSelectorFragmentArgs by navArgs()
 
@@ -37,9 +38,9 @@ class CardSelectorFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_card_selector, container, false)
-        val repository= Repository()
-        val viewModelFactory= ApiViewModelFactory(requireActivity().application, repository)
-        apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
+        //val repository= Repository()
+        //val viewModelFactory= ApiViewModelFactory(requireActivity().application, repository)
+        //apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
         val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
         val token= prefs?.getString("loggedInToken","")
 

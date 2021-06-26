@@ -3,11 +3,9 @@ package com.example.proyectoappmoviles.database
 import android.app.Application
 import androidx.room.Database
 import androidx.room.Room
+import androidx.room.RoomDatabase
 
-class RoomRepository(application: Application) {
-
-    private val database = Room.databaseBuilder(application, RoomsDatabase::class.java, "roomsDb")
-        .build()
+class RoomRepository(private val database :RoomsDatabase) {
 
     fun getRoomDao(): RoomDao{
         return database.roomDao()

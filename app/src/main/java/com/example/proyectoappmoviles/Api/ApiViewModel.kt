@@ -17,7 +17,7 @@ import retrofit2.Response
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class ApiViewModel(application: Application, private val repository: Repository): ViewModel() {
+class ApiViewModel(application: Application, private val repository: Repository, private val deckDao:DeckDao): ViewModel() {
 
     var myResponse: MutableLiveData<Response<UserObject>> = MutableLiveData()
     var myLobbies: MutableLiveData<LobbiesListItem> = MutableLiveData()
@@ -27,7 +27,7 @@ class ApiViewModel(application: Application, private val repository: Repository)
     var joinRoomResponse: MutableLiveData<Response<LobbyItem>> = MutableLiveData()
     var getResultResponse: MutableLiveData<Response<ResultItem>> = MutableLiveData()
     var voteResponse: MutableLiveData<Response<VoteItem>> = MutableLiveData()
-    var deckDao: DeckDao = RoomRepository(application).getDeckDao()
+    //var deckDao: DeckDao = RoomRepository(application).getDeckDao()
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
 
     init {

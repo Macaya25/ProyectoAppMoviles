@@ -35,7 +35,7 @@ class LoginFragment : Fragment() {
     private val apiViewModel:ApiViewModel by inject()
     //private val deckViewModel: ContactViewModel by activityViewModels()
     private val viewModel: CardViewModel by inject()
-    private lateinit var deck: Array<String>
+    private lateinit var deck: String
     private lateinit var decks: List<DeckEntity>
 
     override fun onCreateView(
@@ -66,7 +66,13 @@ class LoginFragment : Fragment() {
             val deckNameaux = prefs?.getString(usernameaux+"DeckName", "Standard").toString()
             Log.d("deckName",deckNameaux)
             viewModel.executor.execute{
-                viewModel.setDeck(DeckEntityMapper().mapFromCached(viewModel.deckDao.getDeck(deckNameaux)), deckaux)
+                decks = viewModel.deckDao.getAllDecks()
+                decks.forEach {
+                    if (it.name == deckNameaux){
+                        this.deck = it.cards
+                    }
+                }
+                //viewModel.setDeck(DeckEntityMapper().mapFromCached(viewModel.deckDao.getDeck(deckNameaux)), deckaux)
             }
             if(check_connection()) {
                 val myUser = UserObject(null, usernameaux, null, passwordaux, null)
@@ -74,7 +80,8 @@ class LoginFragment : Fragment() {
                 apiViewModel.myResponse.observe(activity as MainActivity, Observer { response ->
                     if (response.isSuccessful) {
                         try {
-                            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_lobbyFragment)
+                            val action = LoginFragmentDirections.actionLoginFragmentToLobbyFragment(deck)
+                            Navigation.findNavController(view).navigate(action)
                         }catch (e:Exception){}
 
                     } else {

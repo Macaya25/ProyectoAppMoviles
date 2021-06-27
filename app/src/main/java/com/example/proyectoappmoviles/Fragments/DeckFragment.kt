@@ -42,7 +42,7 @@ class DeckFragment : Fragment() {
         val cards = args.cards.split(",").map{ it.trim() }
         val deck = Deck("", cards)
         viewModel.setDeck(deck, 0)
-        viewModel.live_list.observe(viewLifecycleOwner,androidx.lifecycle.Observer{adapter.set(it)})
+        //viewModel.live_list.observe(viewLifecycleOwner,androidx.lifecycle.Observer{adapter.set(it)})
 
 
         return view

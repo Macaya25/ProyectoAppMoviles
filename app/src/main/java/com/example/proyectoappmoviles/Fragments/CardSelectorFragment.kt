@@ -50,7 +50,7 @@ class CardSelectorFragment : Fragment() {
             adapter = VoteAdapter(viewModel.list,apiViewModel,token,activity as MainActivity,view)
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(activity)
-            viewModel.live_list.observe(viewLifecycleOwner,androidx.lifecycle.Observer{adapter.set(it)})
+            //viewModel.live_list.observe(viewLifecycleOwner,androidx.lifecycle.Observer{adapter.set(it)})
             viewModel.executor.execute{
                 viewModel.setDeck(DeckEntityMapper().mapFromCached(viewModel.deckDao.getDeck(args.deckName)),0)
             }

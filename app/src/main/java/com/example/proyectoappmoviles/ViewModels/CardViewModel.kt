@@ -17,7 +17,7 @@ class CardViewModel(application: Application, val deckDao: DeckDao) : AndroidVie
 
 
     var list = mutableListOf<CardItem>()
-    var live_list = MutableLiveData<MutableList<CardItem>>()
+    //var live_list = MutableLiveData<MutableList<CardItem>>()
     val executor: ExecutorService = Executors.newSingleThreadExecutor()
     //var deckDao: DeckDao = RoomRepository(application).getDeckDao()
 
@@ -35,7 +35,6 @@ class CardViewModel(application: Application, val deckDao: DeckDao) : AndroidVie
     fun setDeck(deck: Deck, deckIndex: Int){
         selected_deck = deckIndex
         list.clear()
-        Log.d("DeckList 1", deck.toString())
         val mutableCards = deck.cards.toMutableList()
         mutableCards.add("?")
         mutableCards.add("☕️")
@@ -43,9 +42,7 @@ class CardViewModel(application: Application, val deckDao: DeckDao) : AndroidVie
         for(i in cards.indices){
             list.add(CardItem(cards[i].size, cards[i]))
         }
-        Log.d("DeckList 2", list.toString())
-        live_list.postValue(list)
-        Log.d("DeckList 3", live_list.value.toString())
+        //live_list.postValue(list)
     }
 
 

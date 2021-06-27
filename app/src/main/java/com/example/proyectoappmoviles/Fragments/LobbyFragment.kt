@@ -16,6 +16,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,6 +39,7 @@ class LobbyFragment : Fragment() {
 
     private val apiViewModel: ApiViewModel by inject()
     lateinit var adapter: ExampleAdapter
+    private val args: LobbyFragmentArgs by navArgs()
     private val viewModel: ContactViewModel by inject()
     //private val cardViewModel: CardViewModel by activityViewModels()
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
@@ -95,7 +97,6 @@ class LobbyFragment : Fragment() {
                 }
 
             }
-
 
             if (token != null) {
                 //viewModel.list.clear()
@@ -227,7 +228,8 @@ class LobbyFragment : Fragment() {
         val btnRefresh=view.findViewById<ImageButton>(R.id.RefreshButton)
 
         btnDeck.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_lobbyFragment_to_deckFragment)
+            val action = LobbyFragmentDirections.actionLobbyFragmentToDeckFragment(args.cards)
+            Navigation.findNavController(view).navigate(action)
         }
 
         btnSettings.setOnClickListener {

@@ -53,7 +53,8 @@ class JoinRoomFragment : Fragment() {
                             apiViewModel.myLobby.observe(activity as MainActivity, Observer { response1 ->
                                 Log.d("yes", response1.body().toString())
                                 val action = JoinRoomFragmentDirections.actionJoinRoomFragmentToCardSelectorFragment(
-                                        response1.body()?.deck?.name.toString()
+                                        response1.body()?.deck?.name.toString(),
+                                        response1.body()?.deck?.toString()!!
                                 )
                                 Navigation.findNavController(view).navigate(action)
                             })

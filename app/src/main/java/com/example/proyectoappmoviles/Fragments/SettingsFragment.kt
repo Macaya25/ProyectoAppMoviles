@@ -2,6 +2,7 @@ package com.example.proyectoappmoviles.Fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -31,7 +32,7 @@ import org.koin.android.ext.android.inject
 
 class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
-    private lateinit var deck: Array<String>
+    private lateinit var deck: String
     private lateinit var decks: List<DeckEntity>
     private val viewModel: CardViewModel by inject()
     private val apiViewModel:ApiViewModel by inject()
@@ -92,11 +93,13 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
 
         btnDeck.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_deckFragment)
+            val action = SettingsFragmentDirections.actionSettingsFragmentToDeckFragment(deck)
+            Navigation.findNavController(view).navigate(action)
         }
 
         btnLobby.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_settingsFragment_to_lobbyFragment)
+            val action = SettingsFragmentDirections.actionSettingsFragmentToLobbyFragment(deck)
+            Navigation.findNavController(view).navigate(action)
         }
     }
 
@@ -119,7 +122,8 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
             decks = viewModel.deckDao.getAllDecks()
             decks.forEach {
                 if (it.name == deckName){
-                    viewModel.setDeck(DeckEntityMapper().mapFromCached(it), position)
+                    this.deck = it.cards
+                    //viewModel.setDeck(DeckEntityMapper().mapFromCached(it), position)
                 }
             }
         }

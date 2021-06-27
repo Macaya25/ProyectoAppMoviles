@@ -42,7 +42,8 @@ class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel:
                         apiViewModel.myLobby.observe(activity as MainActivity, Observer { response1->
                             Log.d("yes",response1.body().toString())
                             val action = LobbyFragmentDirections.actionLobbyFragmentToCardSelectorFragment(
-                                    response1.body()?.deck?.name.toString()
+                                    response1.body()?.deck?.name.toString(),
+                                    currentItem.deck.toString()
                             )
                             Navigation.findNavController(view).navigate(action)
                         })

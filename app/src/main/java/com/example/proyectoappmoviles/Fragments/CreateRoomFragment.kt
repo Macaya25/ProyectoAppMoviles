@@ -62,9 +62,13 @@ class CreateRoomFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         val spinner = view.findViewById<Spinner>(R.id.deckSpinner)
 
-        val deckNames = deckViewModel.deckNames.value!!.toTypedArray()
-        val spinnerAdapter : ArrayAdapter<CharSequence> = ArrayAdapter(view.context, android.R.layout.simple_spinner_item, deckNames)
-        spinner.adapter = spinnerAdapter
+
+        viewModel.executor.execute {
+            val deckNames = deckViewModel.getDeckNames().toList().toTypedArray()
+            val spinnerAdapter : ArrayAdapter<CharSequence> = ArrayAdapter(view.context, android.R.layout.simple_spinner_item, deckNames)
+            spinner.adapter = spinnerAdapter
+        }
+
         spinner.onItemSelectedListener = this
 
 

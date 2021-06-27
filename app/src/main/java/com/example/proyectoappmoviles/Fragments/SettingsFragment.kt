@@ -53,19 +53,14 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val spinner= view.findViewById<Spinner>(R.id.spinner)
 
 
+        viewModel.executor.execute {
+            val deckNames = viewModel.getDeckNames().toList()
+            val spinnerAdapter : ArrayAdapter<CharSequence> = ArrayAdapter(view.context, android.R.layout.simple_spinner_item, deckNames)
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = spinnerAdapter
+        }
 
-        //TODO: Error Here
-        val deckNames = viewModel.deckNames.value!!.toTypedArray()
-
-
-        
-
-
-        val spinnerAdapter : ArrayAdapter<CharSequence> = ArrayAdapter(view.context, android.R.layout.simple_spinner_item, deckNames)
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = spinnerAdapter
         spinner.onItemSelectedListener = this
-
         spinner.setSelection(viewModel.selected_deck)
         
         val btnDeck=view.findViewById<Button>(R.id.DeckButton)

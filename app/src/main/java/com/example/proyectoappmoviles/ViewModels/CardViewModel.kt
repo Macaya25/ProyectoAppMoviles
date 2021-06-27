@@ -15,7 +15,7 @@ import java.util.concurrent.Executors
 
 class CardViewModel(application: Application, val deckDao: DeckDao) : AndroidViewModel(application) {
 
-    var deckNames = MutableLiveData<List<String>>()
+
     var list = mutableListOf<CardItem>()
     var live_list = MutableLiveData<MutableList<CardItem>>()
     val executor: ExecutorService = Executors.newSingleThreadExecutor()
@@ -23,14 +23,14 @@ class CardViewModel(application: Application, val deckDao: DeckDao) : AndroidVie
 
     var selected_deck: Int = 0
 
-    init{
-        executor.execute {
-            val tempDecks = mutableListOf<String>()
-            deckDao.getAllDecks().forEach {
-                tempDecks.add(it.name)
-            }
-            deckNames.postValue(tempDecks)
+
+    fun getDeckNames(): MutableList<String> {
+        val tempDecks = mutableListOf<String>()
+        deckDao.getAllDecks().forEach {
+            tempDecks.add(it.name)
         }
+        return tempDecks
+
     }
 
 

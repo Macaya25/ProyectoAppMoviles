@@ -67,4 +67,10 @@ interface SimpleApi {
             @Body voteItem: VoteItem
     ): Response<VoteItem>
 
+    @POST("reportLocation")
+    suspend fun reportLocation(
+        @Header("token") token:String,
+        @Body locationItem: LocationItem
+    ): Response<LocationItem>
+
 }

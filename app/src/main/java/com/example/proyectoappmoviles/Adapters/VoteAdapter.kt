@@ -9,19 +9,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
+import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
+import com.example.clase12.service.LocationService
 import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.Api.ApiViewModel
 import com.example.proyectoappmoviles.Fragments.CardSelectorFragmentDirections
 import com.example.proyectoappmoviles.Fragments.DeckFragmentDirections
 import com.example.proyectoappmoviles.Interfaces.OnClickFragmentCardInspect
 import com.example.proyectoappmoviles.ObjectItems.CardItem
+import com.example.proyectoappmoviles.ObjectItems.LocationItem
 import com.example.proyectoappmoviles.ObjectItems.VoteItem
 import com.example.proyectoappmoviles.R
 
-class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiViewModel, val token:String, val activity: MainActivity, val view: View): RecyclerView.Adapter<VoteAdapter.CardViewHolder>() {
+class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiViewModel, val token:String, val activity: MainActivity, val view: View, val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<VoteAdapter.CardViewHolder>() {
 
     lateinit var com: OnClickFragmentCardInspect
 
@@ -53,7 +58,7 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
                 apiViewModel.vote(token, tempVote)
                 apiViewModel.voteResponse.observe(activity, Observer { response ->
                     val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[0])
-                    Navigation.findNavController(view).navigate(action)
+                    getLocationNNavigate(action, roomName!!,view)
                 })
             }else{
                 Toast.makeText(activity, "ERROR: Cant join without Internet", Toast.LENGTH_SHORT).show()
@@ -68,7 +73,7 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
                 apiViewModel.vote(token, tempVote)
                 apiViewModel.voteResponse.observe(activity, Observer { response ->
                     val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[1])
-                    Navigation.findNavController(view).navigate(action)
+                    getLocationNNavigate(action, roomName!!,view)
                 })
             }else{
                 Toast.makeText(activity, "ERROR: Cant join without Internet", Toast.LENGTH_SHORT).show()
@@ -82,7 +87,7 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
                 apiViewModel.vote(token, tempVote)
                 apiViewModel.voteResponse.observe(activity, Observer { response ->
                     val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[2])
-                    Navigation.findNavController(view).navigate(action)
+                    getLocationNNavigate(action, roomName!!,view)
                 })
             }else{
                 Toast.makeText(activity, "ERROR: Cant join without Internet", Toast.LENGTH_SHORT).show()
@@ -123,6 +128,19 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
             }
         }
         return false
+    }
+
+    fun getLocationNNavigate(action:NavDirections,roomName:String, auxView: View) {
+        LocationService.getLocation().observe(lifecycleOwner, {
+            val tempLocation =
+                LocationItem(it.latitude.toString(), it.longitude.toString(), null, roomName, null)
+            //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
+            apiViewModel.reportLocation(token, tempLocation)
+            apiViewModel.reportLocationResponse.observe(activity, Observer { response ->
+                Log.d("ApiResponse",response.code().toString())
+                Navigation.findNavController(auxView).navigate(action)
+            })
+        })
     }
 
 }

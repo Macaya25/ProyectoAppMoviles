@@ -50,4 +50,8 @@ class Repository {
         return RetrofitInstance.api.vote(token,voteItem)
     }
 
+    suspend fun reportLocation(token: String,locationItem: LocationItem) :Response<LocationItem>{
+        return RetrofitInstance.api.reportLocation(token,locationItem)
+    }
+
 }

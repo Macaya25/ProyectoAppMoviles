@@ -8,12 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.clase12.service.LocationService
 import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.Adapters.VoteAdapter
 import com.example.proyectoappmoviles.Api.ApiViewModel
@@ -31,6 +34,8 @@ class CardSelectorFragment : Fragment() {
     private val viewModel: CardViewModel by inject()
     private val apiViewModel: ApiViewModel by inject()
     private val args: CardSelectorFragmentArgs by navArgs()
+    private var l1:Double=0.0
+    private var l2:Double=0.0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,11 +48,10 @@ class CardSelectorFragment : Fragment() {
         //apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
         val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
         val token= prefs?.getString("loggedInToken","")
-
         if (token != null) {
             val recyclerView = view.findViewById<RecyclerView>(R.id.DeckRecyclerView)
             recyclerView.setHasFixedSize(true)
-            adapter = VoteAdapter(viewModel.list,apiViewModel,token,activity as MainActivity,view)
+            adapter = VoteAdapter(viewModel.list,apiViewModel,token,activity as MainActivity,view,this)
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(activity)
             //viewModel.live_list.observe(viewLifecycleOwner,androidx.lifecycle.Observer{adapter.set(it)})
@@ -70,5 +74,6 @@ class CardSelectorFragment : Fragment() {
 
         return view
     }
+
 
 }

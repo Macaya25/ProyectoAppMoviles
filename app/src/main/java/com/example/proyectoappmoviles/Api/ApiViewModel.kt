@@ -27,6 +27,7 @@ class ApiViewModel(application: Application, private val repository: Repository,
     var joinRoomResponse: MutableLiveData<Response<LobbyItem>> = MutableLiveData()
     var getResultResponse: MutableLiveData<Response<ResultItem>> = MutableLiveData()
     var voteResponse: MutableLiveData<Response<VoteItem>> = MutableLiveData()
+    var reportLocationResponse: MutableLiveData<Response<LocationItem>> = MutableLiveData()
     //var deckDao: DeckDao = RoomRepository(application).getDeckDao()
     private val executor: ExecutorService = Executors.newSingleThreadExecutor()
 
@@ -164,6 +165,16 @@ class ApiViewModel(application: Application, private val repository: Repository,
             voteResponse= MutableLiveData()
             val response= repository.vote(token,voteItem)
             voteResponse.value = response
+            //val dummy = VoteItem(null,null,"que bacan tu voto xd",null)
+            //voteResponse.postValue(Response.success(dummy))
+        }
+    }
+
+    fun reportLocation(token:String,locationItem: LocationItem){
+        viewModelScope.launch {
+            reportLocationResponse= MutableLiveData()
+            val response= repository.reportLocation(token,locationItem)
+            reportLocationResponse.value = response
             //val dummy = VoteItem(null,null,"que bacan tu voto xd",null)
             //voteResponse.postValue(Response.success(dummy))
         }

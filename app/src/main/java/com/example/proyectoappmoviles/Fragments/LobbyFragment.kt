@@ -78,7 +78,6 @@ class LobbyFragment : Fragment() {
                             viewModel.database.deleteRoom(it1.roomName)
                         }
                         if (it1.roomName==it.room_id){
-                            //TODO OjO que la clave esta jarcodeada
                             val temp=LobbyItem(
                                 null,
                                 null,

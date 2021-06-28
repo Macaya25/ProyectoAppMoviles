@@ -29,7 +29,7 @@ class CardSelectorFragment : Fragment() {
 
     lateinit var adapter: VoteAdapter
     private val viewModel: CardViewModel by inject()
-    private lateinit var apiViewModel: ApiViewModel
+    private val apiViewModel: ApiViewModel by inject()
     private val args: CardSelectorFragmentArgs by navArgs()
 
     override fun onCreateView(

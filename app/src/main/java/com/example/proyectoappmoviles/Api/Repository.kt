@@ -26,7 +26,7 @@ class Repository {
         return RetrofitInstance.api.getRooms(token)
     }
 
-    suspend fun getLobby(token:String,roomName:String): Response<LobbyItem>{
+    suspend fun getLobby(token:String,roomName:String): Response<GetRoomItem>{
         return RetrofitInstance.api.getRoom(token,roomName)
     }
 

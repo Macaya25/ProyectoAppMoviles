@@ -6,6 +6,7 @@ import com.example.proyectoappmoviles.Api.ApiViewModel
 import com.example.proyectoappmoviles.Api.Repository
 import com.example.proyectoappmoviles.ViewModels.CardViewModel
 import com.example.proyectoappmoviles.ViewModels.ContactViewModel
+import com.example.proyectoappmoviles.ViewModels.VotesViewModel
 import com.example.proyectoappmoviles.database.DeckDao
 import com.example.proyectoappmoviles.database.RoomRepository
 import com.example.proyectoappmoviles.database.RoomsDatabase
@@ -26,4 +27,7 @@ val myModule= module {
 
     //CardViewModel
     viewModel { CardViewModel(Application(),get()) }
+
+    //VoteViewModel
+    viewModel { VotesViewModel(Application()) }
 }

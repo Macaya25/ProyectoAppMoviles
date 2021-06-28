@@ -21,7 +21,7 @@ class ApiViewModel(application: Application, private val repository: Repository,
 
     var myResponse: MutableLiveData<Response<UserObject>> = MutableLiveData()
     var myLobbies: MutableLiveData<LobbiesListItem> = MutableLiveData()
-    var myLobby: MutableLiveData<Response<LobbyItem>> = MutableLiveData()
+    var myLobby: MutableLiveData<Response<GetRoomItem>> = MutableLiveData()
     var createRoomResponse: MutableLiveData<Response<LobbyItem>> = MutableLiveData()
     var deleteRoomResponse: MutableLiveData<Response<LobbyItem>> = MutableLiveData()
     var joinRoomResponse: MutableLiveData<Response<LobbyItem>> = MutableLiveData()

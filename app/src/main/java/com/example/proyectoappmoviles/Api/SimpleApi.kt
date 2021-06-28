@@ -35,7 +35,7 @@ interface SimpleApi {
     suspend fun getRoom(
             @Header("token") token:String,
             @Path ("roomName") roomName : String
-    ): Response<LobbyItem>
+    ): Response<GetRoomItem>
 
     @POST("rooms")
     suspend fun createRoom(

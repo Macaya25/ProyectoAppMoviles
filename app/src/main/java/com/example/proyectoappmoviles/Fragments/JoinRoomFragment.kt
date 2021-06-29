@@ -13,18 +13,21 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.Navigation
+import com.example.clase12.service.LocationService
 import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.Api.ApiViewModel
 //import com.example.proyectoappmoviles.Api.ApiViewModelFactory
 import com.example.proyectoappmoviles.Api.Repository
 import com.example.proyectoappmoviles.ObjectItems.LobbyItem
+import com.example.proyectoappmoviles.ObjectItems.LocationItem
 import com.example.proyectoappmoviles.R
 import com.example.proyectoappmoviles.database.RoomEntityMapper
 import org.koin.android.ext.android.inject
 
 
-class JoinRoomFragment : Fragment() {
+class JoinRoomFragment() : Fragment() {
     private val apiViewModel: ApiViewModel by inject()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -51,7 +54,12 @@ class JoinRoomFragment : Fragment() {
                         if (response.isSuccessful && response.body()?.message != null) {
                             apiViewModel.getRoom(token, tempName)
                             apiViewModel.myLobby.observe(activity as MainActivity, Observer { response1 ->
-                                Log.d("yes", response1.body().toString())
+                                LocationService.getLocation().observe(viewLifecycleOwner, {
+                                    val tempLocation = LocationItem(it.latitude.toString(), it.longitude.toString(), null, tempName, null)
+                                    //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
+                                    apiViewModel.reportLocation(token, tempLocation)
+                                })
+
                                 val action = JoinRoomFragmentDirections.actionJoinRoomFragmentToCardSelectorFragment(
                                         response1.body()?.deck?.name.toString(),
                                         response1.body()?.deck?.toString()!!

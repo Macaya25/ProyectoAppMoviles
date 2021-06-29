@@ -1,6 +1,7 @@
 package com.example.proyectoappmoviles.Fragments
 
 import android.content.Context
+import android.location.Geocoder
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
@@ -25,10 +26,13 @@ import com.example.proyectoappmoviles.Adapters.LobbyVotesAdapter
 import com.example.proyectoappmoviles.Api.ApiViewModel
 //import com.example.proyectoappmoviles.Api.ApiViewModelFactory
 import com.example.proyectoappmoviles.Api.Repository
+import com.example.proyectoappmoviles.ObjectItems.MemberItem
 import com.example.proyectoappmoviles.ObjectItems.VoteItem
 import com.example.proyectoappmoviles.R
 import com.example.proyectoappmoviles.ViewModels.VotesViewModel
 import org.koin.android.ext.android.inject
+import java.lang.Exception
+import java.util.*
 
 class VoteFragment : Fragment() {
     private val apiViewModel: ApiViewModel by inject()
@@ -103,9 +107,9 @@ class VoteFragment : Fragment() {
                 if (response.isSuccessful) {
                     apiViewModel.getResult(token, roomName)
                     apiViewModel.getResultResponse.observe(activity as MainActivity, Observer { response1 ->
-                        if (response.isSuccessful) {
+                        if (response1.isSuccessful) {
                             viewModel.setMemberList(response.body()?.members!!, response1.body()!!.result)
-                            Log.d("members", viewModel.list.toString())
+                            //Log.d("members", viewModel.list.toString())
                         }
                     })
                 }

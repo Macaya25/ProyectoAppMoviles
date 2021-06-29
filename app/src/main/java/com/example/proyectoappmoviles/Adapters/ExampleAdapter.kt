@@ -46,16 +46,15 @@ class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel:
                         apiViewModel.getRoom(token,currentItem.roomName)
                         apiViewModel.myLobby.observe(activity as MainActivity, Observer { response1->
                             //Log.d("yes",currentItem.deck.toString())
+                            LocationService.getLocation().observe(lifecycleOwner, {
+                                val tempLocation = LocationItem(it.latitude.toString(), it.longitude.toString(), null, currentItem.roomName, null)
+                                //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
+                                apiViewModel.reportLocation(token, tempLocation)
+                            })
                             val action = LobbyFragmentDirections.actionLobbyFragmentToCardSelectorFragment(
                                     response1.body()?.deck?.name.toString(),
                                     ""
                             )
-                            LocationService.getLocation().observe(lifecycleOwner, {
-                                val tempLocation =
-                                        LocationItem(it.latitude.toString(), it.longitude.toString(), null, currentItem.roomName, null)
-                                //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
-                                apiViewModel.reportLocation(token, tempLocation)
-                            })
                             Navigation.findNavController(view).navigate(action)
                         })
                     }

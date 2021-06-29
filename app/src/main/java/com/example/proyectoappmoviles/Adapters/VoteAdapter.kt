@@ -54,11 +54,17 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
             if (check_connection()) {
                 val prefs = this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
                 val roomName = prefs?.getString("CurrentRoomName", "")
-                val tempVote = VoteItem(roomName, holder.card1.text.toString(), null, null)
+                val tempVote = VoteItem(roomName, holder.card1.text.toString(), null, null,null,null,null,null)
                 apiViewModel.vote(token, tempVote)
                 apiViewModel.voteResponse.observe(activity, Observer { response ->
                     val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[0])
-                    getLocationNNavigate(action, roomName!!,view)
+                    LocationService.getLocation().observe(lifecycleOwner, {
+                        val tempLocation =
+                                LocationItem(it.latitude.toString(), it.longitude.toString(), null, roomName, null)
+                        //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
+                        apiViewModel.reportLocation(token, tempLocation)
+                    })
+                    Navigation.findNavController(view).navigate(action)
                 })
             }else{
                 Toast.makeText(activity, "ERROR: Cant join without Internet", Toast.LENGTH_SHORT).show()
@@ -69,11 +75,17 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
             if (check_connection()) {
                 val prefs = this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
                 val roomName = prefs?.getString("CurrentRoomName", "")
-                val tempVote = VoteItem(roomName, holder.card2.text.toString(), null, null)
+                val tempVote = VoteItem(roomName, holder.card2.text.toString(), null, null,null,null,null,null)
                 apiViewModel.vote(token, tempVote)
                 apiViewModel.voteResponse.observe(activity, Observer { response ->
                     val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[1])
-                    getLocationNNavigate(action, roomName!!,view)
+                    LocationService.getLocation().observe(lifecycleOwner, {
+                        val tempLocation =
+                                LocationItem(it.latitude.toString(), it.longitude.toString(), null, roomName, null)
+                        //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
+                        apiViewModel.reportLocation(token, tempLocation)
+                    })
+                    Navigation.findNavController(view).navigate(action)
                 })
             }else{
                 Toast.makeText(activity, "ERROR: Cant join without Internet", Toast.LENGTH_SHORT).show()
@@ -83,11 +95,17 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
             if (check_connection()) {
                 val prefs = this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
                 val roomName = prefs?.getString("CurrentRoomName", "").toString()
-                val tempVote = VoteItem(roomName, holder.card3.text.toString(), null, null)
+                val tempVote = VoteItem(roomName, holder.card3.text.toString(), null, null,null,null,null,null)
                 apiViewModel.vote(token, tempVote)
                 apiViewModel.voteResponse.observe(activity, Observer { response ->
                     val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[2])
-                    getLocationNNavigate(action, roomName!!,view)
+                    LocationService.getLocation().observe(lifecycleOwner, {
+                        val tempLocation =
+                                LocationItem(it.latitude.toString(), it.longitude.toString(), null, roomName, null)
+                        //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
+                        apiViewModel.reportLocation(token, tempLocation)
+                    })
+                    Navigation.findNavController(view).navigate(action)
                 })
             }else{
                 Toast.makeText(activity, "ERROR: Cant join without Internet", Toast.LENGTH_SHORT).show()
@@ -131,16 +149,7 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
     }
 
     fun getLocationNNavigate(action:NavDirections,roomName:String, auxView: View) {
-        LocationService.getLocation().observe(lifecycleOwner, {
-            val tempLocation =
-                LocationItem(it.latitude.toString(), it.longitude.toString(), null, roomName, null)
-            //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
-            apiViewModel.reportLocation(token, tempLocation)
-            apiViewModel.reportLocationResponse.observe(activity, Observer { response ->
-                Log.d("ApiResponse",response.code().toString())
-                Navigation.findNavController(auxView).navigate(action)
-            })
-        })
+
     }
 
 }

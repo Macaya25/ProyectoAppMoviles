@@ -29,5 +29,5 @@ val myModule= module {
     viewModel { CardViewModel(Application(),get()) }
 
     //VoteViewModel
-    viewModel { VotesViewModel(Application()) }
+    viewModel { VotesViewModel(Application(),get()) }
 }

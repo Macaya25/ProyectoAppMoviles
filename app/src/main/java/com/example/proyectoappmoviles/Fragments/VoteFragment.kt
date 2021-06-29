@@ -98,18 +98,18 @@ class VoteFragment : Fragment() {
             val token = prefs?.getString("loggedInToken", "").toString()
             val roomName = prefs?.getString("CurrentRoomName", "").toString()
             //TODO:Rehacer el la funcion que regista los votos para que ahora pueda funcionar con las coordenadas
-            /*apiViewModel.getRoom(token, roomName)
+            apiViewModel.getRoom(token, roomName)
             apiViewModel.myLobby.observe(activity as MainActivity, Observer { response ->
                 if (response.isSuccessful) {
                     apiViewModel.getResult(token, roomName)
                     apiViewModel.getResultResponse.observe(activity as MainActivity, Observer { response1 ->
                         if (response.isSuccessful) {
                             viewModel.setMemberList(response.body()?.members!!, response1.body()!!.result)
-                            Log.d("members", response.body()?.members.toString())
+                            Log.d("members", viewModel.list.toString())
                         }
                     })
                 }
-            })*/
+            })
             Log.d("looper", "END")
         }else{
             Toast.makeText(activity, "ERROR: Cant Refresh Without Internet", Toast.LENGTH_SHORT).show()

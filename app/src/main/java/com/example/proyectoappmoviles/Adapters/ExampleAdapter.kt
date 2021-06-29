@@ -9,18 +9,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
+import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
+import com.example.clase12.service.LocationService
 import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.Api.ApiViewModel
 import com.example.proyectoappmoviles.Fragments.JoinRoomFragmentDirections
 import com.example.proyectoappmoviles.Fragments.LobbyFragmentDirections
 import com.example.proyectoappmoviles.ObjectItems.ExampleItem
 import com.example.proyectoappmoviles.ObjectItems.LobbyItem
+import com.example.proyectoappmoviles.ObjectItems.LocationItem
 import com.example.proyectoappmoviles.R
 
-class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel: ApiViewModel,val token:String,val activity: MainActivity,val view: View) : RecyclerView.Adapter<ExampleAdapter.ExampleViewHolder>() {
+class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel: ApiViewModel,val token:String,val activity: MainActivity,val view: View, val lifecycleOwner: LifecycleOwner) : RecyclerView.Adapter<ExampleAdapter.ExampleViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExampleViewHolder {
         val itemView= LayoutInflater.from(parent.context).inflate(R.layout.example_item,parent,false)
@@ -41,12 +46,16 @@ class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel:
                         apiViewModel.getRoom(token,currentItem.roomName)
                         apiViewModel.myLobby.observe(activity as MainActivity, Observer { response1->
                             //Log.d("yes",currentItem.deck.toString())
-
-
                             val action = LobbyFragmentDirections.actionLobbyFragmentToCardSelectorFragment(
                                     response1.body()?.deck?.name.toString(),
                                     ""
                             )
+                            LocationService.getLocation().observe(lifecycleOwner, {
+                                val tempLocation =
+                                        LocationItem(it.latitude.toString(), it.longitude.toString(), null, currentItem.roomName, null)
+                                //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
+                                apiViewModel.reportLocation(token, tempLocation)
+                            })
                             Navigation.findNavController(view).navigate(action)
                         })
                     }

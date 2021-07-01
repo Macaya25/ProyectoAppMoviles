@@ -39,9 +39,19 @@ class DeckFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        val cards = args.cards.split(",").map{ it.trim() }
-        val deck = Deck("", cards)
-        viewModel.setDeck(deck, 0)
+
+        if (args.cards == ""){
+            viewModel.executor.execute {
+                val cards = viewModel.deckDao.getAllDecks()[0].cards.split(",").map{ it.trim() }
+                val deck = Deck("", cards)
+                viewModel.setDeck(deck, 0)
+            }
+        }
+        else{
+            val cards = args.cards.split(",").map{ it.trim() }
+            val deck = Deck("", cards)
+            viewModel.setDeck(deck, 0)
+        }
         //viewModel.live_list.observe(viewLifecycleOwner,androidx.lifecycle.Observer{adapter.set(it)})
 
 

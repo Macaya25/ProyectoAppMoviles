@@ -51,9 +51,11 @@ class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel:
                                 //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
                                 apiViewModel.reportLocation(token, tempLocation)
                             })
+                            val re = "[\\[\\]]".toRegex()
+                            val cards = response1.body()?.deck?.cards.toString()
                             val action = LobbyFragmentDirections.actionLobbyFragmentToCardSelectorFragment(
                                     response1.body()?.deck?.name.toString(),
-                                    ""
+                                    re.replace(cards, "")
                             )
                             Navigation.findNavController(view).navigate(action)
                         })

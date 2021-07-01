@@ -84,7 +84,7 @@ class VoteFragment : Fragment() {
         val btnSettings=view.findViewById<Button>(R.id.SettingsButton)
 
         btnDeck.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_voteFragment_to_deckFragment)
+            Navigation.findNavController(view).navigate((R.id.action_voteFragment_to_deckFragment))
         }
 
         btnSettings.setOnClickListener {

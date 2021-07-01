@@ -64,7 +64,8 @@ class CardSelectorFragment : Fragment() {
         val btnSettings=view.findViewById<Button>(R.id.SettingsButton)
 
         btnDeck.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_cardSelectorFragment_to_deckFragment)
+            val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToDeckFragment(args.cards)
+            Navigation.findNavController(view).navigate(action)
         }
 
         btnSettings.setOnClickListener {

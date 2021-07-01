@@ -42,8 +42,7 @@
             app:destination="@id/lobbyFragment" />
         <argument
             android:name="cards"
-            app:argType="string"
-            android:defaultValue="" />
+            app:argType="string" />
 
 
     </fragment>
@@ -63,7 +62,8 @@
             app:destination="@id/inspectCardFragment" />
         <argument
             android:name="cards"
-            app:argType="string" />
+            app:argType="string"
+            android:defaultValue=""/>
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"

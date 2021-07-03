@@ -18,15 +18,18 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.clase12.service.LocationService
 import com.example.proyectoappmoviles.Activities.MainActivity
 import com.example.proyectoappmoviles.Adapters.LobbyVotesAdapter
 import com.example.proyectoappmoviles.Api.ApiViewModel
 //import com.example.proyectoappmoviles.Api.ApiViewModelFactory
 import com.example.proyectoappmoviles.Api.Repository
+import com.example.proyectoappmoviles.ObjectItems.LocationItem
 import com.example.proyectoappmoviles.ObjectItems.MemberItem
 import com.example.proyectoappmoviles.ObjectItems.VoteItem
 import com.example.proyectoappmoviles.R
@@ -86,7 +89,10 @@ class VoteFragment : Fragment() {
         val btnLobby=view.findViewById<Button>(R.id.LobbyButton)
 
         btnDeck.setOnClickListener {
-            Navigation.findNavController(view).navigate((R.id.action_voteFragment_to_deckFragment))
+            val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+            val deck= prefs?.getString("SettingsDeck",null).toString()
+            val action = VoteFragmentDirections.actionVoteFragmentToDeckFragment(deck)
+            Navigation.findNavController(view).navigate(action)
         }
 
         btnSettings.setOnClickListener {
@@ -140,6 +146,12 @@ class VoteFragment : Fragment() {
                     })
                 }
             })
+            LocationService.getLocation().observe(viewLifecycleOwner, {
+                val tempLocation = LocationItem(it.latitude.toString(), it.longitude.toString(), null, roomName, null)
+                //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
+                apiViewModel.reportLocation(token, tempLocation)
+            })
+
             Log.d("looper", "END")
         }else{
             Toast.makeText(activity, "ERROR: Cant Refresh Without Internet", Toast.LENGTH_SHORT).show()

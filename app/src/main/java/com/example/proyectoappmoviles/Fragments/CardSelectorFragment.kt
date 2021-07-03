@@ -66,7 +66,9 @@ class CardSelectorFragment : Fragment() {
         val btnLobby=view.findViewById<Button>(R.id.LobbyButton)
 
         btnDeck.setOnClickListener {
-            val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToDeckFragment(args.cards)
+            val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+            val deck= prefs?.getString("SettingsDeck",null).toString()
+            val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToDeckFragment(deck)
             Navigation.findNavController(view).navigate(action)
         }
 

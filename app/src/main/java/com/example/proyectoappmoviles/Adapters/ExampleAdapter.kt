@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
+import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -27,8 +28,11 @@ import com.example.proyectoappmoviles.R
 
 class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel: ApiViewModel,val token:String,val activity: MainActivity,val view: View, val lifecycleOwner: LifecycleOwner) : RecyclerView.Adapter<ExampleAdapter.ExampleViewHolder>() {
 
+    lateinit var ultimateNav: NavController
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExampleViewHolder {
         val itemView= LayoutInflater.from(parent.context).inflate(R.layout.example_item,parent,false)
+        ultimateNav =Navigation.findNavController(view)
         return ExampleViewHolder(itemView)
     }
 
@@ -36,6 +40,7 @@ class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel:
 
     override fun onBindViewHolder(holder: ExampleViewHolder, position: Int) {
         val currentItem= exampleList[position]
+        ultimateNav =Navigation.findNavController(view)
         val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
         holder.textView1.text = currentItem.roomName
         holder.itemView.setOnClickListener{
@@ -53,12 +58,11 @@ class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel:
                                     //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
                                     apiViewModel.reportLocation(token, tempLocation)
                                     apiViewModel.reportLocationResponse.observe(activity, Observer { aux->
-                                        val editor= prefs?.edit()
                                         if (aux.isSuccessful){
+                                            val editor= prefs?.edit()
                                             editor?.apply {
                                                 putString("CurrentJoinedRoom", currentItem.roomName as String?)
                                             }?.apply()
-
                                             val re = "[\\[\\]]".toRegex()
                                             val cards = response1.body()?.deck?.cards.toString()
                                             val action = LobbyFragmentDirections.actionLobbyFragmentToCardSelectorFragment(

@@ -83,6 +83,7 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 putBoolean("loggedIn",false)
                 putString("loggedInUser",null)
                 putString("loggedInPass",null)
+                putString("SettingsDeck",null)
                 putString("CurrentJoinedRoom",null)
                 putString(usernameaux+"DeckName", deckNameaux as String?)
                 putInt(usernameaux+"Deck", deckaux!!)
@@ -118,22 +119,24 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
         val usernameaux= prefs?.getString("loggedInUser",null).toString()
 
-        val editor= prefs?.edit()
-        editor?.apply {
-            putString(usernameaux+"DeckName", deckName as String?)
-            putInt(usernameaux+"Deck", position)
-        }?.apply()
-
         viewModel.executor.execute{
+            val editor= prefs?.edit()
             decks = viewModel.deckDao.getAllDecks()
             decks.forEach {
                 if (it.name == deckName){
-                    this.deck = it.cards
+                    this.deck=it.cards
+                    editor?.apply {
+                        putString("SettingsDeck", it.cards as String?)
+                    }?.apply()
                     //viewModel.setDeck(DeckEntityMapper().mapFromCached(it), position)
                 }
             }
-        }
 
+            editor?.apply {
+                putString(usernameaux+"DeckName", deckName as String?)
+                putInt(usernameaux+"Deck", position)
+            }?.apply()
+        }
 
 
     }

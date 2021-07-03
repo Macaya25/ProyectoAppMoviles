@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -82,6 +83,7 @@ class VoteFragment : Fragment() {
 
         val btnDeck=view.findViewById<Button>(R.id.DeckButton)
         val btnSettings=view.findViewById<Button>(R.id.SettingsButton)
+        val btnLobby=view.findViewById<Button>(R.id.LobbyButton)
 
         btnDeck.setOnClickListener {
             Navigation.findNavController(view).navigate((R.id.action_voteFragment_to_deckFragment))
@@ -90,6 +92,30 @@ class VoteFragment : Fragment() {
         btnSettings.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_voteFragment_to_settingsFragment)
         }
+
+        btnLobby.setOnClickListener {
+            //Navigation.findNavController(view).navigate(R.id.action_voteFragment_to_cardSelectorFragment)
+            val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+            val token= prefs?.getString("loggedInToken","")
+            val tempName=prefs?.getString("CurrentJoinedRoom","")
+            apiViewModel.getRoom(token!!, tempName!!)
+            apiViewModel.myLobby.observe(activity as MainActivity, Observer { response1 ->
+                val action = VoteFragmentDirections.actionVoteFragmentToCardSelectorFragment(
+                        response1.body()?.deck?.name.toString(),
+                        response1.body()?.deck?.toString()!!
+                )
+                Navigation.findNavController(view).navigate(action)
+            })
+        }
+
+        requireActivity()
+                .onBackPressedDispatcher
+                .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+
+                    }
+                }
+                )
 
 
         return view

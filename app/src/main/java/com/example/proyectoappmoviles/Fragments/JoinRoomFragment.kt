@@ -54,18 +54,29 @@ class JoinRoomFragment() : Fragment() {
                         if (response.isSuccessful && response.body()?.message != null) {
                             apiViewModel.getRoom(token, tempName)
                             apiViewModel.myLobby.observe(activity as MainActivity, Observer { response1 ->
-                                LocationService.getLocation().observe(viewLifecycleOwner, {
-                                    val tempLocation = LocationItem(it.latitude.toString(), it.longitude.toString(), null, tempName, null)
-                                    //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
-                                    apiViewModel.reportLocation(token, tempLocation)
-                                })
+                                if (response1.isSuccessful) {
+                                    LocationService.getLocation().observe(viewLifecycleOwner, {
+                                        val tempLocation = LocationItem(it.latitude.toString(), it.longitude.toString(), null, tempName, null)
+                                        //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
+                                        apiViewModel.reportLocation(token, tempLocation)
+                                        apiViewModel.reportLocationResponse.observe(activity as MainActivity, Observer { aux->
+                                            if (aux.isSuccessful){
+                                                val editor= prefs?.edit()
+                                                editor?.apply {
+                                                    putString("CurrentJoinedRoom", tempName as String?)
+                                                }?.apply()
+                                                val action = JoinRoomFragmentDirections.actionJoinRoomFragmentToCardSelectorFragment(
+                                                        response1.body()?.deck?.name.toString(),
+                                                        response1.body()?.deck?.toString()!!
+                                                )
+                                                Navigation.findNavController(view).navigate(action)
+                                            }
+                                        })
+                                    })
 
-                                val action = JoinRoomFragmentDirections.actionJoinRoomFragmentToCardSelectorFragment(
-                                        response1.body()?.deck?.name.toString(),
-                                        response1.body()?.deck?.toString()!!
-                                )
-                                Navigation.findNavController(view).navigate(action)
+                                }
                             })
+
                         } else {
                             Toast.makeText(activity,"No Match For Given Credentials", Toast.LENGTH_SHORT).show()
                         }

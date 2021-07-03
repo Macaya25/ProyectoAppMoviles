@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
@@ -62,6 +63,7 @@ class CardSelectorFragment : Fragment() {
 
         val btnDeck=view.findViewById<Button>(R.id.DeckButton)
         val btnSettings=view.findViewById<Button>(R.id.SettingsButton)
+        val btnLobby=view.findViewById<Button>(R.id.LobbyButton)
 
         btnDeck.setOnClickListener {
             val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToDeckFragment(args.cards)
@@ -71,6 +73,19 @@ class CardSelectorFragment : Fragment() {
         btnSettings.setOnClickListener {
             Navigation.findNavController(view).navigate(R.id.action_cardSelectorFragment_to_settingsFragment)
         }
+
+        btnLobby.setOnClickListener {
+            Navigation.findNavController(view).navigate(R.id.action_cardSelectorFragment_to_lobbyFragment)
+        }
+
+        requireActivity()
+                .onBackPressedDispatcher
+                .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+
+                    }
+                }
+                )
 
 
         return view

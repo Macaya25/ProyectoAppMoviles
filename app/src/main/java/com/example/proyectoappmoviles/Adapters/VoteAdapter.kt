@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
+import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +30,7 @@ import com.example.proyectoappmoviles.R
 class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiViewModel, val token:String, val activity: MainActivity, val view: View, val lifecycleOwner: LifecycleOwner): RecyclerView.Adapter<VoteAdapter.CardViewHolder>() {
 
     lateinit var com: OnClickFragmentCardInspect
+    lateinit var ultimateNav:NavController
 
 
     inner class CardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -40,11 +42,13 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.card_item,parent,false)
+        ultimateNav =Navigation.findNavController(view)
         return CardViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
         val currentItem = cardsList[position]
+        ultimateNav =Navigation.findNavController(view)
 
         holder.card1.text = currentItem.cardNames[0]
         if (currentItem.cardAmount >= 2) holder.card2.text = currentItem.cardNames[1]
@@ -57,14 +61,23 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
                 val tempVote = VoteItem(roomName, holder.card1.text.toString(), null, null,null,null,null,null)
                 apiViewModel.vote(token, tempVote)
                 apiViewModel.voteResponse.observe(activity, Observer { response ->
-                    val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[0])
-                    LocationService.getLocation().observe(lifecycleOwner, {
-                        val tempLocation =
-                                LocationItem(it.latitude.toString(), it.longitude.toString(), null, roomName, null)
-                        //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
-                        apiViewModel.reportLocation(token, tempLocation)
-                    })
-                    Navigation.findNavController(view).navigate(action)
+                    if (response.isSuccessful) {
+                        val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[0])
+                        LocationService.getLocation().observe(lifecycleOwner, {
+                            val tempLocation =
+                                    LocationItem(it.latitude.toString(), it.longitude.toString(), null, roomName, null)
+                            //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
+                            apiViewModel.reportLocation(token, tempLocation)
+                            apiViewModel.reportLocationResponse.observe(activity, Observer { aux ->
+                                if (aux.isSuccessful) {
+                                    //Navigation.findNavController(view).navigate(action)
+                                    ultimateNav.navigate(action)
+                                }
+                            })
+                            //Navigation.findNavController(view).navigate(action)
+                        })
+                    }
+                    //Navigation.findNavController(view).navigate(action)
                 })
             }else{
                 Toast.makeText(activity, "ERROR: Cant join without Internet", Toast.LENGTH_SHORT).show()
@@ -78,14 +91,23 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
                 val tempVote = VoteItem(roomName, holder.card2.text.toString(), null, null,null,null,null,null)
                 apiViewModel.vote(token, tempVote)
                 apiViewModel.voteResponse.observe(activity, Observer { response ->
-                    val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[1])
-                    LocationService.getLocation().observe(lifecycleOwner, {
-                        val tempLocation =
-                                LocationItem(it.latitude.toString(), it.longitude.toString(), null, roomName, null)
-                        //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
-                        apiViewModel.reportLocation(token, tempLocation)
-                    })
-                    Navigation.findNavController(view).navigate(action)
+                    if (response.isSuccessful) {
+                        val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[1])
+                        LocationService.getLocation().observe(lifecycleOwner, {
+                            val tempLocation =
+                                    LocationItem(it.latitude.toString(), it.longitude.toString(), null, roomName, null)
+                            //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
+                            apiViewModel.reportLocation(token, tempLocation)
+                            apiViewModel.reportLocationResponse.observe(activity, Observer { aux ->
+                                if (aux.isSuccessful) {
+                                    //Navigation.findNavController(view).navigate(action)
+                                    ultimateNav.navigate(action)
+                                }
+                            })
+                            //Navigation.findNavController(view).navigate(action)
+                        })
+                    }
+
                 })
             }else{
                 Toast.makeText(activity, "ERROR: Cant join without Internet", Toast.LENGTH_SHORT).show()
@@ -98,14 +120,23 @@ class VoteAdapter(var cardsList: MutableList<CardItem>, var apiViewModel: ApiVie
                 val tempVote = VoteItem(roomName, holder.card3.text.toString(), null, null,null,null,null,null)
                 apiViewModel.vote(token, tempVote)
                 apiViewModel.voteResponse.observe(activity, Observer { response ->
-                    val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[2])
-                    LocationService.getLocation().observe(lifecycleOwner, {
-                        val tempLocation =
-                                LocationItem(it.latitude.toString(), it.longitude.toString(), null, roomName, null)
-                        //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
-                        apiViewModel.reportLocation(token, tempLocation)
-                    })
-                    Navigation.findNavController(view).navigate(action)
+                    if (response.isSuccessful) {
+                        val action = CardSelectorFragmentDirections.actionCardSelectorFragmentToVoteFragment(currentItem.cardNames[2])
+                        LocationService.getLocation().observe(lifecycleOwner, {
+                            val tempLocation =
+                                    LocationItem(it.latitude.toString(), it.longitude.toString(), null, roomName, null)
+                            //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
+                            apiViewModel.reportLocation(token, tempLocation)
+                            apiViewModel.reportLocationResponse.observe(activity, Observer { aux ->
+                                if (aux.isSuccessful) {
+                                    //Navigation.findNavController(view).navigate(action)
+                                    ultimateNav.navigate(action)
+                                }
+                            })
+                            //Navigation.findNavController(view).navigate(action)
+                        })
+                    }
+                    //Navigation.findNavController(view).navigate(action)
                 })
             }else{
                 Toast.makeText(activity, "ERROR: Cant join without Internet", Toast.LENGTH_SHORT).show()

@@ -53,23 +53,28 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
         //apiViewModel= ViewModelProvider(this,viewModelFactory).get(ApiViewModel::class.java)
         val spinner= view.findViewById<Spinner>(R.id.spinner)
 
+        val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+        val usernameaux= prefs?.getString("loggedInUser",null).toString()
+        val spinnerIndex= prefs?.getInt(usernameaux+"Deck",0)
+        Log.d("spinner index",spinnerIndex.toString())
 
         viewModel.executor.execute {
             val deckNames = viewModel.getDeckNames().toList()
             val spinnerAdapter : ArrayAdapter<CharSequence> = ArrayAdapter(view.context, android.R.layout.simple_spinner_item, deckNames)
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = spinnerAdapter
+            spinner.onItemSelectedListener = this
+            spinner.setSelection(spinnerIndex!!)
         }
 
-        spinner.onItemSelectedListener = this
-        spinner.setSelection(viewModel.selected_deck)
+
         
         val btnDeck=view.findViewById<Button>(R.id.DeckButton)
         val btnLobby=view.findViewById<Button>(R.id.LobbyButton)
         val btnLogout=view.findViewById<Button>(R.id.LogoutButton)
 
         btnLogout.setOnClickListener{
-            val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+
             val usernameaux= prefs?.getString("loggedInUser",null).toString()
             val deckaux = prefs?.getInt(usernameaux+"Deck",0)
             val deckNameaux = prefs?.getString(usernameaux+"DeckName", null).toString()
@@ -78,6 +83,7 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 putBoolean("loggedIn",false)
                 putString("loggedInUser",null)
                 putString("loggedInPass",null)
+                putString("CurrentJoinedRoom",null)
                 putString(usernameaux+"DeckName", deckNameaux as String?)
                 putInt(usernameaux+"Deck", deckaux!!)
             }?.apply()

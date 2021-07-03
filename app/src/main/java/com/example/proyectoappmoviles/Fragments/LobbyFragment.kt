@@ -138,14 +138,17 @@ class LobbyFragment : Fragment() {
 
 
         Log.d("list", viewModel.list.toString())
-        adapter= ExampleAdapter(viewModel.list, apiViewModel, token, activity as MainActivity, aux,this)
+
         val recycler_view = aux.findViewById<RecyclerView>(R.id.recycler_view)
         recycler_view.setHasFixedSize(true)
-        recycler_view.adapter=adapter
+
         recycler_view.layoutManager= LinearLayoutManager(activity)
         viewModel.genericList.observe(
             viewLifecycleOwner,
-            androidx.lifecycle.Observer { adapter.set(it) })
+            androidx.lifecycle.Observer {
+                adapter= ExampleAdapter(viewModel.list, apiViewModel, token, activity as MainActivity, aux,this)
+                recycler_view.adapter=adapter
+                adapter.set(it) })
 
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recycler_view)
 

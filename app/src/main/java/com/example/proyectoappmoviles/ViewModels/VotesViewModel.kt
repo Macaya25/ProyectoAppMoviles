@@ -25,17 +25,18 @@ class VotesViewModel(application: Application,val context: Context) : AndroidVie
     fun setMemberList(memberList: List<MemberItem>,voteList:List<VoteItem>){
         list.clear()
         var tempList= mutableListOf<VoteItem>()
+        var gc = Geocoder(context, Locale.getDefault())
 
         memberList.forEach{
             var tempMember=VoteItem(null,"",null,it.username,null,null,null,null)
             if (it.location!=null) {
                 try {
-                    var gc = Geocoder(context, Locale.getDefault())
                     var addresses= gc.getFromLocation(it.location.lat!!.toDouble(), it.location.long!!.toDouble(),2)
                     var address=addresses.get(0)
                     tempMember = VoteItem(null, "", null, it.username, it.location.lat, it.location.long, it.location.timestamp,address.getAddressLine(0)+" "+address.locality)
                 }catch (e:Exception){
                     tempMember = VoteItem(null, "", null, it.username, it.location.lat, it.location.long, it.location.timestamp,"Unknown Location")
+                    Log.d("geocoder error",it.location.lat.toString()+" "+it.location.long.toString())
                 }
 
             }

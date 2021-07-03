@@ -36,6 +36,7 @@ class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel:
 
     override fun onBindViewHolder(holder: ExampleViewHolder, position: Int) {
         val currentItem= exampleList[position]
+        val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
         holder.textView1.text = currentItem.roomName
         holder.itemView.setOnClickListener{
             if (check_connection()){
@@ -45,19 +46,31 @@ class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel:
                     if (response.isSuccessful){
                         apiViewModel.getRoom(token,currentItem.roomName)
                         apiViewModel.myLobby.observe(activity as MainActivity, Observer { response1->
-                            //Log.d("yes",currentItem.deck.toString())
-                            LocationService.getLocation().observe(lifecycleOwner, {
-                                val tempLocation = LocationItem(it.latitude.toString(), it.longitude.toString(), null, currentItem.roomName, null)
-                                //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
-                                apiViewModel.reportLocation(token, tempLocation)
-                            })
-                            val re = "[\\[\\]]".toRegex()
-                            val cards = response1.body()?.deck?.cards.toString()
-                            val action = LobbyFragmentDirections.actionLobbyFragmentToCardSelectorFragment(
-                                    response1.body()?.deck?.name.toString(),
-                                    re.replace(cards, "")
-                            )
-                            Navigation.findNavController(view).navigate(action)
+                            if (response1.isSuccessful) {
+                                //Log.d("yes",currentItem.deck.toString())
+                                LocationService.getLocation().observe(lifecycleOwner, {
+                                    val tempLocation = LocationItem(it.latitude.toString(), it.longitude.toString(), null, currentItem.roomName, null)
+                                    //Toast.makeText(activity, it.latitude.toString()+" "+it.longitude.toString(), Toast.LENGTH_SHORT).show()
+                                    apiViewModel.reportLocation(token, tempLocation)
+                                    apiViewModel.reportLocationResponse.observe(activity, Observer { aux->
+                                        val editor= prefs?.edit()
+                                        if (aux.isSuccessful){
+                                            editor?.apply {
+                                                putString("CurrentJoinedRoom", currentItem.roomName as String?)
+                                            }?.apply()
+
+                                            val re = "[\\[\\]]".toRegex()
+                                            val cards = response1.body()?.deck?.cards.toString()
+                                            val action = LobbyFragmentDirections.actionLobbyFragmentToCardSelectorFragment(
+                                                    response1.body()?.deck?.name.toString(),
+                                                    re.replace(cards, "")
+                                            )
+                                            Navigation.findNavController(view).navigate(action)
+                                        }
+                                    })
+                                })
+
+                            }
                         })
                     }
                 })

@@ -73,7 +73,10 @@ class CreateRoomFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
 
         btnDeck.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_createRoomFragment_to_deckFragment)
+            val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+            val deck= prefs?.getString("SettingsDeck","0, 1/2, 1, 2, 3, 5, 8, 13, 20, 40, 100, ∞").toString()
+            val action = CreateRoomFragmentDirections.actionCreateRoomFragmentToDeckFragment(deck)
+            Navigation.findNavController(view).navigate(action)
         }
 
         btnSettings.setOnClickListener {

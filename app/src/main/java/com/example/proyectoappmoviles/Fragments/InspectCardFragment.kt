@@ -1,5 +1,6 @@
 package com.example.proyectoappmoviles.Fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -33,7 +34,10 @@ class InspectCardFragment : Fragment() {
         val btnLobby=view.findViewById<Button>(R.id.LobbyButton)
 
         btnCard.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_inspectCardFragment_to_deckFragment)
+            val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+            val deck= prefs?.getString("SettingsDeck","0, 1/2, 1, 2, 3, 5, 8, 13, 20, 40, 100, ∞").toString()
+            val action = InspectCardFragmentDirections.actionInspectCardFragmentToDeckFragment(deck)
+            Navigation.findNavController(view).navigate(action)
         }
 
         btnDeck.setOnClickListener {

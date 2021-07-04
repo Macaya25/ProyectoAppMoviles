@@ -90,7 +90,7 @@ class VoteFragment : Fragment() {
 
         btnDeck.setOnClickListener {
             val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
-            val deck= prefs?.getString("SettingsDeck",null).toString()
+            val deck= prefs?.getString("SettingsDeck","0, 1/2, 1, 2, 3, 5, 8, 13, 20, 40, 100, ∞").toString()
             val action = VoteFragmentDirections.actionVoteFragmentToDeckFragment(deck)
             Navigation.findNavController(view).navigate(action)
         }

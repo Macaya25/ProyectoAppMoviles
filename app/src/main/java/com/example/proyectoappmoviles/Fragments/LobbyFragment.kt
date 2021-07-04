@@ -230,7 +230,9 @@ class LobbyFragment : Fragment() {
         val btnRefresh=view.findViewById<ImageButton>(R.id.RefreshButton)
 
         btnDeck.setOnClickListener {
-            val action = LobbyFragmentDirections.actionLobbyFragmentToDeckFragment(args.cards)
+            val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+            val deck= prefs?.getString("SettingsDeck","0, 1/2, 1, 2, 3, 5, 8, 13, 20, 40, 100, ∞").toString()
+            val action = LobbyFragmentDirections.actionLobbyFragmentToDeckFragment(deck)
             Navigation.findNavController(view).navigate(action)
         }
 

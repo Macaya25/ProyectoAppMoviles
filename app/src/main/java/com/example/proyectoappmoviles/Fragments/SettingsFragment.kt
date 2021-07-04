@@ -125,6 +125,7 @@ class SettingsFragment : Fragment(), AdapterView.OnItemSelectedListener {
             decks.forEach {
                 if (it.name == deckName){
                     this.deck=it.cards
+                    Log.d("yes",it.cards)
                     editor?.apply {
                         putString("SettingsDeck", it.cards as String?)
                     }?.apply()

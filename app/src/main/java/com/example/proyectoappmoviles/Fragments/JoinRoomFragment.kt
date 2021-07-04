@@ -92,7 +92,10 @@ class JoinRoomFragment() : Fragment() {
         val btnSettings=view.findViewById<Button>(R.id.SettingsButton)
 
         btnDeck.setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_joinRoomFragment_to_deckFragment)
+            val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
+            val deck= prefs?.getString("SettingsDeck","0, 1/2, 1, 2, 3, 5, 8, 13, 20, 40, 100, ∞").toString()
+            val action = JoinRoomFragmentDirections.actionJoinRoomFragmentToDeckFragment(deck)
+            Navigation.findNavController(view).navigate(action)
         }
 
         btnSettings.setOnClickListener {

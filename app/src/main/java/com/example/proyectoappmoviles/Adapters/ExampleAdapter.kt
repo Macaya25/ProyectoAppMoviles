@@ -69,7 +69,7 @@ class ExampleAdapter(var exampleList: MutableList<ExampleItem>,var apiViewModel:
                                                     response1.body()?.deck?.name.toString(),
                                                     re.replace(cards, "")
                                             )
-                                            Navigation.findNavController(view).navigate(action)
+                                            ultimateNav.navigate(action)
                                         }
                                     })
                                 })

@@ -50,6 +50,10 @@ class LobbyVotesAdapter(var cardsList: MutableList<VoteItem>): RecyclerView.Adap
         cardsList = item
         this.notifyDataSetChanged()
     }
+
+    //Cortezia de Rafael Ruiz-clavijo
+    //Importante: Este codigo fue compartido con el consentimiento de rafael. Se entiende lo que se hace y se agradece que nos halla ayudado con esta parte dek codigo
+
     fun get_actual_date() : String{
         val sdf = SimpleDateFormat("MM/dd/yyyy HH:mm:ss")
         sdf.timeZone = TimeZone.getTimeZone("gmt")

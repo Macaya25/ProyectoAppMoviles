@@ -50,13 +50,14 @@ class CardSelectorFragment : Fragment() {
         val prefs= this.activity?.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE)
         val token= prefs?.getString("loggedInToken","")
         if (token != null) {
-            val recyclerView = view.findViewById<RecyclerView>(R.id.DeckRecyclerView)
-            recyclerView.setHasFixedSize(true)
-            adapter = VoteAdapter(viewModel.list,apiViewModel,token,activity as MainActivity,view,this)
-            recyclerView.adapter = adapter
-            recyclerView.layoutManager = LinearLayoutManager(activity)
+
             //viewModel.live_list.observe(viewLifecycleOwner,androidx.lifecycle.Observer{adapter.set(it)})
             viewModel.executor.execute{
+                val recyclerView = view.findViewById<RecyclerView>(R.id.DeckRecyclerView)
+                recyclerView.setHasFixedSize(true)
+                adapter = VoteAdapter(viewModel.list,apiViewModel,token,activity as MainActivity,view,this)
+                recyclerView.adapter = adapter
+                recyclerView.layoutManager = LinearLayoutManager(activity)
                 viewModel.setDeck(DeckEntityMapper().mapFromCached(viewModel.deckDao.getDeck(args.deckName)),0)
             }
         }

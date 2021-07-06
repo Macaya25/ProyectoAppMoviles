@@ -33,7 +33,7 @@ class LobbyVotesAdapter(var cardsList: MutableList<VoteItem>): RecyclerView.Adap
         if (currentItem.direction==null){
             holder.locationText.text="OFFLINE"
         }else{
-            if (compare_dates(get_actual_date(),convert_to_date(currentItem.time!!))<60){
+            if (timeDiff(currentItem.time!!)<60){
                 holder.locationText.text=currentItem.direction
             }else{
                 holder.locationText.text="OFFLINE"
@@ -51,19 +51,14 @@ class LobbyVotesAdapter(var cardsList: MutableList<VoteItem>): RecyclerView.Adap
         this.notifyDataSetChanged()
     }
 
-    //Cortezia de Rafael Ruiz-clavijo
-    //Importante: Este codigo fue compartido con el consentimiento de rafael. Se entiende lo que se hace y se agradece que nos halla ayudado con esta parte dek codigo
-
-    fun get_actual_date() : String{
+    
+    fun timeDiff(apiDate:String): Long {
         val sdf = SimpleDateFormat("MM/dd/yyyy HH:mm:ss")
         sdf.timeZone = TimeZone.getTimeZone("gmt")
-        val date = Date()
-        return sdf.format(date)
-    }
+        val d1 = Date()
 
-    fun convert_to_date(date: String) : String{
         var converted = ""
-        val dt = date.split(" ").toList()
+        val dt = apiDate.split(" ").toList()
         val months = listOf("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Sep", "Oct", "Nov", "Dec")
         var month_id = months.indexOf(dt[1]) + 1
         if (month_id < 10){
@@ -73,14 +68,20 @@ class LobbyVotesAdapter(var cardsList: MutableList<VoteItem>): RecyclerView.Adap
             converted += month_id.toString()
         }
         converted+="/" + dt[2] + "/" + dt[3] + " " + dt[4]
-        return converted
-    }
+        val d2 = sdf.parse(converted)
 
-    fun compare_dates(date1: String, date2: String) : Long{
-        val sdf = SimpleDateFormat("MM/dd/yyyy HH:mm:ss")
-        val d1 = sdf.parse(date1)
-        val d2 = sdf.parse(date2)
+
         val diffInMs: Long = abs(d2.getTime() - d1.getTime())
         return TimeUnit.MILLISECONDS.toSeconds(diffInMs)
     }
+
+
+
+
+
+
+
+
+
+
 }
